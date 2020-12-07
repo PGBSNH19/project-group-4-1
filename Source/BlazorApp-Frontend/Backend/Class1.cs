@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Backend
+﻿namespace Backend
 {
     public class Class1
     {
