@@ -1,3 +1,6 @@
+using API.GraphQL.GraphQLSchema;
+using GraphQL.Server;
+using GraphQL.Server.Ui.Playground;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -16,6 +19,13 @@ namespace API
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<AppSchema>();
+            services.AddGraphQL()
+                .AddSystemTextJson()
+                .AddGraphTypes(typeof(AppSchema), ServiceLifetime.Scoped);
+            //services.AddDbContext<ApplicationContext>(opt =>
+            //    opt.UseSqlServer(Configuration.GetConnectionString("sqlConString")));
+            services.AddScoped<IMessageRepository, MessageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -25,6 +35,9 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseGraphQL<AppSchema>();
+            app.UseGraphQLPlayground(options: new GraphQLPlaygroundOptions());
 
             app.UseRouting();
 
