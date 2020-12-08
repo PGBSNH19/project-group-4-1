@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorApp-Frontend", "BlazorApp-Frontend\BlazorApp-Frontend.csproj", "{0D895F7F-F8CF-4516-A973-F4A959DDAB3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp-Frontend", "BlazorApp-Frontend\BlazorApp-Frontend.csproj", "{0D895F7F-F8CF-4516-A973-F4A959DDAB3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{ABE8CEB0-13D9-4EA6-AF10-9C614205E750}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{2399BF67-72B9-4D98-8701-B23F4EE5C985}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{0D895F7F-F8CF-4516-A973-F4A959DDAB3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D895F7F-F8CF-4516-A973-F4A959DDAB3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D895F7F-F8CF-4516-A973-F4A959DDAB3E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ABE8CEB0-13D9-4EA6-AF10-9C614205E750}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ABE8CEB0-13D9-4EA6-AF10-9C614205E750}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ABE8CEB0-13D9-4EA6-AF10-9C614205E750}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ABE8CEB0-13D9-4EA6-AF10-9C614205E750}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2399BF67-72B9-4D98-8701-B23F4EE5C985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2399BF67-72B9-4D98-8701-B23F4EE5C985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2399BF67-72B9-4D98-8701-B23F4EE5C985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2399BF67-72B9-4D98-8701-B23F4EE5C985}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
