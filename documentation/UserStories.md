@@ -10,6 +10,8 @@
   - Display when my harvest / production is done so that people know when i have more goods in stock
   - Choose my own price for products so that i can decide how much my goods are worth
   - Be able to make an inquiry for a new marketplace, so that I can sell my products closer to home. 
+  - Have a profile so that I can present my farm in a good way.
+  - Be able to report a buyer for misconduct.
 
 ### As a Buyer:
 
@@ -19,6 +21,7 @@
   - be able to preorder products, so that I can reserve an amount from the next yield.
   - have a list of orders I have made, so that I see what I have bought.
   - have an account that I can log in to, so that I can manage my account and see past orders.
+  - Be able to report a seller for misconduct.
 
 ### As an Admin:
 
@@ -28,3 +31,4 @@
   - be able to preorder products, so that I can reserve an amount from the next yield.
   - have a list of orders I have made, so that I see what I have bought.
   - have an account that I can log in to, so that I can manage my account and see past orders.
+  - Handle reports and be able to remove users.
