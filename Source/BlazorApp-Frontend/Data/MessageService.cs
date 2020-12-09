@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+
 namespace BlazorApp_Frontend.Data
 {
     public class MessageService
@@ -16,27 +17,18 @@ namespace BlazorApp_Frontend.Data
         }
         public async Task<string> GetMessage()
         {
-            var response = await Client.GetAsync("graphql?query={messages{id,text}}");
-            using var responseStream = await response.Content.ReadAsStreamAsync();
-            var messageList = await JsonSerializer.DeserializeAsync<Message>(responseStream);
+            var response = await Client.GetAsync("graphql?query={messages{text}}");
+            var responseString = await response.Content.ReadAsStringAsync();
+            var jsonHelper = JsonConvert.DeserializeObject<string>(responseString);
 
-            string message = messageList.Text;
+            return "Hej";
 
-
-            return message;
         }
-
-
-        public int id;
-
-        public string text;
     }
 
-    public class Message
+    public class Messages
     {
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
-        [JsonPropertyName("text")]
-        public string Text { get; set; }
+        [JsonPropertyName("Text")]
+        public string messageText { get; set; }
     }
 }

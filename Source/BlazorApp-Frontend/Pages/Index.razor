@@ -12,10 +12,12 @@ Welcome to your new app.
 
 @code
 {
-    public Task<string> welcomeMessage;
+    public string welcomeMessage;
 
     protected override async Task OnInitializedAsync()
     {
-        welcomeMessage = Service.GetMessage();
+        var JsonHelper =  Service.GetMessage();
+
+        welcomeMessage = "hej";
     }
 }
