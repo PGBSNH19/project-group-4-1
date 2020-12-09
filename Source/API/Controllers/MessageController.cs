@@ -3,13 +3,12 @@ using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Route("api/v1.0/[controller]")]
+    [Route("api/v1.0")]
     [ApiController]
     public class MessageController : Controller
     {
@@ -19,7 +18,7 @@ namespace API.Controllers
             _messageRepository = messageRepository;
         }
 
-        [HttpGet(Name = "GetMessages")]
+        [HttpGet("GetMessages")]
         public async Task<ActionResult<Message>> GetMessages()
         {
             try
