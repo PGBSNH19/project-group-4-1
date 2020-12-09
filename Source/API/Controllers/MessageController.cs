@@ -21,6 +21,7 @@ namespace API.Controllers
         [HttpGet("GetMessages")]
         public async Task<ActionResult<Message>> GetMessages()
         {
+            //Debugger.Launch();
             try
             {
                 var results = await _messageRepository.GetMessages();
