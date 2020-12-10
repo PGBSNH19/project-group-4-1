@@ -1,7 +1,40 @@
 ﻿@page "/"
+@inject HttpClient http;
 
-<h1>Hello, world!</h1>
+<h1>Hello, API calling: world!</h1>
 
-Welcome to your new app.
+<button class="btn btn-success" @onclick="@GetMessages">Get Messages</button>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Text</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var Message in Messages)
+        {
+        <tr>
+            <td>@Message.Id</td>
+            <td>@Message.Text</td>
+        </tr>
+        }
+    </tbody>
+</table>
+@code {
+    List<Message> Messages = new List<Message>();
+
+    private async Task GetMessages()
+    {
+        Messages = await http.GetJsonAsync<List<Message>>("https://localhost:44317/api/v1.0/GetMessages");
+    }
+
+    public class Message
+    {
+        public int Id { get; set; } = 0;
+        public string Text { get; set; } = "";
+    }
+}
 
 <SurveyPrompt Title="How is Blazor working for you?" />
