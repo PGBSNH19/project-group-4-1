@@ -1,21 +1,24 @@
 ﻿@page "/"
 @using BlazorApp_Frontend.Data
-@inject MessageService Messageservice
+@inject  MessageService service;
 
 <h1>@WelcomeMessage</h1>
-
+<button class="btn btn-success" @onclick="@clickFunction">Click me!</button>
+<h2>@message</h2>
 Welcome to your new app.
 
 <SurveyPrompt Title="How is Blazor working for you?" />
 
 @code
 {
-    public string WelcomeMessage;
+    public string WelcomeMessage = "Welcome to the Produce Market!";
+    public string message;
 
-    protected override async Task OnInitializedAsync()
+    private void clickFunction()
     {
-        var message = Messageservice.GetMessages();
-        var text = message.Result;
-        WelcomeMessage = "message.Result.MessageText";
+        var result =  service.GetMessages();
+        message = result.Result.Text;
     }
+   
+
 }
