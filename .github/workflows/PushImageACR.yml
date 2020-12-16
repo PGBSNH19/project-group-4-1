@@ -17,18 +17,23 @@ on:
         description: 'Test scenario tags'
   
 jobs:
-   build:
+   build-and-deploy:
 
     runs-on: ubuntu-latest
     
     steps:
-      - uses: azure/docker-login@v1
+      - name: 'Checkout Github Actions'
+        uses: actions/checkout@master
+      
+      - name: 'Docker Login'
+        uses: azure/docker-login@v1
         with:
          login-server: nearbyproduceregistry.azurecr.io
          username: ${{ secrets.ACR_USERNAME }}
          password: ${{ secrets.ACR_PASSWORD }}
-       
-      - run: |
+         
+      - name: 'Build and push image'
+        run: |
          docker build -f Source/API/Dockerfile -t nearbyproduceregistry.azurecr.io/backend/backendimage:latest .
          docker push nearbyproduceregistry.azurecr.io/backend/backendimage:${{ github.sha }}
          
