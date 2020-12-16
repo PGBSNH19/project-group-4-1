@@ -29,11 +29,11 @@ jobs:
          password: ${{ secrets.ACR_PASSWORD }}
        
       - run: |
-         docker build -f ../Source/API/Dockerfile -t nearbyproduceregistry.azurecr.io/backend/backendimage:${{ github.sha }} .
+         docker build -f Source/API/Dockerfile -t nearbyproduceregistry.azurecr.io/backend/backendimage:latest .
          docker push nearbyproduceregistry.azurecr.io/backend/backendimage:${{ github.sha }}
          
       - run: |
-          docker build -f ../Source/BlazorApp-Frontend/Dockerfile -t nearbyproduceregistry.azurecr.io/frontend/frontendimage:${{ github.sha }} .
+          docker build -f Source/BlazorApp-Frontend/Dockerfile -t nearbyproduceregistry.azurecr.io/frontend/frontendimage:latest  .
           docker push nearbyproduceregistry.azurecr.io/frontend/frontendimage:${{ github.sha }}
        
  
