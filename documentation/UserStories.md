@@ -3,12 +3,12 @@
 ### As a Seller:
 
 - I want to:
-  - Be able to log in as a buyer, so that i can manage my account
-  - Display my goods so that people can buy them
-  - Choose what goods i have available so that people know what i have
+  - Be able to log in as a buyer, so I can manage my account
+  - Display my goods so that buyers can reserve them
+  - Choose what goods I have available so that buyers know what I have to sell
   - Choose what products I grow / make, so that people can preorder / reserve them.
   - Display when my harvest / production is done so that people know when i have more goods in stock
-  - Choose my own price for products so that i can decide how much my goods are worth
+  - Choose my own price for products so that I can decide how much my goods are worth
   - Be able to make an inquiry for a new marketplace, so that I can sell my products closer to home. 
   - Have a profile so that I can present my farm in a good way.
   - Be able to report a buyer for misconduct.

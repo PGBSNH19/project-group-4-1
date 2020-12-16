@@ -11,7 +11,7 @@
 *.sln.docstates
 
 .vs/
-Source/appsettings.Development.json
+Source/API/appsettings.Development.json
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
