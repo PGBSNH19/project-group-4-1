@@ -1,0 +1,33 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Push Image to ACR
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  
+jobs:
+   build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: azure/docker-login@v1
+        with:
+         login-server: nearbyproduceregistry.azurecr.io
+         username: ${{ secrets.ACR_USERNAME }}
+         password: ${{ secrets.ACR_PASSWORD }}
+       
+      - run: |
+         docker build -f ./Source/API/Dockerfile -t nearbyproduceregistry.azurecr.io/backend/backendimage:${{ github.sha }}
+         docker push nearbyproduceregistry.azurecr.io/backend/backendimage:${{ github.sha }}
+         
+      - run: |
+          docker build -f ./Source/BlazorApp-Frontend/Dockerfile -t nearbyproduceregistry.azurecr.io/frontend/frontendimage:${{ github.sha }}
+          docker push nearbyproduceregistry.azurecr.io/frontend/frontendimage:${{ github.sha }}
+       
+ 
+ 
+
