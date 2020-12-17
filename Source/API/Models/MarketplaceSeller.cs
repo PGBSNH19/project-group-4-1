@@ -1,9 +1,17 @@
-﻿namespace API.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace API.Models
 {
     public class MarketplaceSeller
     {
-        public int SellerID { get; set; }
+        [ForeignKey("MarketplaceID")]
         public int MarketplaceID { get; set; }
+        public Marketplace Marketplace { get; set; }
+
+        [ForeignKey("SellerID")]
+        public int SellerID { get; set; }
+        public User Seller { get; set; }
+
 
     }
 }

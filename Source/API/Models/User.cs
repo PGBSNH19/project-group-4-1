@@ -1,14 +1,22 @@
-﻿namespace API.Models
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+namespace API.Models
 {
     public class User
     {
-        public int ID { get; set; }
+        [Key]
+        public int UserID { get; set; }
 
         public string Username { get; set; }
 
         public string Password { get; set; }
 
-        public UserType userType { get; set; }
+        public UserType Type { get; set; }
+
+        public ICollection<MarketplaceSeller> MarketplaceSellers { get; set; }
+
+        public ICollection<UserProduct> UserProducts { get; set; }
     }
     public enum UserType
     {
