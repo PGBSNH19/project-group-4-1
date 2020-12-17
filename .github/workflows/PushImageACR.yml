@@ -23,7 +23,7 @@ jobs:
     
     steps:
       - name: 'Checkout Github Actions'
-        uses: actions/checkout@master
+        uses: actions/checkout@PushImageTest
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1
         with:
