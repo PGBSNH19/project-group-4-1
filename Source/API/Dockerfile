@@ -5,13 +5,18 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-WORKDIR /app
+WORKDIR /src
 
-COPY Source/API/API.csproj ./API
+COPY ["Source/API/API.csproj" "NearbyProduceBackend/"]
 RUN dotnet restore ./API
 
-COPY . ./
-RUN dotnet publish API.csproj -c Release -o publish
+COPY . .
+WORKDIR "/src/NearbyProduceBackend"
+RUN dotnet build "API.csproj" -c Release -o /app/build
+
+COPY . .
+WORKDIR "/src/NearbyProduceBackend"
+RUN dotnet publish API.csproj -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 COPY --from=publish /app/publish .
