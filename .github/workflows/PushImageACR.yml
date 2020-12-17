@@ -24,6 +24,10 @@ jobs:
     steps:
       - name: 'Checkout Github Actions'
         uses: actions/checkout@master
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+           dotnet-version: 5.0.100
       
       - name: 'Docker Login'
         uses: azure/docker-login@v1
