@@ -1,40 +1,36 @@
 ﻿@page "/"
 @inject HttpClient http;
 
-<h1>Hello, API calling: world!</h1>
 
-<button class="btn btn-success" @onclick="@GetMessages">Get Messages</button>
-
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Text</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var Message in Messages)
-        {
-        <tr>
-            <td>@Message.Id</td>
-            <td>@Message.Text</td>
-        </tr>
-        }
-    </tbody>
-</table>
-@code {
-    List<Message> Messages = new List<Message>();
-
-    private async Task GetMessages()
-    {
-        Messages = await http.GetJsonAsync<List<Message>>("https://localhost:44317/api/v1.0/GetMessages");
-    }
-
-    public class Message
-    {
-        public int Id { get; set; } = 0;
-        public string Text { get; set; } = "";
-    }
-}
-
-<SurveyPrompt Title="How is Blazor working for you?" />
+<div class="container">
+    <div class="card" style="margin: 10px">
+        <img alt="Populäraste marknad" class="card-img-top" src="Images/hero-page-placeholder.jpg" />
+        <div class="card-body">
+            <h4 class="card-title">Titel på populäraste marknaden</h4>
+            <p class="card-text">Text till populäraste marknaden</p>
+        </div>
+    </div>
+    <div class="card-deck">
+        <div class="card">
+            <img alt="Rekommenderad marknad1" class="card-img-top" src="Images/hero-page-placeholder2.jpg" />
+            <div class="card-body">
+                <h4 class="card-title">Titel på rekommenderad marknad1</h4>
+                <p class="card-text">Text till rekommenderad marknad1</p>
+            </div>
+        </div>
+        <div class="card">
+            <img alt="Rekommenderad marknad2" class="card-img-top" src="Images/hero-page-placeholder3.jpg" />
+            <div class="card-body">
+                <h4 class="card-title">Titel på rekommenderad marknad2</h4>
+                <p class="card-text">Text till rekommenderad marknad2</p>
+            </div>
+        </div>
+        <div class="card">
+            <img alt="Rekommenderad marknad3" class="card-img-top" src="Images/hero-page-placeholder4.jpg" />
+            <div class="card-body">
+                <h4 class="card-title">Titel på rekommenderad marknad3</h4>
+                <p class="card-text">Text till rekommenderad marknad3</p>
+            </div>
+        </div>
+    </div>
+</div>
