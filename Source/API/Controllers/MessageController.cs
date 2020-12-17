@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Route("api/v1.0")]
+    [Route("api/v1.0/[controller]")]
     [ApiController]
     public class MessageController : Controller
     {
@@ -37,6 +37,5 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {exception.Message}");
             }
         }
-
     }
 }
