@@ -41,11 +41,11 @@ jobs:
       - name: 'Build and push Backend image'
         run: |
          docker build -f Source/API/Dockerfile -t nearbyproduceregistry.azurecr.io/backend/backendimage:latest .
-         docker push nearbyproduceregistry.azurecr.io/backend/backendimage:${{ github.sha }}
+         docker push nearbyproduceregistry.azurecr.io/backend/backendimage:latest
       - name: 'Build and push Frontend image'
         run: |
          docker build -f Source/BlazorApp-Frontend/Dockerfile -t nearbyproduceregistry.azurecr.io/frontend/frontendimage:latest  .
-         docker push nearbyproduceregistry.azurecr.io/frontend/frontendimage:${{ github.sha }}
+         docker push nearbyproduceregistry.azurecr.io/frontend/frontendimage:latest
        
  
  
