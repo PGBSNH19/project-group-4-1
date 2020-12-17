@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["BlazorApp-Frontend/BlazorApp-Frontend.csproj", "BlazorApp-Frontend/"]
-RUN dotnet restore "BlazorApp-Frontend/BlazorApp-Frontend.csproj"
+COPY ["./BlazorApp-Frontend.csproj", "./"]
+RUN dotnet restore "./BlazorApp-Frontend.csproj"
 COPY . .
-WORKDIR "/src/BlazorApp-Frontend"
+WORKDIR "./"
 RUN dotnet build "BlazorApp-Frontend.csproj" -c Release -o /app/build
 
 FROM build AS publish
