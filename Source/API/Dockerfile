@@ -14,7 +14,6 @@ COPY . ./
 WORKDIR "/src/NearbyProduceBackend"
 RUN dotnet build "API.csproj" -c Release -o /app/build
 
-COPY . ./
 FROM  build as publish
 RUN dotnet publish API.csproj -c Release -o out
 
