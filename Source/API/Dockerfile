@@ -7,7 +7,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY Source/API/ /NearbyProduceBackend/
+COPY Source/API/ NearbyProduceBackend/
 RUN dotnet restore ./NearbyProduceBackend/API.csproj
 
 COPY . ./
