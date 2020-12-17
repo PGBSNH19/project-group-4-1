@@ -16,7 +16,7 @@ RUN dotnet build "API.csproj" -c Release -o /app/build
 
 COPY . ./
 FROM  build as publish
-RUN dotnet publish /app/build/API.csproj -c Release -o out
+RUN dotnet publish src/NearbyProduceBackend/API.csproj -c Release -o out
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 COPY --from=build-env /app/out .
