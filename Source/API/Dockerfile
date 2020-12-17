@@ -11,7 +11,7 @@ COPY Source/API/API.csproj ./API
 RUN dotnet restore ./API
 
 COPY . ./
-RUN dotnet publish ./API.csproj -c Release -o publish
+RUN dotnet publish API.csproj -c Release -o publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 COPY --from=publish /app/publish .
