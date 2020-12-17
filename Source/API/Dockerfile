@@ -7,12 +7,12 @@ EXPOSE 443
 
 WORKDIR /app
 
-COPY Source/API/API.csproj ./
-RUN dotnet restore 
+COPY Source/API/API.csproj ./API
+RUN dotnet restore ./API
 
-COPY . ./
-RUN dotnet publish "API.csproj" -c Release -o publish
+COPY ./API ./API
+RUN dotnet publish ./API/API.csproj -c Release -o publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
-COPY --from=publish /app/publish .
+COPY --from=publish /app/API/publish .
 ENTRYPOINT ["dotnet", "API.dll"]
