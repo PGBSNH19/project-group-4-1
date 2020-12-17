@@ -7,11 +7,8 @@ EXPOSE 443
 
 WORKDIR /app
 
-COPY Source/API/API.csproj ./Source/API
+COPY *.csproj ./Source/API
 RUN dotnet restore 
-
-COPY . ./
-RUN dotnet build "API.csproj" -c Release -o /app/build
 
 COPY . ./
 RUN dotnet publish "API.csproj" -c Release -o publish
