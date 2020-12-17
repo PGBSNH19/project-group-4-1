@@ -7,7 +7,7 @@ EXPOSE 443
 
 WORKDIR /app
 
-COPY *.csproj ./
+COPY Source/API/API.csproj ./Source/API
 RUN dotnet restore 
 
 COPY . ./
