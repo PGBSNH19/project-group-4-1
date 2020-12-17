@@ -23,7 +23,9 @@ jobs:
     
     steps:
       - name: 'Checkout Github Actions'
-        uses: actions/checkout@PushImageTest
+        uses: actions/checkout@v2
+        with:
+          repository: PushImageTest
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1
         with:
