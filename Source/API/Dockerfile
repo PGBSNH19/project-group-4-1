@@ -10,10 +10,11 @@ WORKDIR /src
 COPY Source/API/API.csproj NearbyProduceBackend/
 RUN dotnet restore ./NearbyProduceBackend/API.csproj
 
-COPY . .
+COPY . ./
 WORKDIR "/src/NearbyProduceBackend"
 RUN dotnet build "API.csproj" -c Release -o /app/build
 
+COPT . ./
 FROM  build as publish
 RUN dotnet publish API.csproj -c Release -o /app/publish
 
