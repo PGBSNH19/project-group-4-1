@@ -7,7 +7,7 @@ EXPOSE 443
 
 WORKDIR /src
 
-COPY ["Source/API/API.csproj" "NearbyProduceBackend/"]
+COPY ["API/API.csproj" "NearbyProduceBackend/"]
 RUN dotnet restore ./API
 
 COPY . .
