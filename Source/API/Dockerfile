@@ -6,9 +6,9 @@ EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
-WORKDIR /src
-COPY ["./API.csproj", "./"]
-RUN dotnet restore "./API.csproj"
+WORKDIR /app
+COPY ["*.csproj", "./"]
+RUN dotnet restore 
 COPY . .
 WORKDIR "./"
 RUN dotnet build "API.csproj" -c Release -o /app/build
