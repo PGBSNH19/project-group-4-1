@@ -29,7 +29,7 @@ namespace API.Context
         {
             var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/Nearby-Connectionstring/7e9291ea1c8541b7899695911098c6cc");
             var builder = new ConfigurationBuilder();
-            if (azureDbCon == null)
+            if (string.IsNullOrEmpty(azureDbCon))
             {
                 IConfigurationRoot configuration = builder.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                                                                               .AddJsonFile("appsettings.Development.json")
