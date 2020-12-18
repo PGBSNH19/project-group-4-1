@@ -8,8 +8,12 @@
     flex: 1;
 }
 
-#gg{
-    margin-top:3.5rem;
+.dropdown-item:hover {
+    cursor: pointer;
+}
+
+#hero{
+    margin-top:56px;
 }
 
 @media (max-width: 870.98px) {

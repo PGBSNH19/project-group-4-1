@@ -1,27 +1,9 @@
 ﻿@page "/"
 @inject HttpClient http;
 
-<h1>Hello, API calling: world!</h1>
+<h1 class="index-title">Nearby Produce Prototype</h1>
 
-<button class="btn btn-success" @onclick="@GetMessages">Get Messages</button>
 
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Text</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var Message in Messages)
-        {
-        <tr>
-            <td>@Message.Id</td>
-            <td>@Message.Text</td>
-        </tr>
-        }
-    </tbody>
-</table>
 @code {
     List<Message> Messages = new List<Message>();
 
@@ -36,5 +18,3 @@
         public string Text { get; set; } = "";
     }
 }
-
-<SurveyPrompt Title="How is Blazor working for you?" />
