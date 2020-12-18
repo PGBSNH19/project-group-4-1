@@ -5,14 +5,11 @@
     <RootNamespace>BlazorApp_Frontend</RootNamespace>
     <UserSecretsId>f56c98b2-b3a0-44c3-a336-b69ff02b349d</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <StartupObject>BlazorApp_Frontend.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\API\API.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.2.0-preview3.20168.3" />
   </ItemGroup>
 
 </Project>
