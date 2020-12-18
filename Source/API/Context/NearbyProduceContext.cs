@@ -27,6 +27,7 @@ namespace API.Context
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
                                                           .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                                                          .AddJsonFile("appsettings.json")
                                                           .AddJsonFile("appsettings.Development.json")
                                                           .Build();
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
