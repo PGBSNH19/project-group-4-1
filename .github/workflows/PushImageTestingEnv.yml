@@ -6,7 +6,7 @@ name: Push Image to ACR
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ main ]
+    branches: [ Test ]
   workflow_dispatch:
     inputs:
       logLevel:
@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: 'Checkout Github Actions'
         uses: actions/checkout@v2
+        with:
+          ref: 'Test'
       - name: Setup .NET Core SDK
         uses: actions/setup-dotnet@v1
         with:
@@ -38,11 +40,11 @@ jobs:
          
       - name: 'Build and push Backend image'
         run: |
-         docker build -f Source/API/Dockerfile -t nearbyproduceregistry.azurecr.io/backend/backendimage:latest .
+         docker build -f Source/API/Dockerfile -t nearbyproduceregistry.azurecr.io/backendTest/backendimage:latest .
          docker push nearbyproduceregistry.azurecr.io/backend/backendimage:latest
       - name: 'Build and push Frontend image'
         run: |
-         docker build -f Source/BlazorApp-Frontend/Dockerfile -t nearbyproduceregistry.azurecr.io/frontend/frontendimage:latest  .
+         docker build -f Source/BlazorApp-Frontend/Dockerfile -t nearbyproduceregistry.azurecr.io/frontendTest/frontendimage:latest  .
          docker push nearbyproduceregistry.azurecr.io/frontend/frontendimage:latest
        
  
