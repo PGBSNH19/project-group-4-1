@@ -14,13 +14,13 @@ namespace API.Services
 
         public async Task<ICollection<User>> GetUsers()
         {
-            IQueryable<User> query = _context.User;
+            IQueryable<User> query = _context.Users;
             return await query.ToArrayAsync();
         }
 
         public async Task<User> GetUserById(int id)
         {
-            IQueryable<User> query = _context.User.Where(x => x.UserID == id);
+            IQueryable<User> query = _context.Users.Where(x => x.UserID == id);
             return await query.FirstOrDefaultAsync();
         }
     }

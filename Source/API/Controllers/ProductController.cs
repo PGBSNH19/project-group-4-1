@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetProducts")]
-        public async Task<ActionResult<Marketplace[]>> GetMarketplaces()
+        public async Task<ActionResult<Marketplace[]>> GetProducts()
         {
             try
             {
