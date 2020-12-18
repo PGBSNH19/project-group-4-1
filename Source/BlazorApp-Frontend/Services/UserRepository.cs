@@ -11,7 +11,7 @@ namespace BlazorApp_Frontend.Services
         public HttpClient http { get; }
         public UserRepository(HttpClient client)
         {
-            // client.BaseAddress = new Uri("https://nearbyproduceapi.azurewebsites.net");
+            // client.BaseAddress = new Uri("https://nearbyproduceapiTest.azurewebsites.net");
             http = client;
         }
 
