@@ -29,16 +29,14 @@ namespace API.Context
         {
             var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/Nearby-Connectionstring/7e9291ea1c8541b7899695911098c6cc");
             var builder = new ConfigurationBuilder();
-            try
+            if (azureDbCon == null)
             {
-
-
                 IConfigurationRoot configuration = builder.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                                                              .AddJsonFile("appsettings.Development.json")
-                                                              .Build();
+                                                                              .AddJsonFile("appsettings.Development.json")
+                                                                              .Build();
                 optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
             }
-            catch
+            else
             {
                 builder.Build();
                 optionsBuilder.UseSqlServer(azureDbCon);
