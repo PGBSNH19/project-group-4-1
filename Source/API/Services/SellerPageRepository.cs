@@ -21,7 +21,7 @@ namespace API.Services
 
         public async Task<ICollection<SellerPage>> GetSellerPages()
         {
-            IQueryable<SellerPage> query = _context.SellerPage);
+            IQueryable<SellerPage> query = _context.SellerPage;
             return await query.ToArrayAsync();
         }
     }
