@@ -9,21 +9,21 @@ namespace API.Controllers
 {
     [Route("api/v1.0/[controller]")]
     [ApiController]
-    public class MarketplaceController : Controller
+    public class ProductController : Controller
     {
-        private readonly IMarketplaceRepository _marketplaceRepository;
+        private readonly IProductRepository _productRepository;
 
-        public MarketplaceController(IMarketplaceRepository marketplaceRepository)
+        public ProductController(IProductRepository productRepository)
         {
-            _marketplaceRepository = marketplaceRepository;
+            _productRepository = productRepository;
         }
 
-        [HttpGet("GetMarketplaces")]
+        [HttpGet("GetProducts")]
         public async Task<ActionResult<Marketplace[]>> GetMarketplaces()
         {
             try
             {
-                var results = await _marketplaceRepository.GetMarketplaces();
+                var results = await _productRepository.GetProducts();
 
                 if (results.Count == 0)
                 {
@@ -38,19 +38,19 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetMarketplace/{id}")]
-        public async Task<ActionResult<Marketplace>> GetMarketplaceById(int id)
+        [HttpGet("GetProduct/{id}")]
+        public async Task<ActionResult<Marketplace>> GetProductById(int id)
         {
             try
             {
-                var result = await _marketplaceRepository.GetMarketplaceById(id);
+                var result = await _productRepository.GetProductById(id);
 
                 if (result == null)
                 {
                     return NotFound();
                 }
 
-                return Ok();
+                return Ok(result);
             }
             catch (Exception e)
             {
@@ -59,14 +59,14 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Marketplace>> PostMarketplace(Marketplace marketplace)
+        public async Task<ActionResult<Marketplace>> PostProduct(Product product)
         {
             try
             {
-                _marketplaceRepository.Add(marketplace);
-                if (await _marketplaceRepository.Save())
+                _productRepository.Add(product);
+                if (await _productRepository.Save())
                 {
-                    return Created("/api/v1.0/[controller]/" + marketplace.MarketplaceID, new Marketplace { MarketplaceID = marketplace.MarketplaceID });
+                    return Created("/api/v1.0/[controller]/" + product.ProductID, new Product { ProductID = product.ProductID });
                 }
 
                 return BadRequest();
@@ -78,20 +78,20 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteMarketplace(int id)
+        public async Task<ActionResult> DeleteProduct(int id)
         {
             try
             {
-                var marketplace = await _marketplaceRepository.GetMarketplaceById(id);
+                var product = await _productRepository.GetProductById(id);
 
-                if (marketplace == null)
+                if (product == null)
                 {
                     return NotFound();
                 }
 
-                _marketplaceRepository.Delete(marketplace);
+                _productRepository.Delete(product);
 
-                if (await _marketplaceRepository.Save())
+                if (await _productRepository.Save())
                 {
                     return NoContent();
                 }
