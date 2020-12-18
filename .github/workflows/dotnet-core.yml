@@ -2,7 +2,7 @@ name: .NET Core
 
 on:
   push:
-    branches: [ main ]
+    branches: [ Setup-unit-test-environment ]
 
 
 jobs:
@@ -15,6 +15,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: 'Setup-unit-test-environment'
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v1
       with:
