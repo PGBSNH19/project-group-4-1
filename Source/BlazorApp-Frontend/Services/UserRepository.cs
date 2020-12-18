@@ -17,7 +17,7 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<List<User>> GetAllUsers()
         {
-            var users = await http.GetJsonAsync<List<User>>("https://nearbyproduceapi.azurewebsites.net/api/v1.0/User/GetUsers");
+            var users = await http.GetJsonAsync<List<User>>("https://nearbyproduceapitest.azurewebsites.net/api/v1.0/User/GetUsers");
             return users;
         }
     }

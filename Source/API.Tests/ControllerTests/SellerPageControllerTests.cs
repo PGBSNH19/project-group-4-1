@@ -19,7 +19,7 @@ namespace API.Tests.ControllerTests
         {
             //arange
             var mockContext = new Mock<NearbyProduceContext>();
-            mockContext.Setup(x => x.SellerPage).ReturnsDbSet(GetSellerPages());
+            mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
             var sellerPageRepository = new SellerPageRepository(mockContext.Object);
             var sellerpageController = new SellerPageController(sellerPageRepository);
 
@@ -35,7 +35,7 @@ namespace API.Tests.ControllerTests
         public async void GetSellerPageById_IfExist_ReturnTrue()
         {
             var mockContext = new Mock<NearbyProduceContext>();
-            mockContext.Setup(x => x.SellerPage).ReturnsDbSet(GetSellerPages());
+            mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
             var sellerPagesRepository = new SellerPageRepository(mockContext.Object);
             var sellPageController = new SellerPageController(sellerPagesRepository);
 
