@@ -1,17 +1,54 @@
 ﻿@inherits LayoutComponentBase
-
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
+    <div class="main ">
+        
+                <nav class="navbar navbar-expand-md navbar-dark bg-primary fixed-top ">
+                    <button class="navbar-toggler" data-toggle="collapse" data-target="#collapse_target">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-        <div class="content px-4">
+                    <div class="collapse navbar-collapse row" id="collapse_target">
+                        @*<h3 class="navbar-text col-6 text-danger font-weight-bold">Nearby Produce</h3>*@
+                        <span class="navbar-text col-6 text-warning font-weight-bold">Nearby Produce</span>
+                        <ul class="navbar-nav col-4 ">
+                            <li class="nav-item">
+                                <a class="nav-link text-warning" href="#">Hem</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-warning" data-toggle="dropdown" data-target="dropdown_target" href="#">
+                                    Köpare
+                                    <span class="oi-caret-right"></span>
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="dropdown_target">
+                                    <ul class="navbar-nav">
+                                        <a class="dropdown-item" href="#">Anders1</a>
+                                        <a class="dropdown-item" href="#">Anders2</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Anders3</a>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-warning" href="#">Profil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-warning" href="#">Kontakt</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </nav>
+    
+        <div class="content px-4" id="gg">
             @Body
         </div>
     </div>
+    <nav class="navbar navbar-expand-md  navbar-dark bg-primary fixed-bottom">
+        <a class="text-warning">Nearby Produce © 2020 Copyright: Grupp-4</a>
+    </nav>
 </div>
+@code{
+
+}
