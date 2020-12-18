@@ -17,6 +17,7 @@ namespace API
             services.AddDbContext<NearbyProduceContext>();
             services.AddScoped<IRepository, Repository>();
             services.AddControllers();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMarketplaceRepository, MarketplaceRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
