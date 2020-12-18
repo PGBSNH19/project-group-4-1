@@ -1,5 +1,4 @@
 using API.Context;
-using API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +14,6 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<NearbyProduceContext>();
-            services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddControllers();
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
