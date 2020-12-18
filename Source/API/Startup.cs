@@ -1,4 +1,5 @@
 using API.Context;
+using API.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,10 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<NearbyProduceContext>();
+            services.AddScoped<IRepository, Repository>();
             services.AddControllers();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IMarketplaceRepository, MarketplaceRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
