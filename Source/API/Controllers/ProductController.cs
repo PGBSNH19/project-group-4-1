@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using API.Models;
+﻿using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -50,7 +50,7 @@ namespace API.Controllers
                     return NotFound();
                 }
 
-                return Ok();
+                return Ok(result);
             }
             catch (Exception e)
             {

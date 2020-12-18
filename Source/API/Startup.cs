@@ -20,6 +20,7 @@ namespace API
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMarketplaceRepository, MarketplaceRepository>();
+            services.AddScoped<ISellerPageRepository, SellerPageRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }
 
