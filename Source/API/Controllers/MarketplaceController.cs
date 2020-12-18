@@ -66,7 +66,7 @@ namespace API.Controllers
                 _marketplaceRepository.Add(marketplace);
                 if (await _marketplaceRepository.Save())
                 {
-                    return Created("/api/v1.0/[controller]/" + marketplace.ID, new Marketplace { ID = marketplace.ID });
+                    return Created("/api/v1.0/[controller]/" + marketplace.MarketplaceID, new Marketplace { MarketplaceID = marketplace.MarketplaceID });
                 }
 
                 return BadRequest();

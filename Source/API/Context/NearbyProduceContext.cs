@@ -13,13 +13,13 @@ namespace API.Context
         {
             _configuration = config;
         }
-        public DbSet<Marketplace> Marketplaces { get; set; }
-        public DbSet<MarketplaceSeller> MarketplaceSeller { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<SellerPage> SellerPage { get; set; }
-        public DbSet<SellerPageProduct> SellerPageProducts { get; set; }
-        public DbSet<User> User { get; set; }
-        public DbSet<UserProduct> UserProducts { get; set; }
+        public virtual DbSet<Marketplace> Marketplaces { get; set; }
+        public virtual DbSet<MarketplaceSeller> MarketplaceSeller { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<SellerPage> SellerPage { get; set; }
+        public virtual DbSet<SellerPageProduct> SellerPageProducts { get; set; }
+        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<UserProduct> UserProducts { get; set; }
 
 
 
