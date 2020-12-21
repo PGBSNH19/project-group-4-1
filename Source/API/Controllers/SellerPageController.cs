@@ -51,6 +51,7 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
         [HttpPost]
         public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPage sellerPage)
         {
