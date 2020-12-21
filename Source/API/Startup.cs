@@ -16,7 +16,10 @@ namespace API
         {
             services.AddDbContext<NearbyProduceContext>();
             services.AddScoped<IRepository, Repository>();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+            }); ;
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMarketplaceRepository, MarketplaceRepository>();

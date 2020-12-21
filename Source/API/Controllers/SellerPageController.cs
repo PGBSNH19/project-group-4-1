@@ -17,7 +17,7 @@ namespace API.Controllers
             _sellerPageRepository = sellerPageRepository;
         }
 
-        [HttpGet("GetSellerPageByUserID/{id}")]
+        [HttpGet("GetSellerPage/{id}")]
         public async Task<ActionResult<SellerPage>> GetSellerPageByUserId(int id)
         {
             try

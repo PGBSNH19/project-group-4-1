@@ -45,6 +45,45 @@ namespace API.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var users = new User[]
+            {
+                new User{
+               UserID = 1,
+               Username = "JanneBonde07",
+               Password = "lösen123",
+               Email = "test@test.com",
+               Type = UserType.Seller
+                },
+                new User
+                {
+               UserID = 2,
+               Username = "Bengtan555",
+               Password = "lösen123",
+               Email = "test@test.com",
+               Type = UserType.Buyer
+                }, new User
+                {
+                UserID = 3,
+               Username = "Henrik123",
+               Password = "KlDioL123!",
+               Email = "test@test.com",
+               Type = UserType.Buyer
+                }, new User
+                {
+               UserID = 4,
+               Username = "BondenLisa1",
+               Password = "lösen123",
+               Email = "test@test.com",
+               Type = UserType.Seller
+                }, new User
+                {
+               UserID = 5,
+               Username = "HannesFarm",
+               Password = "lösen123",
+               Email = "test@test.com",
+               Type = UserType.Seller
+                }
+            };
 
             modelBuilder.Entity<Marketplace>().ToTable("Marketplace");
             modelBuilder.Entity<Marketplace>().HasKey(x => x.MarketplaceID);
@@ -81,7 +120,7 @@ namespace API.Context
            .HasData(new
            {
                MarketplaceID = 1,
-               SellerID = 1
+               SellerID = 1,
            }, new
            {
                MarketplaceID = 1,
@@ -100,7 +139,7 @@ namespace API.Context
            .HasData(new
            {
                ProductID = 1,
-               Name = "Potatis"
+               Name = "Potatis",
            }, new
            {
                ProductID = 2,
@@ -150,42 +189,7 @@ namespace API.Context
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<User>().HasKey(k => k.UserID);
             modelBuilder.Entity<User>()
-           .HasData(new
-           {
-               UserID = 1,
-               Username = "JanneBonde07",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Seller
-           }, new
-           {
-               UserID = 2,
-               Username = "Bengtan555",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Buyer
-           }, new
-           {
-               UserID = 3,
-               Username = "Henrik123",
-               Password = "KlDioL123!",
-               Email = "test@test.com",
-               Type = UserType.Buyer
-           }, new
-           {
-               UserID = 4,
-               Username = "BondenLisa1",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Seller
-           }, new
-           {
-               UserID = 5,
-               Username = "HannesFarm",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Seller
-           });
+           .HasData(users[0], users[1], users[2], users[3], users[4]);
 
 
             modelBuilder.Entity<SellerPage>().ToTable("SellerPage");
