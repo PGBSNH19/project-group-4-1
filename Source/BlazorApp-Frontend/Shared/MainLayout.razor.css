@@ -8,8 +8,13 @@
     flex: 1;
 }
 
-#gg{
-    margin-top:3.5rem;
+
+.dropdown-item:hover {
+    cursor: pointer;
+}
+
+#hero{
+    margin-top:56px;
 }
 
 @media (max-width: 870.98px) {
@@ -23,4 +28,25 @@
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }
+}
+
+/*****************
+    NavBarLoggedIn
+******************/
+
+.not-logged-in-menu {
+    display: none;
+}
+
+.logged-in-menu {
+    display: normal;
+}
+
+/*****************
+    Footer
+******************/
+
+.footer {
+    align-self: center;
+    justify-content: center;
 }
