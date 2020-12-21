@@ -1,8 +1,22 @@
 ﻿@page "/Marketplace"
+@inject HttpClient http;
+@inject MarketplaceRepository MarketplaceRepository
+@using Data;
+@using Services;
 
 <div class="container-fluid">
     <div class="card-deck">
-        <div class="card">
+        @foreach(var Marketplace in marketplaces)
+        {
+            <div class="card">
+                <img alt="Rekommenderad marknad1" class="card-img-top" src="Images/hero-page-placeholder1.jpg" />
+                <div class="card-body">
+                    <h4 class="card-title">@Marketplace.Name</h4>
+                    <p class="card-text">@Marketplace.Location</p>
+                </div>
+            </div>
+        }
+        @*<div class="card">
             <img alt="Rekommenderad marknad1" class="card-img-top" src="Images/hero-page-placeholder2.jpg" />
             <div class="card-body">
                 <h4 class="card-title">Titel på rekommenderad marknad1</h4>
@@ -22,6 +36,15 @@
                 <h4 class="card-title">Titel på rekommenderad marknad3</h4>
                 <p class="card-text">Text till rekommenderad marknad3</p>
             </div>
-        </div>
+        </div>*@
     </div>
 </div>
+@code {
+
+    List<Marketplace> marketplaces = new List<Marketplace> { };
+    private async Task Onclick()
+    {
+        marketplaces = await MarketplaceRepository.GetAllMarketplaces();
+    }
+
+}
