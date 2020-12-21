@@ -4,7 +4,8 @@
 @using Data;
 @using Services;
 
-<h1>Hello, API calling: world!</h1>
+<h1 class="index-title">Nearby Produce Prototype</h1>
+
 
 <button class="btn btn-success" @onclick="@Onclick">Get Users</button>
 
@@ -16,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var User in users )
+        @foreach (var User in users)
         {
         <tr>
             <td>@User.Email</td>
@@ -34,7 +35,4 @@
         users = await userRepo.GetAllUsers();
     }
 
-
 }
-
-<SurveyPrompt Title="How is Blazor working for you?" />
