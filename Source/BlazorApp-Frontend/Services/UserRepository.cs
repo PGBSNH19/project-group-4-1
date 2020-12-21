@@ -20,7 +20,7 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<List<User>> GetAllUsers()
         {
-            var users = await http.GetJsonAsync<List<User>>("/api/v1.0/User/GetUsers");
+            var users = await http.GetJsonAsync<List<User>>(http.BaseAddress + "/api/v1.0/User/GetUsers");
             return users;
         }
         public async Task<User> GetUserById(int id)
@@ -36,6 +36,11 @@ namespace BlazorApp_Frontend.Services
 
             var user = await http.PostJsonAsync<User>(http.BaseAddress + "api/v1.0/User", data);
             return user;
+        }
+        public async Task<HttpResponseMessage> DeleteUser(User userToDelete)
+        {
+            var response = await http.DeleteAsync(http.BaseAddress + $"api/v1.0/User/{userToDelete.UserID}");
+            return response;
         }
     }
 }
