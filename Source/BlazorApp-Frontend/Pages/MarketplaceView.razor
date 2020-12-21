@@ -1,50 +1,31 @@
 ﻿@page "/Marketplace"
 @inject HttpClient http;
-@inject MarketplaceRepository MarketplaceRepository
+@inject MarketplaceRepository MarketplaceRepository;
 @using Data;
 @using Services;
 
-<div class="container-fluid">
-    <div class="card-deck">
-        @foreach(var Marketplace in marketplaces)
+<div class="d-flex flex-wrap">
+    @if (marketplaces.Count != 0)
+    {
+        @foreach (var Marketplace in marketplaces)
         {
-            <div class="card">
-                <img alt="Rekommenderad marknad1" class="card-img-top" src="Images/hero-page-placeholder1.jpg" />
+            <div style="width: 400px;" class="card d-flex">
+                <img alt="Rekommenderad marknad" class="card-img-top" src="Images/placeholder.png" />
                 <div class="card-body">
                     <h4 class="card-title">@Marketplace.Name</h4>
                     <p class="card-text">@Marketplace.Location</p>
+                    <p class="card-footer">Börjar: @Marketplace.StartDateTime <br/> Slutar: @Marketplace.EndDateTime</p>
                 </div>
             </div>
         }
-        @*<div class="card">
-            <img alt="Rekommenderad marknad1" class="card-img-top" src="Images/hero-page-placeholder2.jpg" />
-            <div class="card-body">
-                <h4 class="card-title">Titel på rekommenderad marknad1</h4>
-                <p class="card-text">Text till rekommenderad marknad1</p>
-            </div>
-        </div>
-        <div class="card">
-            <img alt="Rekommenderad marknad2" class="card-img-top" src="Images/hero-page-placeholder3.jpg" />
-            <div class="card-body">
-                <h4 class="card-title">Titel på rekommenderad marknad2</h4>
-                <p class="card-text">Text till rekommenderad marknad2</p>
-            </div>
-        </div>
-        <div class="card">
-            <img alt="Rekommenderad marknad3" class="card-img-top" src="Images/hero-page-placeholder4.jpg" />
-            <div class="card-body">
-                <h4 class="card-title">Titel på rekommenderad marknad3</h4>
-                <p class="card-text">Text till rekommenderad marknad3</p>
-            </div>
-        </div>*@
-    </div>
+    }
 </div>
 @code {
 
-    List<Marketplace> marketplaces = new List<Marketplace> { };
-    private async Task Onclick()
+    List<Marketplace> marketplaces = new List<Marketplace>();
+    protected override async Task OnInitializedAsync()
     {
-        marketplaces = await MarketplaceRepository.GetAllMarketplaces();
+        marketplaces = await MarketplaceRepository.GetMarketplaces();
     }
 
 }
