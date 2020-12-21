@@ -1,60 +1,60 @@
 ﻿@page "/ProfileSettingsView"
-    <div class="display-3 text-center mb-4">Profile inställningar</div>
-    <form id="form">
-        <div class="form-row">
-            <div class="col-md-5 mb-3 ml-2">
-                <label for="validationDefault01">Förnamn</label>
-                <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Förnamn" value="Anders" disabled>
-            </div>
-            <div class="col-md-5 mb-3">
-                <label for="validationDefault02">Nytt Förnamn</label>
-                <input type="text" class="form-control" id="validationDefault02" placeholder="Nytt förnamn" required>
-            </div>
+@inject UserRepository userRepo
+@using Data;
+@using Services;
 
-            <div class="col-md-5 mb-3 ml-2">
-                <label for="validationDefault01">Förnamn</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="Efternamn" value="Djerf" disabled>
-            </div>
-            <div class="col-md-5 mb-3">
-                <label for="validationDefault02">Nytt Efternamn</label>
-                <input type="text" class="form-control" id="validationDefault02" placeholder="Nytt efternamn" required>
-            </div>
-
-            <div class="col-md-5 mb-3 ml-2">
-                <label for="validationDefault01">Telefon nummer</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="Telefon nummer" value="112" disabled>
-            </div>
-            <div class="col-md-5 mb-3">
-                <label for="validationDefault02">Nytt Telefon nummer</label>
-                <input type="text" class="form-control" id="validationDefault02" placeholder="Nytt telefon nummer" required>
-            </div>
-
-            <div class="col-md-5 mb-3  ml-2">
-                <label for="validationDefault01">Efternamn</label>
-                <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value="andersdjerf@gmail.com" disabled>
-            </div>
-            <div class="col-md-5 mb-3">
-                <label for="validationDefault02">Ny mailadress</label>
-                <input type="text" class="form-control" id="validationDefault02" placeholder="Mail adress" required>
-            </div>
+<div class="display-3 text-center mb-4">Profile inställningar</div>
+<form id="form">
+    <div class="form-row">
+        <div class="col-md-5 mb-3 ml-2">
+            <label for="validationDefault01">Användarnamn</label>
+            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@user.Username disabled>
         </div>
-        
-        <div class="pb-2">
-            
-            <p class="text-center ">
-                <button class="btn btn-outline-success" data-toggle="Spara ändringar">Spara ändringa</button>
-                <button type="button" class="btn btn-outline-danger">Ta bort mitt konto</button>
-                
-            </p>
-
-
+        <div class="col-md-5 mb-3">
+            <label for="validationDefault02">Nytt Användarnamn</label>
+            <input type="text" class="form-control" id="validationDefault02" placeholder="Användarnamn" required>
         </div>
-        
 
-    </form>
-        
-    
+        <div class="col-md-5 mb-3 ml-2">
+            <label for="validationDefault01">Lösenord</label>
+            <input type="text" class="form-control" id="validationDefault01" placeholder="Lösenord" value="*********" disabled>
+        </div>
+        <div class="col-md-5 mb-3">
+            <label for="validationDefault02">Nytt Lösenord</label>
+            <input type="text" class="form-control" id="validationDefault02" placeholder="Nytt lösenord " required>
+        </div>
+
+        <div class="col-md-5 mb-3  ml-2">
+            <label for="validationDefault01">Mailadress</label>
+            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@user.Email disabled>
+        </div>
+        <div class="col-md-5 mb-3">
+            <label for="validationDefault02">Ny mailadress</label>
+            <input type="text" class="form-control" id="validationDefault02" placeholder="Mailadress" required>
+        </div>
+    </div>
+
+    <div class="pb-2">
+
+        <p class="text-center ">
+            <button class="btn btn-outline-success" data-toggle="Spara ändringar">Spara ändringa</button>
+            <button type="button" class="btn btn-outline-danger">Ta bort mitt konto</button>
+
+        </p>
+
+
+    </div>
+
+
+</form>
+
+
 
 @code {
+    private User user = new User { };
 
+    protected override async Task OnInitializedAsync()
+    {
+        user = await userRepo.GetUserById(1);
+    }
 }
