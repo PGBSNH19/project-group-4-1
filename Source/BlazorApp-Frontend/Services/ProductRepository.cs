@@ -1,7 +1,6 @@
 ﻿using BlazorApp_Frontend.Data;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -12,9 +11,9 @@ namespace BlazorApp_Frontend.Services
     public class ProductRepository
     {
         public HttpClient http { get; }
-        public ProductRepository(HttpClient client)
+        public ProductRepository(IHttpClientFactory _clientFactory)
         {
-            client.BaseAddress = new Uri("https://nearbyproduceapiTest.azurewebsites.net");
+            var client = _clientFactory.CreateClient("api");
             http = client;
         }
 
