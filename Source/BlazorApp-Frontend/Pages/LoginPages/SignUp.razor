@@ -1,4 +1,9 @@
 ﻿@page  "/signup"
+@using BlazorApp_Frontend.Data
+@using BlazorApp_Frontend.Services
+@inject UserRepository userRepo
+@inject NavigationManager NavigationManager
+
 
 <center>
     <div class="col-8 card">
@@ -7,38 +12,44 @@
         </div>
         <div class="col-12 row">
             <div class="col-6" style="border-left:thick">
-                <div>
-                    <br /><br /><br /><br /><br />
-                </div>
-                <div>
-                    <h3 style="font-weight:bold; color:purple">Nearby-Produce Register</h3>
-                </div>
-                <div>
+                <EditForm Model="@user" OnValidSubmit="@RegisterUser">
+                    <div>
+                        <br /><br /><br /><br /><br />
+                    </div>
+                    <div>
+                        <h3 style="font-weight:bold; color:purple">Nearby-Produce Register</h3>
+                    </div>
+                    <div>
+                        <br />
+                    </div>
+                    <div class="col-12 row">
+                        <input class="form-control col-12" @bind="user.Username" placeholder="username" />
+                    </div>
                     <br />
-                </div>
-                <div class="col-12 row">
-                    <input class="form-control col-12" placeholder="email address" />
-                </div>
-                <br />
-                <div class="col-12 row">
-                    <input type="password" class="form-control col-12" placeholder="password" />
-                </div>
-                <br />
-                <div class="col-12 row">
-                    <input type="password" class="form-control col-12" placeholder="confirm password" />
-                </div>
-                <br />
-                <div class="col-12 row">
-                    <span class="col-12"></span>
-                    <input type="submit" class="form-control col-6 btn btn-primary" value="Sign up" />
-                    <a href="/login" class="col-6">Already an user?</a>
-                </div>
-                <br />
-                <div class="col-12 row" style="text-align:left; font-weight:bold">
-                </div>
-                <br />
-                <div class="col-12 row" style="text-align:left; font-weight:bold">
-                </div>
+                    <div class="col-12 row">
+                        <input class="form-control col-12" @bind="user.Email" placeholder="email address" />
+                    </div>
+                    <br />
+                    <div class="col-12 row">
+                        <input type="password" class="form-control col-12" @bind="user.Password" placeholder="password" />
+                    </div>
+                    <br />
+                    <div class="col-12 row">
+                        <input type="password" class="form-control col-12" @bind="ConfirmPassword" placeholder="confirm password" />
+                    </div>
+                    <br />
+                    <div class="col-12 row">
+                        <span class="col-12"></span>
+                        <input type="submit" class="form-control col-6 btn btn-primary" value="Sign up" />
+                        <a href="/login" class="col-6">Already an user?</a>
+                    </div>
+                    <br />
+                    <div class="col-12 row" style="text-align:left; font-weight:bold">
+                    </div>
+                    <br />
+                    <div class="col-12 row" style="text-align:left; font-weight:bold">
+                    </div>
+                </EditForm>
             </div>
         </div>
         <div class="col-12 row">
@@ -46,3 +57,44 @@
         </div>
     </div>
 </center>
+
+@code {
+
+    private User user;
+    private User returnedUser;
+    private string ConfirmPassword;
+    public string LoginMesssage { get; set; }
+
+    protected override Task OnInitializedAsync()
+    {
+        user = new User();
+        return base.OnInitializedAsync();
+    }
+
+    private async Task<bool> RegisterUser()
+    {
+        if (user.Password == ConfirmPassword)
+        {
+
+            user.Type = UserType.Buyer;
+            returnedUser = await userRepo.PostUser(user);
+
+            if (returnedUser.Email != null)
+            {
+                NavigationManager.NavigateTo("/Login");
+            }
+            else
+            {
+                LoginMesssage = "Felaktigt användarnamn eller lösenord";
+            }
+
+            return await Task.FromResult(true);
+        }
+        else
+        {
+            LoginMesssage = "Lösenordet matchar inte";
+        }
+        return await Task.FromResult(false);
+    }
+
+}
