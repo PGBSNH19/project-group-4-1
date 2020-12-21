@@ -1,39 +1,49 @@
 ﻿@page "/"
 @inject HttpClient http;
+@inject MarketplaceRepository MarketplaceRepository;
+@using Data;
+@using Services;
 
-
-<button class="btn btn-success" @onclick="@GetMessages">Get Messages</button>
-
-<table>
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>Text</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var Message in Messages)
+@if (marketplaces.Count != 0)
+{
+    <div id="hero-card" class="card">
+        <div class="row no-gutters">
+            <div class="col-sm-5">
+                <img src="Images/placeholder.png" class="card-img-top" alt="Populäraste marknaden">
+            </div>
+            <div class="col-sm-7">
+                <div class="card-body">
+                    <h4 class="card-title">Namn på populäraste marknaden</h4>
+                    <p class="card-text">Exempel location</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-container">
+        @foreach (var Marketplace in marketplaces)
         {
-        <tr>
-            <td>@Message.Id</td>
-            <td>@Message.Text</td>
-        </tr>
+            <div class="card flex-item">
+                <img alt="Rekommenderad marknad" class="card-img-top" src="Images/placeholder.png" />
+                <div class="card-body">
+                    <h4 class="card-title">@Marketplace.Name</h4>
+                    <p class="card-text">@Marketplace.Location</p>
+                    <p class="card-footer">Börjar: @Marketplace.StartDateTime <br /> Slutar: @Marketplace.EndDateTime</p>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
-@code {
-    List<Message> Messages = new List<Message>();
-
-    private async Task GetMessages()
-    {
-        Messages = await http.GetJsonAsync<List<Message>>("https://localhost:44317/api/v1.0/GetMessages");
-    }
-
-    public class Message
-    {
-        public int Id { get; set; } = 0;
-        public string Text { get; set; } = "";
-    }
+    </div>
+}
+else
+{
+    <p>Loading...</p>
 }
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+@code {
+
+    List<Marketplace> marketplaces = new List<Marketplace>();
+    protected override async Task OnInitializedAsync()
+    {
+        marketplaces = await MarketplaceRepository.GetMarketplaces();
+    }
+
+}

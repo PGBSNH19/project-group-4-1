@@ -8,8 +8,40 @@ a, .btn-link {
     color: #0366d6;
 }
 
-.card {
+#hero-card {
+    height: 600px;
+}
+
+img {
+    height: 600px;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-container > flex-item {
     margin: 10px;
+    flex-basis: 33%;
+}
+
+.flex-container > * {
+    margin: 10px;
+    flex-basis: 20%;
+}
+
+@media (max-width: 800px) {
+    .flex-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 1024px) {
+    .flex-container > * {
+        margin: 10px;
+        flex-basis: calc(50% - 20px);
+    }
 }
 
 .btn-primary {
@@ -46,9 +78,9 @@ a, .btn-link {
     z-index: 1000;
 }
 
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
+#blazor-error-ui .dismiss {
+    cursor: pointer;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.5rem;
+}
