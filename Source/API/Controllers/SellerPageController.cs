@@ -18,7 +18,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetSellerPageByUserID/{id}")]
-        public async Task<ActionResult<SellerPage>> GetSellerPageByID(int id)
+        public async Task<ActionResult<SellerPage>> GetSellerPageByUserId(int id)
         {
             try
             {
@@ -51,6 +51,7 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
         [HttpPost]
         public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPage sellerPage)
         {

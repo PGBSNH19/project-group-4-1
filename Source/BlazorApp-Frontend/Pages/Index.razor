@@ -1,20 +1,37 @@
 ﻿@page "/"
 @inject HttpClient http;
+@inject UserRepository userRepo
+@using Data;
+@using Services;
 
 <h1 class="index-title">Nearby Produce Prototype</h1>
 
 
+<button class="btn btn-success" @onclick="@Onclick">Get Users</button>
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var User in users )
+        {
+        <tr>
+            <td>@User.Email</td>
+            <td>@User.Username</td>
+            <td>@User.Type </td>
+        </tr>
+        }
+    </tbody>
+</table>
 @code {
-    List<Message> Messages = new List<Message>();
 
-    private async Task GetMessages()
+    List<User> users = new List<User> { };
+    private async Task Onclick()
     {
-        Messages = await http.GetJsonAsync<List<Message>>("https://localhost:44317/api/v1.0/GetMessages");
+        users = await userRepo.GetAllUsers();
     }
 
-    public class Message
-    {
-        public int Id { get; set; } = 0;
-        public string Text { get; set; } = "";
-    }
-}

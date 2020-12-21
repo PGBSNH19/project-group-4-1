@@ -1,0 +1,52 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Push Image to ACR
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ Test ]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test scenario tags'
+  
+jobs:
+   build-and-deploy:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 'Checkout Github Actions'
+        uses: actions/checkout@v2
+        with:
+          ref: 'Test'
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1
+        with:
+           dotnet-version: 5.0.100
+      
+      - name: 'Docker Login'
+        uses: azure/docker-login@v1
+        with:
+         login-server: nearbyproduceregistry.azurecr.io
+         username: ${{ secrets.ACR_USERNAME }}
+         password: ${{ secrets.ACR_PASSWORD }}
+         
+      - name: 'Build and push Backend image'
+        run: |
+         docker build -f Source/API/Dockerfile -t nearbyproduceregistry.azurecr.io/backendtest/backendimage:latest .
+         docker push nearbyproduceregistry.azurecr.io/backendtest/backendimage:latest
+      - name: 'Build and push Frontend image'
+        run: |
+         docker build -f Source/BlazorApp-Frontend/Dockerfile -t nearbyproduceregistry.azurecr.io/frontendtest/frontendimage:latest  .
+         docker push nearbyproduceregistry.azurecr.io/frontendtest/frontendimage:latest
+       
+ 
+ 
+

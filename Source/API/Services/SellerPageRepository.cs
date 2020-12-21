@@ -15,13 +15,13 @@ namespace API.Services
         }
         public async Task<SellerPage> GetSellerPageByUserID(int id)
         {
-            IQueryable<SellerPage> query = _context.SellerPage.Where(x => x.SellerUserID == id);
+            IQueryable<SellerPage> query = _context.SellerPages.Where(x => x.SellerUserID == id);
             return await query.FirstOrDefaultAsync();
         }
 
         public async Task<ICollection<SellerPage>> GetSellerPages()
         {
-            IQueryable<SellerPage> query = _context.SellerPage;
+            IQueryable<SellerPage> query = _context.SellerPages;
             return await query.ToArrayAsync();
         }
     }

@@ -50,7 +50,7 @@ namespace API.Controllers
                     return NotFound();
                 }
 
-                return Ok();
+                return Ok(result);
             }
             catch (Exception e)
             {

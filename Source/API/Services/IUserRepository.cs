@@ -8,6 +8,7 @@ namespace API.Services
     {
         Task<ICollection<User>> GetUsers();
         Task<User> GetUserById(int id);
-
+        Task<User> GetUserByName(string name);
+        Task<User> GetUserByEmail(string email);
     }
 }
