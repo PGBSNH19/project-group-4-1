@@ -23,5 +23,18 @@ namespace API.Services
             IQueryable<User> query = _context.Users.Where(x => x.UserID == id);
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<User> GetUserByName(string name)
+        {
+            IQueryable<User> query = _context.Users.Where(x => x.Username == name);
+            return await query.FirstOrDefaultAsync();
+
+        }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            IQueryable<User> query = _context.Users.Where(x => x.Email == email);
+            return await query.FirstOrDefaultAsync();
+        }
     }
 }

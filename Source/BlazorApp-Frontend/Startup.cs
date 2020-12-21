@@ -25,6 +25,7 @@ namespace BlazorApp_Frontend
             services.AddServerSideBlazor();
             services.AddSingleton<HttpClient>();
             services.AddSingleton<UserRepository>();
+            services.AddSingleton<MarketplaceRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

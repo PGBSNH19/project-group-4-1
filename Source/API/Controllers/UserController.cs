@@ -53,6 +53,40 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+        [HttpGet("GetUserByName/{name}")]
+        public async Task<ActionResult<User>> GetUserByName(string name)
+        {
+            try
+            {
+                var result = await _userRepository.GetUserByName(name);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
+            }
+        }
+        [HttpGet("GetUserByEmail/{email}")]
+        public async Task<ActionResult<User>> GetUserByEmail(string email)
+        {
+            try
+            {
+                var result = await _userRepository.GetUserByEmail(email);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
+            }
+        }
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
