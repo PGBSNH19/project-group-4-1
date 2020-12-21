@@ -39,7 +39,7 @@ namespace API.Tests.ControllerTests
             var sellerPagesRepository = new SellerPageRepository(mockContext.Object);
             var sellPageController = new SellerPageController(sellerPagesRepository);
 
-            var result = await sellPageController.GetSellerPageByID(1);
+            var result = await sellPageController.GetSellerPageByUserId(1);
             var contentResult = result.Result as OkObjectResult;
             var resultSellerPage = contentResult.Value as SellerPage;
 

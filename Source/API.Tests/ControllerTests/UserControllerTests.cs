@@ -16,42 +16,48 @@ namespace API.Tests.ControllerTests
         [Fact]
         public async void GetAll_IfAnyExist_ReturnTrue()
         {
+            //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
-
             var userRepository = new UserRepository(mockContext.Object);
             var userController = new UserController(userRepository);
 
+            //Act
             var result = await userController.GetUsers();
             var contentResult = result.Result as OkObjectResult;
             var resultUsers = contentResult.Value as User[];
 
+            //Assert
             Assert.True(resultUsers.Length > 0);
         }
 
         [Fact]
         public async void GetById_IfExist_ExpectedNotNull()
         {
+            //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
-
             var userRepository = new UserRepository(mockContext.Object);
             var userController = new UserController(userRepository);
 
+            //Act
             var result = await userController.GetUser(1);
             var contentResult = result.Result as OkObjectResult;
             var resultUsers = contentResult.Value as User;
 
+            //Assert
             Assert.NotNull(resultUsers);
         }
 
         [Fact]
         public async void PostUser_IfUserPosted_Expected201StatusCode()
         {
+            //Arrange
             var userRepository = new Mock<IUserRepository>();
             userRepository.Setup(x => x.Save()).Returns(Task.FromResult(true));
             var userController = new UserController(userRepository.Object);
 
+            //Act
             var createdResult = await userController.PostUser(new User()
             {
                 UserID = 3,
@@ -61,6 +67,7 @@ namespace API.Tests.ControllerTests
             });
             var contentResult = createdResult.Result as CreatedResult;
 
+            //Assert
             Assert.Equal(201, contentResult.StatusCode);
         }
 

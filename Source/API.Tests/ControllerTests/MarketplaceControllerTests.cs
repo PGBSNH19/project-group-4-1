@@ -17,42 +17,48 @@ namespace API.Tests.ControllerTests
         [Fact]
         public async void GetAll_IfAnyExist_ReturnTrue()
         {
+            //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
-
             var marketplaceRepository = new MarketplaceRepository(mockContext.Object);
             var marketplaceController = new MarketplaceController(marketplaceRepository);
 
+            //Act
             var result = await marketplaceController.GetMarketplaces();
             var contentResult = result.Result as OkObjectResult;
             var resultMarketplaces = contentResult.Value as Marketplace[];
 
+            //Assert
             Assert.True(resultMarketplaces.Length > 0);
         }
 
         [Fact]
         public async void GetById_IfExist_ExpectedNotNull()
         {
+            //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
-
             var marketplaceRepository = new MarketplaceRepository(mockContext.Object);
             var marketplaceController = new MarketplaceController(marketplaceRepository);
 
+            //Act
             var result = await marketplaceController.GetMarketplaceById(1);
             var contentResult = result.Result as OkObjectResult;
             var resultMarketplace = contentResult.Value as Marketplace;
 
+            //Assert
             Assert.NotNull(resultMarketplace);
         }
 
         [Fact]
         public async void PostMarketplace_IfMarketplaceIsPosted_Expected201StatusCode()
         {
+            //Arrange
             var marketplaceRepository = new Mock<IMarketplaceRepository>();
             marketplaceRepository.Setup(x => x.Save()).Returns(Task.FromResult(true));
             var marketplaceController = new MarketplaceController(marketplaceRepository.Object);
 
+            //Act
             var createdResult = await marketplaceController.PostMarketplace(new Marketplace
             {
                 MarketplaceID = 3,
@@ -63,6 +69,7 @@ namespace API.Tests.ControllerTests
             });
             var contentResult = createdResult.Result as CreatedResult;
 
+            //Assert
             Assert.Equal(201, contentResult.StatusCode);
         }
 
