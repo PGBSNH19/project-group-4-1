@@ -8,6 +8,10 @@ a, .btn-link {
     color: #0366d6;
 }
 
+.card {
+    margin: 10px;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;

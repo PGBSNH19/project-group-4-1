@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using BlazorApp_Frontend.Data;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp_Frontend.Services
 {
