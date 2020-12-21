@@ -35,11 +35,11 @@
 ******************/
 
 .not-logged-in-menu {
-    display: normal;
+    display: none;
 }
 
 .logged-in-menu {
-    display: none;
+    display: normal;
 }
 
 /*****************

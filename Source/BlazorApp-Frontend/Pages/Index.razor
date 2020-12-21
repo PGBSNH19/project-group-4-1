@@ -17,7 +17,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach(var User in users )
+        @foreach (var User in users)
         {
         <tr>
             <td>@User.Email</td>
@@ -35,3 +35,4 @@
         users = await userRepo.GetAllUsers();
     }
 
+}
