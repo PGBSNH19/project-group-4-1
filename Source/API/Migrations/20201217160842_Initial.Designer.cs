@@ -4,14 +4,16 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(NearbyProduceContext))]
-    partial class NearbyProduceContextModelSnapshot : ModelSnapshot
+    [Migration("20201217160842_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,14 +52,6 @@ namespace API.Migrations
                             Location = "Heden",
                             Name = "Göteborgs Bakluckeloppis",
                             StartDateTime = new DateTime(2020, 12, 26, 10, 30, 0, 0, DateTimeKind.Unspecified)
-                        },
-                        new
-                        {
-                            MarketplaceID = 2,
-                            EndDateTime = new DateTime(2020, 12, 30, 16, 30, 0, 0, DateTimeKind.Unspecified),
-                            Location = "Majorna",
-                            Name = "Majornas Eko-Marknad",
-                            StartDateTime = new DateTime(2020, 12, 30, 9, 30, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -80,16 +74,6 @@ namespace API.Migrations
                         {
                             MarketplaceID = 1,
                             SellerID = 1
-                        },
-                        new
-                        {
-                            MarketplaceID = 1,
-                            SellerID = 3
-                        },
-                        new
-                        {
-                            MarketplaceID = 2,
-                            SellerID = 5
                         });
                 });
 
@@ -117,26 +101,6 @@ namespace API.Migrations
                         {
                             ProductID = 1,
                             Name = "Potatis"
-                        },
-                        new
-                        {
-                            ProductID = 2,
-                            Name = "Morot"
-                        },
-                        new
-                        {
-                            ProductID = 3,
-                            Name = "Äpplen"
-                        },
-                        new
-                        {
-                            ProductID = 4,
-                            Name = "Päron"
-                        },
-                        new
-                        {
-                            ProductID = 5,
-                            Name = "Nöttfärs"
                         });
                 });
 
@@ -163,20 +127,8 @@ namespace API.Migrations
                         new
                         {
                             SellerPageID = 1,
-                            Name = "Jannes Online-Gård",
-                            SellerUserID = 1
-                        },
-                        new
-                        {
-                            SellerPageID = 2,
-                            Name = "Lisas Näroldat",
-                            SellerUserID = 4
-                        },
-                        new
-                        {
-                            SellerPageID = 3,
-                            Name = "Hannes eko-farm",
-                            SellerUserID = 4
+                            Name = "Arnes Online-Gård",
+                            SellerUserID = 2
                         });
                 });
 
@@ -207,20 +159,6 @@ namespace API.Migrations
                             SellerPageID = 1,
                             Price = 2,
                             Stock = 10
-                        },
-                        new
-                        {
-                            ProductID = 5,
-                            SellerPageID = 2,
-                            Price = 55,
-                            Stock = 25
-                        },
-                        new
-                        {
-                            ProductID = 3,
-                            SellerPageID = 3,
-                            Price = 10,
-                            Stock = 100
                         });
                 });
 
@@ -230,9 +168,6 @@ namespace API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -251,7 +186,6 @@ namespace API.Migrations
                         new
                         {
                             UserID = 1,
-                            Email = "test@test.com",
                             Password = "lösen123",
                             Type = 2,
                             Username = "JanneBonde07"
@@ -259,34 +193,9 @@ namespace API.Migrations
                         new
                         {
                             UserID = 2,
-                            Email = "test@test.com",
                             Password = "lösen123",
                             Type = 1,
                             Username = "Bengtan555"
-                        },
-                        new
-                        {
-                            UserID = 3,
-                            Email = "test@test.com",
-                            Password = "KlDioL123!",
-                            Type = 1,
-                            Username = "Henrik123"
-                        },
-                        new
-                        {
-                            UserID = 4,
-                            Email = "test@test.com",
-                            Password = "lösen123",
-                            Type = 2,
-                            Username = "BondenLisa1"
-                        },
-                        new
-                        {
-                            UserID = 5,
-                            Email = "test@test.com",
-                            Password = "lösen123",
-                            Type = 2,
-                            Username = "HannesFarm"
                         });
                 });
 
@@ -309,11 +218,6 @@ namespace API.Migrations
                         {
                             UserID = 2,
                             ProductID = 1
-                        },
-                        new
-                        {
-                            UserID = 3,
-                            ProductID = 5
                         });
                 });
 
