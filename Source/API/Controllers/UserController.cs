@@ -91,6 +91,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser([FromBody] User user)
         {
+            user.Type = UserType.Buyer;
             try
             {
                 _userRepository.Add(user);

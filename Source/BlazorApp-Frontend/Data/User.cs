@@ -29,8 +29,8 @@ namespace BlazorApp_Frontend.Data
 
     public enum UserType
     {
-        Admin,
         Buyer,
-        Seller
+        Seller,
+        Admin
     }
 }
