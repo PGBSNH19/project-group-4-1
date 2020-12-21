@@ -28,3 +28,24 @@
         padding-right: 1.5rem !important;
     }
 }
+
+/*****************
+    NavBarLoggedIn
+******************/
+
+.not-logged-in-menu {
+    display: normal;
+}
+
+.logged-in-menu {
+    display: none;
+}
+
+/*****************
+    Footer
+******************/
+
+.footer {
+    align-self: center;
+    justify-content: center;
+}
