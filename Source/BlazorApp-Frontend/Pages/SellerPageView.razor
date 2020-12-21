@@ -1,0 +1,32 @@
+﻿@page "/SellerPage"
+@inject HttpClient http;
+@inject SellerPageRepository selllerPageRepository;
+@using Data;
+@using Services;
+
+<h2 class="text-center font-weight-bold">Bosses Säljarsida</h2>
+<div class="d-flex flex-wrap">
+    @if (sellerpages.Count != 0)
+    {
+        @foreach (var sellerPage in sellerpages)
+        {
+            <div class="card d-flex">
+                <img alt="Standard Seller" class="card-img-top" src="Images/placeholder.png" />
+                <div class="card-body">
+                    <h4 class="card-title">@sellerPage.Name</h4>
+                    <p class="card-text">@sellerPage.SellerUserID</p>
+                    
+                </div>
+            </div>
+        }
+    }
+</div>
+@code {
+
+    List<SellerPage> sellerpages = new List<SellerPage>();
+    protected override async Task OnInitializedAsync()
+    {
+        sellerpages = await selllerPageRepository.GetSellerPages();
+    }
+
+}
