@@ -22,8 +22,8 @@ namespace API.Models
     }
     public enum UserType
     {
-        Admin,
+        Seller,
         Buyer,
-        Seller
+        Admin
     }
 }

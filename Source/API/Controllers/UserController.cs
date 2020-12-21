@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 
 
+
 namespace API.Controllers
 {
     [Route("api/v1.0/[controller]")]
@@ -88,14 +89,14 @@ namespace API.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> PostUser([FromBody] User user)
         {
             try
             {
                 _userRepository.Add(user);
                 if (await _userRepository.Save())
                 {
-                    return Created("/api/v1.0/[controller]" + user.UserID, new User { UserID = user.UserID });
+                    return Ok(user);
                 }
                 return BadRequest();
             }
@@ -103,6 +104,11 @@ namespace API.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
+        }
+
+        private void Debugger()
+        {
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]

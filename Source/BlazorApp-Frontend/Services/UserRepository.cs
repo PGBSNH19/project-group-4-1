@@ -20,7 +20,7 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<List<User>> GetAllUsers()
         {
-            var users = await http.GetJsonAsync<List<User>>("/api/v1.0/User/GetUsers");
+            var users = await http.GetJsonAsync<List<User>>(http.BaseAddress + "/api/v1.0/User/GetUsers");
             return users;
         }
         public async Task<User> GetUserById(int id)
@@ -30,12 +30,19 @@ namespace BlazorApp_Frontend.Services
             return user;
         }
 
-        public async Task<User> PostUser(User userToCreate)
+        public async Task<HttpResponseMessage> PostUser(User userToCreate)
         {
+
             var data = new StringContent(JsonConvert.SerializeObject(userToCreate), Encoding.UTF8, "application/json");
 
-            var user = await http.PostJsonAsync<User>(http.BaseAddress + "api/v1.0/User", data);
-            return user;
+            userToCreate.UserID = 100;
+            userToCreate.Email = "hej";
+            userToCreate.Password = "123";
+            userToCreate.Username = "test";
+
+            var response = await http.PostAsync($"http://localhost:5000/api/v1.0/User", data);
+
+            return null;
         }
     }
 }
