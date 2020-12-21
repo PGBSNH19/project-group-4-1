@@ -1,3 +1,4 @@
+using System;
 using BlazorApp_Frontend.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +27,12 @@ namespace BlazorApp_Frontend
             services.AddSingleton<HttpClient>();
             services.AddSingleton<UserRepository>();
             services.AddSingleton<MarketplaceRepository>();
+            services.AddHttpClient("api", client =>
+            {
+                client.BaseAddress = new Uri("https://nearbyproduceapiTest.azurewebsites.net");
+            });
+            services.AddSingleton<ProductRepository>();
+            services.AddSingleton<SellerPageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

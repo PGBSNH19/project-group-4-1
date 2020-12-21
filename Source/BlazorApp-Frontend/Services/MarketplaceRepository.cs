@@ -1,22 +1,19 @@
 ﻿using BlazorApp_Frontend.Data;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using BlazorApp_Frontend.Data;
-using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp_Frontend.Services
 {
     public class MarketplaceRepository
     {
         public HttpClient http { get; }
-        public MarketplaceRepository(HttpClient client)
+        public MarketplaceRepository(IHttpClientFactory _clientFactory)
         {
-            client.BaseAddress = new Uri("https://nearbyproduceapiTest.azurewebsites.net");
+            var client = _clientFactory.CreateClient("api");
             http = client;
         }
 

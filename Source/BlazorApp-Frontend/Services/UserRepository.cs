@@ -1,7 +1,6 @@
 ﻿using BlazorApp_Frontend.Data;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -12,9 +11,9 @@ namespace BlazorApp_Frontend.Services
     public class UserRepository
     {
         public HttpClient http { get; }
-        public UserRepository(HttpClient client)
+        public UserRepository(IHttpClientFactory _clientFactory)
         {
-            client.BaseAddress = new Uri("https://nearbyproduceapiTest.azurewebsites.net");
+            var client = _clientFactory.CreateClient("api");
             http = client;
         }
 
@@ -43,6 +42,11 @@ namespace BlazorApp_Frontend.Services
             var response = await http.PostAsync($"http://localhost:5000/api/v1.0/User", data);
 
             return null;
+        }
+        public async Task<HttpResponseMessage> DeleteUser(User userToDelete)
+        {
+            var response = await http.DeleteAsync(http.BaseAddress + $"api/v1.0/User/{userToDelete.UserID}");
+            return response;
         }
     }
 }

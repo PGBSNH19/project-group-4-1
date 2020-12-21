@@ -1,15 +1,15 @@
-﻿@page "/Marketplace"
+﻿@page "/markets"
 @inject HttpClient http;
 @inject MarketplaceRepository MarketplaceRepository;
 @using Data;
 @using Services;
 
-<div class="d-flex flex-wrap">
+<div class="flex-container">
     @if (marketplaces.Count != 0)
     {
         @foreach (var Marketplace in marketplaces)
         {
-            <div style="width: 400px;" class="card d-flex">
+            <div class="card">
                 <img alt="Rekommenderad marknad" class="card-img-top" src="Images/placeholder.png" />
                 <div class="card-body">
                     <h4 class="card-title">@Marketplace.Name</h4>
