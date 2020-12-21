@@ -31,6 +31,8 @@ namespace BlazorApp_Frontend
             {
                 client.BaseAddress = new Uri("https://nearbyproduceapiTest.azurewebsites.net");
             });
+            services.AddSingleton<ProductRepository>();
+            services.AddSingleton<SellerPageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
