@@ -33,15 +33,9 @@ namespace BlazorApp_Frontend.Services
         {
 
             var data = new StringContent(JsonConvert.SerializeObject(userToCreate), Encoding.UTF8, "application/json");
+            var response = await http.PostAsync(http.BaseAddress + $"api/v1.0/User", data);
 
-            userToCreate.UserID = 100;
-            userToCreate.Email = "hej";
-            userToCreate.Password = "123";
-            userToCreate.Username = "test";
-
-            var response = await http.PostAsync($"http://localhost:5000/api/v1.0/User", data);
-
-            return null;
+            return response;
         }
         public async Task<HttpResponseMessage> DeleteUser(User userToDelete)
         {
