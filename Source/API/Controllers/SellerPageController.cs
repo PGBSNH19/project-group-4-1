@@ -18,7 +18,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetSellerPageByUserID/{id}")]
-        public async Task<ActionResult<SellerPage>> GetSellerPageByID(int id)
+        public async Task<ActionResult<SellerPage>> GetSellerPageByUserId(int id)
         {
             try
             {
