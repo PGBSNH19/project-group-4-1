@@ -1,38 +1,49 @@
 ﻿@page "/"
 @inject HttpClient http;
-@inject UserRepository userRepo
+@inject MarketplaceRepository MarketplaceRepository;
 @using Data;
 @using Services;
 
-<h1 class="index-title">Nearby Produce Prototype</h1>
-
-
-<button class="btn btn-success" @onclick="@Onclick">Get Users</button>
-
-<table>
-    <thead>
-        <tr>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var User in users)
+@if (marketplaces.Count != 0)
+{
+    <div id="hero-card" class="card">
+        <div class="row no-gutters">
+            <div class="col-sm-5">
+                <img src="Images/placeholder.png" class="card-img-top" alt="Populäraste marknaden">
+            </div>
+            <div class="col-sm-7">
+                <div class="card-body">
+                    <h4 class="card-title">Namn på populäraste marknaden</h4>
+                    <p class="card-text">Exempel location</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-container">
+        @foreach (var Marketplace in marketplaces)
         {
-        <tr>
-            <td>@User.Email</td>
-            <td>@User.Username</td>
-            <td>@User.Type </td>
-        </tr>
+            <div class="card flex-item">
+                <img alt="Rekommenderad marknad" class="card-img-top" src="Images/placeholder.png" />
+                <div class="card-body">
+                    <h4 class="card-title">@Marketplace.Name</h4>
+                    <p class="card-text">@Marketplace.Location</p>
+                    <p class="card-footer">Börjar: @Marketplace.StartDateTime <br /> Slutar: @Marketplace.EndDateTime</p>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+}
+else
+{
+    <p>Loading...</p>
+}
+
 @code {
 
-    List<User> users = new List<User> { };
-    private async Task Onclick()
+    List<Marketplace> marketplaces = new List<Marketplace>();
+    protected override async Task OnInitializedAsync()
     {
-        users = await userRepo.GetAllUsers();
+        marketplaces = await MarketplaceRepository.GetMarketplaces();
     }
 
 }
