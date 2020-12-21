@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,27 +10,37 @@ namespace API.Context
     {
         private readonly IConfiguration _configuration;
         public NearbyProduceContext() { }
+        AzureKeyvaultService _aKVService = new AzureKeyvaultService();
         public NearbyProduceContext(IConfiguration config, DbContextOptions options) : base(options)
         {
             _configuration = config;
         }
-        public DbSet<Marketplace> Marketplaces { get; set; }
-        public DbSet<MarketplaceSeller> MarketplaceSeller { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<SellerPage> SellerPage { get; set; }
-        public DbSet<SellerPageProduct> SellerPageProducts { get; set; }
-        public DbSet<User> User { get; set; }
-        public DbSet<UserProduct> UserProducts { get; set; }
+        public virtual DbSet<Marketplace> Marketplaces { get; set; }
+        public virtual DbSet<MarketplaceSeller> MarketplaceSellers { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<SellerPage> SellerPages { get; set; }
+        public virtual DbSet<SellerPageProduct> SellerPageProducts { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserProduct> UserProducts { get; set; }
 
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                                                          .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                                                          .AddJsonFile("appsettings.Development.json")
-                                                          .Build();
-            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+            var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/Nearbyproduce-ConnectionString/a32f78484d8448178a8e6d1e1aa4a4a5");
+            var builder = new ConfigurationBuilder();
+            if (string.IsNullOrEmpty(azureDbCon))
+            {
+                IConfigurationRoot configuration = builder.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                                                                              .AddJsonFile("appsettings.Development.json")
+                                                                              .Build();
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
+            }
+            else
+            {
+                builder.Build();
+                optionsBuilder.UseSqlServer(azureDbCon);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
