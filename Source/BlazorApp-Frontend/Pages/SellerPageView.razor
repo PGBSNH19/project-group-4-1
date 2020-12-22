@@ -1,0 +1,40 @@
+﻿@page "/SellerPage"
+@inject HttpClient http;
+@inject SellerPageRepository selllerPageRepository;
+@inject ProductRepository productRepository;
+@using Data;
+@using Services;
+
+
+<h2 class="text-center font-weight-bold">@sellerpage.Name</h2>
+<div class="d-flex flex-wrap">
+    @if (products.Count != 0)
+    {
+        @foreach (var product in products)
+        {
+            <div class="card d-flex">
+                <img alt="Standard Seller" class="card-img-top" src="Images/placeholder.png" />
+                <div class="card-body">
+                    <h4 class="card-title">@product.Name</h4>
+                    <p class="card-text">@product.Price</p>
+                    <p class="card-text">@product.Stock</p>
+                </div>
+            </div>
+        }
+    }
+</div>
+@code {
+    public int SellerUserID = 1;
+    public int SellerPageID { get; set; }
+
+
+    SellerPage sellerpage = new SellerPage();
+    List<Product> products = new List<Product>();
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        sellerpage = await selllerPageRepository.GetSellerPageByUserId(SellerUserID);
+        products = sellerpage.Products.ToList();
+    }
+}
