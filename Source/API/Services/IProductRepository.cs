@@ -10,7 +10,6 @@ namespace API.Services
     public interface IProductRepository : IRepository
     {
         Task<ICollection<Product>> GetProducts();
-        Task<ICollection<Product>> GetProductsBySellerPageId(int id);
         Task<Product> GetProductById(int id);
     }
 }

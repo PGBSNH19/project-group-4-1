@@ -29,7 +29,7 @@ namespace BlazorApp_Frontend
             services.AddSingleton<MarketplaceRepository>();
             services.AddHttpClient("api", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:44317");
+                client.BaseAddress = new Uri("https://nearbyproduceapiTest.azurewebsites.net");
             });
             services.AddSingleton<ProductRepository>();
             services.AddSingleton<SellerPageRepository>();

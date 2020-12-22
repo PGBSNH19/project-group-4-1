@@ -30,13 +30,11 @@
 
     SellerPage sellerpage = new SellerPage();
     List<Product> products = new List<Product>();
+    
+
     protected override async Task OnInitializedAsync()
     {
-        sellerpage = await selllerPageRepository.GetSellerPageById(SellerUserID);
-        products = await productRepository.GetProductsBySellerPageId(sellerpage.SellerPageID);
+        sellerpage = await selllerPageRepository.GetSellerPageByUserId(SellerUserID);
+        products = sellerpage.Products.ToList();
     }
-
-
-
-
 }

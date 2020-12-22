@@ -38,25 +38,6 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("GetSellerPageProducts/{sellerPageId}")]
-        public async Task<ActionResult<Product[]>> GetProductsBySellerId(int sellerPageId)
-        {
-            try
-            {
-                var results = await _productRepository.GetProductsBySellerPageId(sellerPageId);
-
-                if (results.Count == 0)
-                {
-                    return NotFound();
-                }
-
-                return Ok(results);
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {exception.Message}");
-            }
-        }
 
         [HttpGet("GetProduct/{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)

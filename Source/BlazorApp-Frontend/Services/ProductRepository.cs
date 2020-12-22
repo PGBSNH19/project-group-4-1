@@ -22,11 +22,6 @@ namespace BlazorApp_Frontend.Services
             var products = await http.GetJsonAsync<List<Product>>(http.BaseAddress + "/api/v1.0/Product/GetProducts");
             return products;
         }
-        public async Task<List<Product>> GetProductsBySellerPageId(int id)
-        {
-            var products = await http.GetJsonAsync<List<Product>>(http.BaseAddress + "/api/v1.0/Product/GetSellerPageProducts");
-            return products;
-        }
 
         public async Task<Product> GetProductById(int id)
         {

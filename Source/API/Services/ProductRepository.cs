@@ -18,13 +18,6 @@ namespace API.Services
             IQueryable<Product> query = _context.Products;
             return await query.ToArrayAsync();
         }
-        public async Task<ICollection<Product>> GetProductsBySellerPageId(int id)
-        {
-            IQueryable<Product> query = _context.Products
-                                                .Where(x => x.ProductID == id)
-                                                .Include(sellerPage => sellerPage.SellerPageProducts);
-            return await query.ToArrayAsync();
-        }
 
         public async Task<Product> GetProductById(int id)
         {
