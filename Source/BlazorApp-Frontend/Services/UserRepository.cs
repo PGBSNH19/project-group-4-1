@@ -29,12 +29,13 @@ namespace BlazorApp_Frontend.Services
             return user;
         }
 
-        public async Task<User> PostUser(User userToCreate)
+        public async Task<HttpResponseMessage> PostUser(User userToCreate)
         {
-            var data = new StringContent(JsonConvert.SerializeObject(userToCreate), Encoding.UTF8, "application/json");
 
-            var user = await http.PostJsonAsync<User>(http.BaseAddress + "api/v1.0/User", data);
-            return user;
+            var data = new StringContent(JsonConvert.SerializeObject(userToCreate), Encoding.UTF8, "application/json");
+            var response = await http.PostAsync(http.BaseAddress + $"api/v1.0/User", data);
+
+            return response;
         }
         public async Task<HttpResponseMessage> DeleteUser(User userToDelete)
         {
