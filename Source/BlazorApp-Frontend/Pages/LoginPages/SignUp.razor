@@ -61,7 +61,6 @@
 @code {
 
     private User user;
-    private User returnedUser;
     private string ConfirmPassword;
     public string LoginMesssage { get; set; }
 
@@ -77,9 +76,9 @@
         {
 
             user.Type = UserType.Buyer;
-            returnedUser = await userRepo.PostUser(user);
+            var response = await userRepo.PostUser(user);
 
-            if (returnedUser.Email != null)
+            if (response.IsSuccessStatusCode)
             {
                 NavigationManager.NavigateTo("/Login");
             }
