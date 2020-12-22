@@ -17,6 +17,11 @@ namespace API.Controllers
             _sellerPageRepository = sellerPageRepository;
         }
 
+        /// <summary>
+        /// Gets a seller based on a userID 
+        /// </summary>
+        /// 
+
         [HttpGet("GetSellerPageByUserID/{id}")]
         public async Task<ActionResult<SellerPage>> GetSellerPageByUserId(int id)
         {
@@ -34,6 +39,12 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
+        /// <summary>
+        /// Gets all Sellers
+        /// </summary>
+        /// 
+
         [HttpGet("GetSellerPages")]
         public async Task<ActionResult<SellerPage[]>> GetSellerPages()
         {
@@ -52,6 +63,11 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Posts a user
+        /// </summary>
+        /// 
+
         [HttpPost]
         public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPage sellerPage)
         {
@@ -69,6 +85,12 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
+
+        /// <summary>
+        /// Deletes a user
+        /// </summary>
+        ///
+
         [HttpDelete]
         public async Task<ActionResult> DeleteSellerPage(int id)
         {

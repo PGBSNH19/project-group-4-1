@@ -18,6 +18,10 @@ namespace API.Controllers
             _productRepository = productRepository;
         }
 
+        /// <summary>
+        /// Gets all Products
+        /// </summary>
+        /// 
         [HttpGet("GetProducts")]
         public async Task<ActionResult<Product[]>> GetProducts()
         {
@@ -38,7 +42,10 @@ namespace API.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Gets a product with the specified id
+        /// </summary>
+        /// 
         [HttpGet("GetProduct/{id}")]
         public async Task<ActionResult<Product>> GetProductById(int id)
         {
@@ -59,6 +66,10 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Posts a new products
+        /// </summary>
+        /// 
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct(Product product)
         {
@@ -77,6 +88,11 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
+
+        /// <summary>
+        /// Deletes a product based on its id 
+        /// </summary>
+        /// 
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
