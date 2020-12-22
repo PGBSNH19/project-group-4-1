@@ -5,47 +5,31 @@
 @using System.Security.Claims
 @inject NavigationManager NavigationManager
 
-<center>
-    <div class="col-8 card">
-        <div class="col-12 row">
-            <p>&nbsp;</p>
-        </div>
-        <div class="col-12 row">
-            <div class="col-6" style="border-left:thick">
-                @*<EditForm Model="@user" OnValidSubmit="@ValidateUser">*@
-                    <div>
-                        <br /><br /><br /><br /><br />
-                    </div>
-                    <div>
-                        <h3 style="font-weight:bold; color:purple">Nearby-Produce Login</h3>
-                    </div>
-                    <div>
-                        <br />
-                    </div>
-                    <div class="col-12 row">
-                        <input class="form-control col-12" placeholder="email address or username" />
-                    </div>
-                    <br />
-                    <div class="col-12 row">
-                        <input type="password" class="form-control col-12" placeholder="password" />
-                    </div>
-                    <br />
-                    <div class="col-12 row">
-                        <span class="col-12"></span>
-                        <input type="submit" class="form-control col-6 btn btn-primary" value="Login" />
-                        <a href="/signup" class="col-3">Sign up</a>
-                    </div>*
-                    <br />
-                    <div class="col-12 row" style="text-align:left; font-weight:bold">
-                    </div>
-                @*</EditForm>*@
+<div class="flex-container-login">
+    <div class="login card">
+        @*<EditForm Model="@user" OnValidSubmit="@ValidateUser">*@
+            <div>
+                <h3>Nearby-Produce Login</h3>
             </div>
-        </div>
-        <div class="col-12 row">
-            <p>&nbsp;</p>
-        </div>
+            <div>
+                <br />
+            </div>
+            <div>
+                <input placeholder="email address or username" class="form-control" />
+            </div>
+            <br />
+            <div>
+                <input type="password" class="form-control" placeholder="password" />
+            </div>
+            <br />
+            <div>
+                <input type="submit" class="btn btn-outline-primary btn-lg" value="Login" />
+                <br/>
+                <a href="/signup">Sign up</a>
+            </div>
+        @*</EditForm>*@
     </div>
-</center>
+</div>
 
 @*@code {
 
