@@ -7,9 +7,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse row" id="collapse_target">
                 <span class="navbar-text col-6 font-weight-bold text-white text-center">Nearby Produce</span>
-                <ul class="navbar-nav ">
+            <div class="collapse navbar-collapse row" id="collapse_target">
+                <ul class="navbar-nav col-sm-6 text-center">
                     <li class="nav-item">
                         <NavLink class="nav-link" href="/">
                             <span class="oi oi-home" aria-hidden="true"></span> Hem
@@ -21,24 +21,33 @@
                         </NavLink>
                     </li>
                     <li>
-                        <NavLink class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
-                            <span class="oi oi-person" aria-hidden="true"></span> Konto <span class="oi oi-chevron-bottom" aria-hidden="true"></span>
-                        </NavLink>
+                        @if (expandSubNav != true)
+                        {
+                            <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                                <span class="oi oi-person" aria-hidden="false"></span> Konto <span class="oi oi-chevron-bottom" aria-hidden="true"></span>
+                            </NavLink>
+                        }
+                        else
+                        {
+                            <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                                <span class="oi oi-person" aria-hidden="true"></span> Konto <span class="oi oi-chevron-top" aria-hidden="true"></span>
+                            </NavLink>
+                        }
                         @if (expandSubNav)
-                        {<div class="dropdown-menu-sm-left">
-                            <NavLink class="expand-menu" href="/profilesettingsview">
-                                <span class="text-white">Profil</span>
-                            </NavLink>
-                            <NavLink class="" href="/reservations">
-                                <span class="text-white">Reservationer</span>
-                            </NavLink>
-                            <NavLink class="" href="/sellerpage">
-                                <span class="text-white">Säljarsida</span>
-                            </NavLink>
-                            <NavLink class="" href="/">
-                                <span class="text-white">Logga ut</span>
-                            </NavLink>
-                        </div>
+                        {<div class="dropdown-menu show">
+                                <NavLink class="expand-menu" href="/profilesettingsview">
+                                    <span class="text-black-50 nav-link-span">Profil</span>
+                                </NavLink>
+                                <NavLink class="" href="/reservations">
+                                    <span class="text-black-50 nav-link-span">Reservationer</span>
+                                </NavLink>
+                                <NavLink class="" href="/sellerpage">
+                                    <span class="text-black-50 nav-link-span">Säljarsida</span>
+                                </NavLink>
+                                <NavLink class="" href="/">
+                                    <span class="text-black-50 nav-link-span">Logga ut</span>
+                                </NavLink>
+                            </div>
                         }
                     </li>
                 </ul>
