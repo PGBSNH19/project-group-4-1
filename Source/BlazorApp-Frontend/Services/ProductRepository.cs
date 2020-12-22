@@ -22,12 +22,14 @@ namespace BlazorApp_Frontend.Services
             var products = await http.GetJsonAsync<List<Product>>(http.BaseAddress + "/api/v1.0/Product/GetProducts");
             return products;
         }
+
         public async Task<Product> GetProductById(int id)
         {
             var product = await http.GetJsonAsync<Product>(http.BaseAddress + $"/api/v1.0/Product/GetProduct/{id}");
 
             return product;
         }
+
         public async Task<Product> PostProduct(Product productToCreate)
         {
             var data = new StringContent(JsonConvert.SerializeObject(productToCreate), Encoding.UTF8, "application/json");

@@ -17,15 +17,15 @@ namespace BlazorApp_Frontend.Services
             http = client;
         }
 
-        public async Task<List<SellerPage>> GetProducts()
+        public async Task<List<SellerPage>> GetSellerPages()
         {
             var sellerPages = await http.GetJsonAsync<List<SellerPage>>(http.BaseAddress + "/api/v1.0/SellerPage/GetSellerPages");
             return sellerPages;
         }
 
-        public async Task<SellerPage> GetSellerPageById(int id)
+        public async Task<SellerPage> GetSellerPageByUserId(int id)
         {
-            var sellerPage = await http.GetJsonAsync<SellerPage>(http.BaseAddress + $"/api/v1.0/SellerPage/GetSellerPage/{id}");
+            var sellerPage = await http.GetJsonAsync<SellerPage>(http.BaseAddress + $"/api/v1.0/SellerPage/GetSellerPageByUserID/{id}");
             return sellerPage;
         }
         public async Task<SellerPage> PostSellerPage(SellerPage sellerPageToCreate)
