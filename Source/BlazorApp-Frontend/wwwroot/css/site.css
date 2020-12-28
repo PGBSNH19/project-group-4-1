@@ -62,27 +62,31 @@ img {
 .login >div{
     margin:15px;
 }
+
 .reservationtitle{
     margin:10px;
     grid-column-start:2;
     grid-row-start:1;
     align-self:center;
 }
+
 .reservation {
     grid-column-start: 2;
     grid-row-start: 2;
     padding: 30px;
     align-items: center;
 }
+
 .flex-container-reservation {
     display: grid;
     margin-top: 56px;
     width: calc(100vw-20px);
     margin-bottom: 49px;
-    height: calc(100vh - 105px);
+    height: calc(100vh - 153px);
     grid-template-columns: 15% auto 15%;
     grid-template-rows: 10% auto 25%;
 }
+
 .flex-container-profilesettings {
     display: grid;
     margin-top: 56px;
@@ -125,29 +129,41 @@ img {
     flex-basis: 20%;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 320px) {
+    .flex-container-reservation {
+        grid-template-columns: 1% auto 1%;
+        grid-template-rows: 10% auto 5%;
+        margin-top: 80px;
+        margin-bottom: 73px;
+    }
+}
+
+@media (max-width: 767px) {
     .flex-container {
         flex-direction: column;
     }
+
     .flex-container-signup {
         grid-template-columns: 10% auto 10%;
         grid-template-rows: 5% auto 30%;
     }
+
     .flex-container-login {
         grid-template-columns: 10% auto 10%;
         grid-template-rows: 5% auto 5%;
     }
+
     .flex-container-profilesettings {
         grid-template-columns: 10% auto 10%;
         grid-template-rows: 5% auto 5%;
         margin-bottom: 73px;
         height: calc(100% - 129px);
     }
+
     .flex-container-reservation {
-        grid-template-columns: 5% auto 5%;
+        grid-template-columns: 1% auto 1%;
         grid-template-rows: 10% auto 5%;
         margin-bottom: 73px;
-        height: calc(100% - 129px);
     }
 }
 
@@ -155,6 +171,10 @@ img {
     .flex-container > * {
         margin: 10px;
         flex-basis: calc(50% - 20px);
+    }
+    .flex-container-reservation {
+        height: calc(100vh - 153px);
+        margin-top: 104px;
     }
 }
 
