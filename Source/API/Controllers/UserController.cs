@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 
 
+
 namespace API.Controllers
 {
     [Route("api/v1.0/[controller]")]
@@ -53,15 +54,50 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        [HttpGet("GetUserByName/{name}")]
+        public async Task<ActionResult<User>> GetUserByName(string name)
         {
+            try
+            {
+                var result = await _userRepository.GetUserByName(name);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
+            }
+        }
+        [HttpGet("GetUserByEmail/{email}")]
+        public async Task<ActionResult<User>> GetUserByEmail(string email)
+        {
+            try
+            {
+                var result = await _userRepository.GetUserByEmail(email);
+                if (result == null)
+                {
+                    return NotFound();
+                }
+                return Ok(result);
+            }
+            catch (Exception exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
+            }
+        }
+        [HttpPost]
+        public async Task<ActionResult<User>> PostUser([FromBody] User user)
+        {
+            user.Type = UserType.Buyer;
             try
             {
                 _userRepository.Add(user);
                 if (await _userRepository.Save())
                 {
-                    return Created("/api/v1.0/[controller]" + user.UserID, new User { UserID = user.UserID });
+                    return Ok(user);
                 }
                 return BadRequest();
             }
@@ -69,6 +105,11 @@ namespace API.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
+        }
+
+        private void Debugger()
+        {
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{id}")]

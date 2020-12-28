@@ -19,7 +19,7 @@ namespace API.Controllers
         }
 
         [HttpGet("GetProducts")]
-        public async Task<ActionResult<Marketplace[]>> GetProducts()
+        public async Task<ActionResult<Product[]>> GetProducts()
         {
             try
             {
@@ -38,8 +38,9 @@ namespace API.Controllers
             }
         }
 
+
         [HttpGet("GetProduct/{id}")]
-        public async Task<ActionResult<Marketplace>> GetProductById(int id)
+        public async Task<ActionResult<Product>> GetProductById(int id)
         {
             try
             {
@@ -59,7 +60,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Marketplace>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct(Product product)
         {
             try
             {

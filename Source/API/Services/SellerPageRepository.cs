@@ -15,7 +15,10 @@ namespace API.Services
         }
         public async Task<SellerPage> GetSellerPageByUserID(int id)
         {
-            IQueryable<SellerPage> query = _context.SellerPages.Where(x => x.SellerUserID == id);
+            IQueryable<SellerPage> query = _context.SellerPages.Where(x => x.SellerUserID == id)
+                                                                .Include(SellerPageProduct => SellerPageProduct.SellerPageProducts)
+                                                                .ThenInclude(SellerPageProduct => SellerPageProduct.product);
+
             return await query.FirstOrDefaultAsync();
         }
 
