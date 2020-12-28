@@ -97,7 +97,7 @@ namespace API.Controllers
                 _userRepository.Add(user);
                 if (await _userRepository.Save())
                 {
-                    return Ok(user);
+                    return Created("/api/v1.0/[controller]" + user.UserID, new User { UserID = user.UserID });
                 }
                 return BadRequest();
             }
