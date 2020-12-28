@@ -9,7 +9,7 @@
 }
 
 #hero{
-    margin-top:56px;
+    margin-top: 56px;
 }
 
 @media (max-width: 870.98px) {
@@ -17,11 +17,6 @@
 @media (min-width: 641px) {
     .page {
         flex-direction: row;
-    }
-
-    .main > div {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
     }
 }
 
