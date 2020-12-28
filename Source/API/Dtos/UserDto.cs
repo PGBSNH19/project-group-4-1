@@ -13,10 +13,4 @@ namespace API.Dtos
         public ICollection<MarketplaceSeller> MarketplaceSellers { get; set; }
         public ICollection<UserProduct> UserProducts { get; set; }
     }
-    public enum UserType
-    {
-        Buyer,
-        Seller,
-        Admin
-    }
 }

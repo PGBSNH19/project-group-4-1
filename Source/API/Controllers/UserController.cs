@@ -95,15 +95,16 @@ namespace API.Controllers
             }
         }
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser([FromBody] User user)
+        public async Task<ActionResult<User>> PostUser([FromBody] UserDto user)
         {
             user.Type = UserType.Buyer;
             try
             {
-                _userRepository.Add(user);
+                var mappedEntity = _mapper.Map<User>(user);
+                _userRepository.Add(mappedEntity);
                 if (await _userRepository.Save())
                 {
-                    return Ok(user);
+                    return Created("/api/v1.0/[controller]" + user.UserID, new User { UserID = user.UserID });
                 }
                 return BadRequest();
             }
