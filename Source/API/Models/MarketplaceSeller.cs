@@ -11,7 +11,5 @@ namespace API.Models
         [ForeignKey("SellerID")]
         public int SellerID { get; set; }
         public User Seller { get; set; }
-
-
     }
 }

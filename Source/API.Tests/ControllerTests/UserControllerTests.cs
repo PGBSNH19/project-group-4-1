@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using API.Configuration;
 using API.Context;
 using API.Controllers;
+using API.Dtos;
 using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Moq.EntityFrameworkCore;
@@ -13,6 +16,15 @@ namespace API.Tests.ControllerTests
 {
     public class UserControllerTests
     {
+        private readonly IMapper _mapper;
+        public UserControllerTests()
+        {
+            var mappedProfile = new MappedProfile();
+            var configuration = new MapperConfiguration(config => config.AddProfile(mappedProfile));
+            IMapper mapper = new Mapper(configuration);
+            _mapper = mapper;
+        }
+
         [Fact]
         public async void GetAll_IfAnyExist_ReturnTrue()
         {
@@ -20,12 +32,12 @@ namespace API.Tests.ControllerTests
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
             var userRepository = new UserRepository(mockContext.Object);
-            var userController = new UserController(userRepository);
+            var userController = new UserController(userRepository, _mapper);
 
             //Act
             var result = await userController.GetUsers();
             var contentResult = result.Result as OkObjectResult;
-            var resultUsers = contentResult.Value as User[];
+            var resultUsers = contentResult.Value as UserDto[];
 
             //Assert
             Assert.True(resultUsers.Length > 0);
@@ -38,12 +50,12 @@ namespace API.Tests.ControllerTests
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
             var userRepository = new UserRepository(mockContext.Object);
-            var userController = new UserController(userRepository);
+            var userController = new UserController(userRepository, _mapper);
 
             //Act
             var result = await userController.GetUser(1);
             var contentResult = result.Result as OkObjectResult;
-            var resultUsers = contentResult.Value as User;
+            var resultUsers = contentResult.Value as UserDto;
 
             //Assert
             Assert.NotNull(resultUsers);
@@ -55,10 +67,10 @@ namespace API.Tests.ControllerTests
             //Arrange
             var userRepository = new Mock<IUserRepository>();
             userRepository.Setup(x => x.Save()).Returns(Task.FromResult(true));
-            var userController = new UserController(userRepository.Object);
+            var userController = new UserController(userRepository.Object, _mapper);
 
             //Act
-            var createdResult = await userController.PostUser(new User()
+            var createdResult = await userController.PostUser(new UserDto
             {
                 UserID = 3,
                 Email = "example3@examplesson.se",
