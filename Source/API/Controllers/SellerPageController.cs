@@ -1,11 +1,11 @@
-﻿using API.Models;
+﻿using API.Dtos;
+using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
 
 namespace API.Controllers
 {
@@ -58,6 +58,11 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
+        /// <summary>
+        /// Posts a user
+        /// </summary>
+        /// 
 
         [HttpPost]
         public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPageDto sellerPage)

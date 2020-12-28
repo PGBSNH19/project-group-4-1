@@ -21,6 +21,10 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets all users
+        /// </summary>
+        /// 
         [HttpGet("GetUsers")]
         public async Task<ActionResult<UserDto[]>> GetUsers()
         {
@@ -40,6 +44,10 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a User by their id.
+        /// </summary>
+        /// 
         [HttpGet("GetUser/{id}")]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {
@@ -58,6 +66,11 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
+        /// <summary>
+        /// Gets a User by their name.
+        /// </summary>
+        /// 
         [HttpGet("GetUserByName/{name}")]
         public async Task<ActionResult<UserDto>> GetUserByName(string name)
         {
@@ -76,6 +89,11 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
+        /// <summary>
+        /// Gets a User by their email.
+        /// </summary>
+        /// 
         [HttpGet("GetUserByEmail/{email}")]
         public async Task<ActionResult<UserDto>> GetUserByEmail(string email)
         {
@@ -94,6 +112,9 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+        /// <summary>
+        /// Post a new User.
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<User>> PostUser([FromBody] UserDto user)
         {
@@ -119,6 +140,9 @@ namespace API.Controllers
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Deletes a specific User.
+        /// </summary>
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
         {
