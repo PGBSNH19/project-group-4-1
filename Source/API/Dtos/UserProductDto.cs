@@ -1,14 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using API.Models;
 
-namespace API.Models
+namespace API.Dtos
 {
-    public class UserProduct
+    public class UserProductDto
     {
-        [ForeignKey("UserID")]
         public int UserID { get; set; }
         public User user { get; set; }
-
-        [ForeignKey("ProductID")]
         public int ProductID { get; set; }
         public Product product { get; set; }
     }

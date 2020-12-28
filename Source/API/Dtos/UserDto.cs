@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using API.Models;
 
-namespace API.Models
+namespace API.Dtos
 {
-    public class User
+    public class UserDto
     {
-        [Key]
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
@@ -13,11 +12,5 @@ namespace API.Models
         public UserType Type { get; set; }
         public ICollection<MarketplaceSeller> MarketplaceSellers { get; set; }
         public ICollection<UserProduct> UserProducts { get; set; }
-    }
-    public enum UserType
-    {
-        Buyer,
-        Seller,
-        Admin
     }
 }

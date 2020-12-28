@@ -6,7 +6,7 @@
 @using Services;
 
 
-<h2 class="text-center font-weight-bold">@sellerpage.Name</h2>
+<h2 class="text-center font-weight-bold">@sellerpage1.Name</h2>
 <div class="d-flex flex-wrap">
 
 
@@ -29,7 +29,7 @@
 </div>
 @code {
 
-    SellerPage sellerpage = new SellerPage();
+    SellerPage sellerpage1 = new SellerPage();
     List<Product> products = new List<Product>();
 
     protected override async Task OnInitializedAsync()

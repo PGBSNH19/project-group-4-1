@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using API.Dtos;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -12,25 +14,28 @@ namespace API.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
-        public ProductController(IProductRepository productRepository)
+        public ProductController(IProductRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("GetProducts")]
-        public async Task<ActionResult<Product[]>> GetProducts()
+        public async Task<ActionResult<ProductDto[]>> GetProducts()
         {
             try
             {
                 var results = await _productRepository.GetProducts();
+                var mappedEntities = _mapper.Map<ProductDto[]>(results);
 
-                if (results.Count == 0)
+                if (mappedEntities.Length == 0)
                 {
                     return NotFound();
                 }
 
-                return Ok(results);
+                return Ok(mappedEntities);
             }
             catch (Exception exception)
             {
@@ -40,18 +45,19 @@ namespace API.Controllers
 
 
         [HttpGet("GetProduct/{id}")]
-        public async Task<ActionResult<Product>> GetProductById(int id)
+        public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
             try
             {
                 var result = await _productRepository.GetProductById(id);
+                var mappedEntity = _mapper.Map<ProductDto>(result);
 
-                if (result == null)
+                if (mappedEntity == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(result);
+                return Ok(mappedEntity);
             }
             catch (Exception e)
             {
@@ -60,11 +66,12 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(Product product)
+        public async Task<ActionResult<Product>> PostProduct(ProductDto product)
         {
             try
             {
-                _productRepository.Add(product);
+                var _mappedEntity = _mapper.Map<Product>(product);
+                _productRepository.Add(_mappedEntity);
                 if (await _productRepository.Save())
                 {
                     return Created("/api/v1.0/[controller]/" + product.ProductID, new Product { ProductID = product.ProductID });
