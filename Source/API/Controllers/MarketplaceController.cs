@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using API.Dtos;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -12,25 +14,28 @@ namespace API.Controllers
     public class MarketplaceController : Controller
     {
         private readonly IMarketplaceRepository _marketplaceRepository;
+        private readonly IMapper _mapper;
 
-        public MarketplaceController(IMarketplaceRepository marketplaceRepository)
+        public MarketplaceController(IMarketplaceRepository marketplaceRepository, IMapper mapper)
         {
             _marketplaceRepository = marketplaceRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("GetMarketplaces")]
-        public async Task<ActionResult<Marketplace[]>> GetMarketplaces()
+        public async Task<ActionResult<MarketplaceDto[]>> GetMarketplaces()
         {
             try
             {
                 var results = await _marketplaceRepository.GetMarketplaces();
+                var mappedEntities = _mapper.Map<MarketplaceDto[]>(results);
 
-                if (results.Count == 0)
+                if (mappedEntities.Length == 0)
                 {
                     return NotFound();
                 }
 
-                return Ok(results);
+                return Ok(mappedEntities);
             }
             catch (Exception exception)
             {
@@ -39,18 +44,19 @@ namespace API.Controllers
         }
 
         [HttpGet("GetMarketplace/{id}")]
-        public async Task<ActionResult<Marketplace>> GetMarketplaceById(int id)
+        public async Task<ActionResult<MarketplaceDto>> GetMarketplaceById(int id)
         {
             try
             {
                 var result = await _marketplaceRepository.GetMarketplaceById(id);
+                var mappedEntity = _mapper.Map<MarketplaceDto>(result);
 
-                if (result == null)
+                if (mappedEntity == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(result);
+                return Ok(mappedEntity);
             }
             catch (Exception e)
             {
@@ -59,11 +65,12 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Marketplace>> PostMarketplace(Marketplace marketplace)
+        public async Task<ActionResult<Marketplace>> PostMarketplace(MarketplaceDto marketplace)
         {
             try
             {
-                _marketplaceRepository.Add(marketplace);
+                var mappedEntity = _mapper.Map<Marketplace>(marketplace);
+                _marketplaceRepository.Add(mappedEntity);
                 if (await _marketplaceRepository.Save())
                 {
                     return Created("/api/v1.0/[controller]/" + marketplace.MarketplaceID, new Marketplace { MarketplaceID = marketplace.MarketplaceID });

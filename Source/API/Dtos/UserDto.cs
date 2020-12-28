@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using API.Models;
 
-namespace API.Models
+namespace API.Dtos
 {
-    public class User
+    public class UserDto
     {
-        [Key]
         public int UserID { get; set; }
         public string Username { get; set; }
         public string Email { get; set; }
