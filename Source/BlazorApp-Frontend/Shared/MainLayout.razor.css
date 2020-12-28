@@ -8,11 +8,6 @@
     flex: 1;
 }
 
-
-.dropdown-item:hover {
-    cursor: pointer;
-}
-
 #hero{
     margin-top: 56px;
 }
@@ -26,9 +21,27 @@
 }
 
 /*****************
-    NavBarLoggedIn
+    NavBar
 ******************/
+.navbar-text{
+    cursor: default;
+}
+.navbar-nav {
+    justify-content: center;
+}
 
+.nav-link {
+    cursor: pointer;
+}
+.nav-link-span {
+    cursor: pointer;
+    margin: 5px;
+    justify-content: center;
+}
+
+.dropdown-menu{
+    justify-content: center;
+}
 .not-logged-in-menu {
     display: none;
 }
