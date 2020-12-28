@@ -1,11 +1,11 @@
-﻿using API.Models;
+﻿using API.Dtos;
+using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
 
 namespace API.Controllers
 {
@@ -41,7 +41,17 @@ namespace API.Controllers
         }
 
         [HttpGet("GetSellerPageByUserID/{id}")]
+        public async Task<ActionResult<SellerPageDto>> GetSellerPageByUserId(int id)
+        {
+            try
+            {
+                var result = await _sellerPageRepository.GetSellerPageByUserID(id);
+                var mappedEntity = _mapper.Map<SellerPageDto>(result);
+                if (mappedEntity == null)
+                {
                     return NotFound();
+                }
+                return Ok(mappedEntity);
             }
             catch (Exception exception)
             {
