@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-namespace API.Models
+using API.Models;
+
+namespace API.Dtos
 {
-    public class Product
+    public class ProductDto
     {
-        [Key]
         public int ProductID { get; set; }
         public string Name { get; set; }
         public ICollection<UserProduct> UserProducts { get; set; }

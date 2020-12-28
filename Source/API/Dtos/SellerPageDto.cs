@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using API.Models;
 
-namespace API.Models
+namespace API.Dtos
 {
-    public class SellerPage
+    public class SellerPageDto
     {
-        [Key]
         public int SellerPageID { get; set; }
         public string Name { get; set; }
         public int SellerUserID { get; set; }

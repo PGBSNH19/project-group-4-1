@@ -7,6 +7,9 @@ using Moq;
 using Moq.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using API.Configuration;
+using API.Dtos;
+using AutoMapper;
 using Xunit;
 
 
@@ -14,6 +17,15 @@ namespace API.Tests.ControllerTests
 {
     public class SellerPageControllerTests
     {
+        private readonly IMapper _mapper;
+        public SellerPageControllerTests()
+        {
+            var mappedProfile = new MappedProfile();
+            var configuration = new MapperConfiguration(config => config.AddProfile(mappedProfile));
+            IMapper mapper = new Mapper(configuration);
+            _mapper = mapper;
+        }
+
         [Fact]
         public async void GetAll_IfAnyExist_ReturnTrue()
         {
@@ -21,11 +33,11 @@ namespace API.Tests.ControllerTests
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
             var sellerPageRepository = new SellerPageRepository(mockContext.Object);
-            var sellerpageController = new SellerPageController(sellerPageRepository);
+            var sellerpageController = new SellerPageController(sellerPageRepository, _mapper);
 
             var result = await sellerpageController.GetSellerPages();
             var contentResult = result.Result as OkObjectResult;
-            var resultSellerPages = contentResult.Value as SellerPage[];
+            var resultSellerPages = contentResult.Value as SellerPageDto[];
 
             Assert.True(resultSellerPages.Length > 0);
         }
@@ -37,11 +49,11 @@ namespace API.Tests.ControllerTests
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
             var sellerPagesRepository = new SellerPageRepository(mockContext.Object);
-            var sellPageController = new SellerPageController(sellerPagesRepository);
+            var sellPageController = new SellerPageController(sellerPagesRepository, _mapper);
 
             var result = await sellPageController.GetSellerPageByUserId(1);
             var contentResult = result.Result as OkObjectResult;
-            var resultSellerPage = contentResult.Value as SellerPage;
+            var resultSellerPage = contentResult.Value as SellerPageDto;
 
             Assert.NotNull(resultSellerPage);
 
@@ -52,9 +64,9 @@ namespace API.Tests.ControllerTests
             var sellerPagesRepository = new Mock<ISellerPageRepository>();
             sellerPagesRepository.Setup(x => x.Save()).Returns(Task.FromResult(true));
 
-            var sellerController = new SellerPageController(sellerPagesRepository.Object);
+            var sellerController = new SellerPageController(sellerPagesRepository.Object, _mapper);
 
-            var createdResult = await sellerController.PostSellerPage(new SellerPage
+            var createdResult = await sellerController.PostSellerPage(new SellerPageDto
             {
                 SellerPageID = 3,
                 Name = "Sebastian",

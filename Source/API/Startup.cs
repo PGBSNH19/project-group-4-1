@@ -1,5 +1,7 @@
+using API.Configuration;
 using API.Context;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -22,6 +24,13 @@ namespace API
             services.AddScoped<IMarketplaceRepository, MarketplaceRepository>();
             services.AddScoped<ISellerPageRepository, SellerPageRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappedProfile());
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
