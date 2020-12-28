@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-
-
+using API.Dtos;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -13,10 +13,12 @@ namespace API.Controllers
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -24,16 +26,17 @@ namespace API.Controllers
         /// </summary>
         /// 
         [HttpGet("GetUsers")]
-        public async Task<ActionResult<User[]>> GetUsers()
+        public async Task<ActionResult<UserDto[]>> GetUsers()
         {
             try
             {
                 var results = await _userRepository.GetUsers();
-                if (results.Count == 0)
+                var mappedEntities = _mapper.Map<UserDto[]>(results);
+                if (mappedEntities.Length == 0)
                 {
                     return NotFound();
                 }
-                return Ok(results);
+                return Ok(mappedEntities);
             }
             catch (Exception exception)
             {
@@ -46,16 +49,17 @@ namespace API.Controllers
         /// </summary>
         /// 
         [HttpGet("GetUser/{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<UserDto>> GetUser(int id)
         {
             try
             {
                 var result = await _userRepository.GetUserById(id);
-                if (result == null)
+                var mappedEntity = _mapper.Map<UserDto>(result);
+                if (mappedEntity == null)
                 {
                     return NotFound();
                 }
-                return Ok(result);
+                return Ok(mappedEntity);
             }
             catch (Exception exception)
             {
@@ -68,16 +72,17 @@ namespace API.Controllers
         /// </summary>
         /// 
         [HttpGet("GetUserByName/{name}")]
-        public async Task<ActionResult<User>> GetUserByName(string name)
+        public async Task<ActionResult<UserDto>> GetUserByName(string name)
         {
             try
             {
                 var result = await _userRepository.GetUserByName(name);
-                if (result == null)
+                var mappedEntity = _mapper.Map<UserDto>(result);
+                if (mappedEntity == null)
                 {
                     return NotFound();
                 }
-                return Ok(result);
+                return Ok(mappedEntity);
             }
             catch (Exception exception)
             {
@@ -90,16 +95,17 @@ namespace API.Controllers
         /// </summary>
         /// 
         [HttpGet("GetUserByEmail/{email}")]
-        public async Task<ActionResult<User>> GetUserByEmail(string email)
+        public async Task<ActionResult<UserDto>> GetUserByEmail(string email)
         {
             try
             {
                 var result = await _userRepository.GetUserByEmail(email);
-                if (result == null)
+                var mappedEntity = _mapper.Map<UserDto>(result);
+                if (mappedEntity == null)
                 {
                     return NotFound();
                 }
-                return Ok(result);
+                return Ok(mappedEntity);
             }
             catch (Exception exception)
             {
@@ -110,15 +116,16 @@ namespace API.Controllers
         /// Post a new User.
         /// </summary>
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser([FromBody] User user)
+        public async Task<ActionResult<User>> PostUser([FromBody] UserDto user)
         {
             user.Type = UserType.Buyer;
             try
             {
-                _userRepository.Add(user);
+                var mappedEntity = _mapper.Map<User>(user);
+                _userRepository.Add(mappedEntity);
                 if (await _userRepository.Save())
                 {
-                    return Ok(user);
+                    return Created("/api/v1.0/[controller]" + user.UserID, new User { UserID = user.UserID });
                 }
                 return BadRequest();
             }

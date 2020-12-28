@@ -8,12 +8,24 @@ using Moq.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using API.Configuration;
+using API.Dtos;
+using AutoMapper;
 using Xunit;
 
 namespace API.Tests.ControllerTests
 {
     public class MarketplaceControllerTests
     {
+        private readonly IMapper _mapper;
+        public MarketplaceControllerTests()
+        {
+            var mappedProfile = new MappedProfile();
+            var configuration = new MapperConfiguration(config => config.AddProfile(mappedProfile));
+            IMapper mapper = new Mapper(configuration);
+            _mapper = mapper;
+        }
+
         [Fact]
         public async void GetAll_IfAnyExist_ReturnTrue()
         {
@@ -21,12 +33,12 @@ namespace API.Tests.ControllerTests
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
             var marketplaceRepository = new MarketplaceRepository(mockContext.Object);
-            var marketplaceController = new MarketplaceController(marketplaceRepository);
+            var marketplaceController = new MarketplaceController(marketplaceRepository, _mapper);
 
             //Act
             var result = await marketplaceController.GetMarketplaces();
             var contentResult = result.Result as OkObjectResult;
-            var resultMarketplaces = contentResult.Value as Marketplace[];
+            var resultMarketplaces = contentResult.Value as MarketplaceDto[];
 
             //Assert
             Assert.True(resultMarketplaces.Length > 0);
@@ -39,12 +51,12 @@ namespace API.Tests.ControllerTests
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
             var marketplaceRepository = new MarketplaceRepository(mockContext.Object);
-            var marketplaceController = new MarketplaceController(marketplaceRepository);
+            var marketplaceController = new MarketplaceController(marketplaceRepository, _mapper);
 
             //Act
             var result = await marketplaceController.GetMarketplaceById(1);
             var contentResult = result.Result as OkObjectResult;
-            var resultMarketplace = contentResult.Value as Marketplace;
+            var resultMarketplace = contentResult.Value as MarketplaceDto;
 
             //Assert
             Assert.NotNull(resultMarketplace);
@@ -56,10 +68,10 @@ namespace API.Tests.ControllerTests
             //Arrange
             var marketplaceRepository = new Mock<IMarketplaceRepository>();
             marketplaceRepository.Setup(x => x.Save()).Returns(Task.FromResult(true));
-            var marketplaceController = new MarketplaceController(marketplaceRepository.Object);
+            var marketplaceController = new MarketplaceController(marketplaceRepository.Object, _mapper);
 
             //Act
-            var createdResult = await marketplaceController.PostMarketplace(new Marketplace
+            var createdResult = await marketplaceController.PostMarketplace(new MarketplaceDto
             {
                 MarketplaceID = 3,
                 Name = "Market3",

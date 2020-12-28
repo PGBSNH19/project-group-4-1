@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using API.Dtos;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -11,28 +13,26 @@ namespace API.Controllers
     public class SellerPageController : Controller
     {
         private readonly ISellerPageRepository _sellerPageRepository;
+        private readonly IMapper _mapper;
 
-        public SellerPageController(ISellerPageRepository sellerPageRepository)
+        public SellerPageController(ISellerPageRepository sellerPageRepository, IMapper mapper)
         {
             _sellerPageRepository = sellerPageRepository;
+            _mapper = mapper;
         }
 
-        /// <summary>
-        /// Gets a seller based on a userID 
-        /// </summary>
-        /// 
-
-        [HttpGet("GetSellerPageByUserID/{id}")]
-        public async Task<ActionResult<SellerPage>> GetSellerPageByUserId(int id)
+        [HttpGet("GetSellerPages")]
+        public async Task<ActionResult<SellerPageDto[]>> GetSellerPages()
         {
             try
             {
-                var result = await _sellerPageRepository.GetSellerPageByUserID(id);
-                if (result == null)
+                var results = await _sellerPageRepository.GetSellerPages();
+                var mappedEntities = _mapper.Map<SellerPageDto[]>(results);
+                if (mappedEntities.Length == 0)
                 {
                     return NotFound();
                 }
-                return Ok(result);
+                return Ok(mappedEntities);
             }
             catch (Exception exception)
             {
@@ -40,22 +40,8 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Gets all Sellers
-        /// </summary>
-        /// 
-
-        [HttpGet("GetSellerPages")]
-        public async Task<ActionResult<SellerPage[]>> GetSellerPages()
-        {
-            try
-            {
-                var results = await _sellerPageRepository.GetSellerPages();
-                if (results.Count == 0)
-                {
+        [HttpGet("GetSellerPageByUserID/{id}")]
                     return NotFound();
-                }
-                return Ok(results);
             }
             catch (Exception exception)
             {
@@ -69,11 +55,12 @@ namespace API.Controllers
         /// 
 
         [HttpPost]
-        public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPage sellerPage)
+        public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPageDto sellerPage)
         {
             try
             {
-                _sellerPageRepository.Add(sellerPage);
+                var _mappedEntity = _mapper.Map<SellerPage>(sellerPage);
+                _sellerPageRepository.Add(_mappedEntity);
                 if (await _sellerPageRepository.Save())
                 {
                     return Created("/api/v1.0/[controller]" + sellerPage.SellerPageID, new SellerPage { SellerPageID = sellerPage.SellerPageID });
@@ -85,11 +72,6 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
-
-        /// <summary>
-        /// Deletes a user
-        /// </summary>
-        ///
 
         [HttpDelete]
         public async Task<ActionResult> DeleteSellerPage(int id)
