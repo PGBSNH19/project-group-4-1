@@ -28,15 +28,12 @@
     </div>
 </div>
 @code {
-    public int SellerUserID = 1;
-    public int SellerPageID { get; set; }
-
 
     SellerPage sellerpage1 = new SellerPage();
     List<Product> products = new List<Product>();
 
     protected override async Task OnInitializedAsync()
     {
-        sellerpage1 = await selllerPageRepository.GetSellerPageByUserId(SellerUserID);
+        sellerpage = await selllerPageRepository.GetSellerPageByUserId(1);
     }
 }
