@@ -3,13 +3,13 @@ using API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Security.Cryptography;
 
 namespace API.Context
 {
     public class NearbyProduceContext : DbContext
     {
         private readonly IConfiguration _configuration;
+
         public NearbyProduceContext() { }
         AzureKeyvaultService _aKVService = new AzureKeyvaultService();
         public NearbyProduceContext(IConfiguration config, DbContextOptions options) : base(options)
@@ -43,14 +43,7 @@ namespace API.Context
                 optionsBuilder.UseSqlServer(azureDbCon);
             }
         }
-        public byte[] GenerateSalt()
-        {
-            byte[] salt = new byte[128 / 8]; using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
-            return salt;
-        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -156,52 +149,6 @@ namespace API.Context
                ProductID = 5,
                Amount = 12
            });
-
-
-            modelBuilder.Entity<User>().ToTable("User");
-            modelBuilder.Entity<User>().HasKey(k => k.UserID);
-            modelBuilder.Entity<User>()
-           .HasData(new
-           {
-               UserID = 1,
-               Username = "JanneBonde07",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Seller,
-               Salt = GenerateSalt()
-           }, new
-           {
-               UserID = 2,
-               Username = "Bengtan555",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Buyer,
-               Salt = GenerateSalt()
-           }, new
-           {
-               UserID = 3,
-               Username = "Henrik123",
-               Password = "KlDioL123!",
-               Email = "test@test.com",
-               Type = UserType.Buyer,
-               Salt = GenerateSalt()
-           }, new
-           {
-               UserID = 4,
-               Username = "BondenLisa1",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Seller,
-               Salt = GenerateSalt()
-           }, new
-           {
-               UserID = 5,
-               Username = "HannesFarm",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Seller,
-               Salt = GenerateSalt()
-           }); ; ;
 
 
             modelBuilder.Entity<SellerPage>().ToTable("SellerPage");

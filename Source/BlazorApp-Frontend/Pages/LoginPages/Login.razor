@@ -1,55 +1,42 @@
 ﻿@page  "/login"
 @using BlazorApp_Frontend.Data
-@using Newtonsoft.Json
 @using BlazorApp_Frontend.Services
-@using System.Security.Claims
 @inject NavigationManager NavigationManager
+@inject UserService UserService
 
 <div class="flex-container-login">
     <div class="login card">
-        @*<EditForm Model="@user" OnValidSubmit="@ValidateUser">*@
+        <EditForm Model="@user" OnValidSubmit="@ValidateUser">
             <div>
                 <h3>Nearby-Produce Login</h3>
             </div>
             <div>
-                <input placeholder="email address or username" class="form-control" />
+                <input placeholder="email" class="form-control" @bind="user.Email"/>
             </div>
             <div>
-                <input type="password" class="form-control" placeholder="password" />
+                <input type="password" class="form-control" placeholder="password" @bind="user.Password"/>
             </div>
             <div>
                 <input type="submit" class="btn btn-outline-primary btn-lg" value="Login" />
                 <br/>
                 <a href="/signup">Sign up</a>
             </div>
-        @*</EditForm>*@
+        </EditForm>
+        @if (correctLogin)
+        {
+            <p>Log in successful</p>
+        }
     </div>
 </div>
 
-@*@code {
+@code {
 
-    private User user;
-    public string LoginMesssage { get; set; }
-    ClaimsPrincipal claimsPrincipal;
-
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private User user = new User();
+    private bool correctLogin;
 
     private async Task<bool> ValidateUser()
     {
-                var returnedUser = await userService.LoginAsync(user);  //Needs to be re-written or altered once services are in place.
-
-        if (returnedUser.Email != null && returnedUser.Username != null)
-        {
-            await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser);  //Needs to be re-written or altered once services are in place.
-
-            NavigationManager.NavigateTo("/"); // Needs to Navigate to profile pages depending on type when that is in place
-        }
-        else
-        {
-            LoginMesssage = "Invalid username or password";
-        }
-
-        return await Task.FromResult(true);
+        return correctLogin = await UserService.LoginAsync(user);
     }
 
-}*@
+}
