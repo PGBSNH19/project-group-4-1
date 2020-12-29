@@ -15,5 +15,7 @@ namespace BlazorApp_Frontend.Data
 
         [JsonProperty("product")]
         public Product product { get; set; }
+        [JsonProperty("amount")]
+        public int Amount { get; set; }
     }
 }
