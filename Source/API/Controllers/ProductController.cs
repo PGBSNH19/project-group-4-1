@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using API.Configuration;
 using API.Dtos;
 using AutoMapper;
 
@@ -33,6 +34,9 @@ namespace API.Controllers
             {
                 var results = await _productRepository.GetProducts();
                 var mappedEntities = _mapper.Map<ProductDto[]>(results);
+
+                var manualMapper = new ManualMapper();
+                manualMapper.ManualMapperRecordingsReverse(results, mappedEntities);
 
                 if (mappedEntities.Length == 0)
                 {
@@ -77,12 +81,14 @@ namespace API.Controllers
         /// </summary>
         /// 
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(ProductDto product)
+        public async Task<ActionResult<Product>> PostProduct([FromForm] ProductDto productDto)
         {
             try
             {
-                var _mappedEntity = _mapper.Map<Product>(product);
-                _productRepository.Add(_mappedEntity);
+                var product = _mapper.Map<Product>(productDto);
+                var manualMapper = new ManualMapper();
+                var manualObj = manualMapper.ManualMapperPictures(product, productDto);
+                _productRepository.Add(manualObj);
                 if (await _productRepository.Save())
                 {
                     return Created("/api/v1.0/[controller]/" + product.ProductID, new Product { ProductID = product.ProductID });
