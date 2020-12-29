@@ -142,7 +142,7 @@ namespace API.Controllers
         /// Puts a User.
         /// </summary>
         [HttpPut("{userId}")]
-        public async Task<ActionResult<User>> PutUser(int userId,[FromBody] UserDto userDto)
+        public async Task<ActionResult<User>> PutUser(int userId, [FromBody] UserDto userDto)
         {
             try
             {

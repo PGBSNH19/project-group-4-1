@@ -14,6 +14,7 @@ namespace API.Models
         public UserType Type { get; set; }
         public ICollection<MarketplaceSeller> MarketplaceSellers { get; set; }
         public ICollection<UserProduct> UserProducts { get; set; }
+        public byte[] Salt { get; set; }
     }
     public enum UserType
     {
