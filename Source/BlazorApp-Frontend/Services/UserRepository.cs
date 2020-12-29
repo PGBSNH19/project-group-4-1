@@ -24,7 +24,7 @@ namespace BlazorApp_Frontend.Services
         }
         public async Task<User> GetUserById(int id)
         {
-            var user = await http.GetJsonAsync<User>($"https://localhost:5002/api/v1.0/User/GetUser/{id}");
+            var user = await http.GetJsonAsync<User>(http.BaseAddress + $"/api/v1.0/User/GetUser/{id}");
 
             return user;
         }

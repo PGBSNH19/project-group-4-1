@@ -142,24 +142,24 @@ img {
     .flex-container {
         flex-direction: column;
     }
-
     .flex-container-signup {
         grid-template-columns: 10% auto 10%;
         grid-template-rows: 5% auto 30%;
+        margin-top: 56px;
+        margin-bottom: 49px;
     }
-
     .flex-container-login {
         grid-template-columns: 10% auto 10%;
         grid-template-rows: 5% auto 5%;
+        margin-top: 56px;
+        margin-bottom: 49px;
     }
-
     .flex-container-profilesettings {
         grid-template-columns: 10% auto 10%;
         grid-template-rows: 5% auto 5%;
         margin-bottom: 73px;
         height: calc(100% - 129px);
     }
-
     .flex-container-reservation {
         grid-template-columns: 1% auto 1%;
         grid-template-rows: 10% auto 5%;
@@ -167,12 +167,24 @@ img {
     }
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
     .flex-container > * {
         margin: 10px;
         flex-basis: calc(50% - 20px);
     }
     .flex-container-reservation {
+        height: calc(100vh - 153px);
+        margin-top: 104px;
+    }
+    .flex-container-profilesettings {
+        height: calc(100vh - 153px);
+        margin-top: 104px;
+    }
+    .flex-container-login {
+        height: calc(100vh - 153px);
+        margin-top: 104px;
+    }
+    .flex-container-signup {
         height: calc(100vh - 153px);
         margin-top: 104px;
     }
