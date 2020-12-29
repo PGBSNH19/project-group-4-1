@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using BlazorApp_Frontend.Data;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Mvc;
-using 
 
 namespace BlazorApp_Frontend.Services
 {
@@ -20,7 +17,20 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<bool> LoginAsync(User user)
         {
-            var dbUser = await _userRepository.GetUserByUsername(user.Username);
+            //var dbUser = await _userRepository.GetUserByUsername(user.Username);
+            byte[] salt = new byte[128 / 8];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+
+            var dbUser = new User
+            {
+                Username = "oskarmorell",
+                Salt = salt,
+                Password = "Hej1234"
+            };
+
             if (dbUser != null)
             {
                 string hashedPasswordDb = Convert.ToBase64String(KeyDerivation.Pbkdf2(

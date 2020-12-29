@@ -1,39 +1,42 @@
 ﻿@page  "/login"
 @using BlazorApp_Frontend.Data
-@using Newtonsoft.Json
 @using BlazorApp_Frontend.Services
-@using System.Security.Claims
 @inject NavigationManager NavigationManager
 @inject LoginService LoginService
 
 <div class="flex-container-login">
     <div class="login card">
-        @*<EditForm Model="@user" OnValidSubmit="@ValidateUser">*@
+        <EditForm Model="@user" class="signup-form" OnValidSubmit="@ValidateUser">
             <div>
                 <h3>Nearby-Produce Login</h3>
             </div>
             <div>
-                <input placeholder="email address or username" class="form-control" />
+                <input placeholder="username" class="form-control" @bind="user.Username"/>
             </div>
             <div>
-                <input type="password" class="form-control" placeholder="password" />
+                <input type="password" class="form-control" placeholder="password" @bind="user.Password"/>
             </div>
             <div>
                 <input type="submit" class="btn btn-outline-primary btn-lg" value="Login" />
                 <br/>
                 <a href="/signup">Sign up</a>
             </div>
-        @*</EditForm>*@
+        </EditForm>
+        @if (correctLogin)
+        {
+            <p>Log in successful</p>
+        }
     </div>
 </div>
 
 @code {
 
-    private User user;
+    private User user = new User();
+    private bool correctLogin;
 
     private async Task<bool> ValidateUser()
     {
-        var correctLogin = await LoginService.LoginAsync(user);
+        return correctLogin = await LoginService.LoginAsync(user);
     }
 
 }
