@@ -11,5 +11,6 @@ namespace API.Models
         [ForeignKey("ProductID")]
         public int ProductID { get; set; }
         public Product product { get; set; }
+        public int Amount { get; set; }
     }
 }

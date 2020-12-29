@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using API.Models;
+﻿using API.Models;
+using System.Collections.Generic;
 
 namespace API.Dtos
 {
@@ -12,5 +12,7 @@ namespace API.Dtos
         public UserType Type { get; set; }
         public ICollection<MarketplaceSeller> MarketplaceSellers { get; set; }
         public ICollection<UserProduct> UserProducts { get; set; }
+
+        public byte[] Salt { get; set; }
     }
 }

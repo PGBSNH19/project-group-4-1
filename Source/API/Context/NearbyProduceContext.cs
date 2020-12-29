@@ -3,6 +3,7 @@ using API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Security.Cryptography;
 
 namespace API.Context
 {
@@ -27,7 +28,7 @@ namespace API.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/Nearbyproduce-ConnectionString/a32f78484d8448178a8e6d1e1aa4a4a5");
+            var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/NearByProduce-Connectionstring2/7acfdcff94724f948b6e03e2addd6301");
             var builder = new ConfigurationBuilder();
             if (string.IsNullOrEmpty(azureDbCon))
             {
@@ -42,7 +43,14 @@ namespace API.Context
                 optionsBuilder.UseSqlServer(azureDbCon);
             }
         }
-
+        public byte[] GenerateSalt()
+        {
+            byte[] salt = new byte[128 / 8]; using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+            return salt;
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -139,11 +147,14 @@ namespace API.Context
            .HasData(new
            {
                UserID = 2,
-               ProductID = 1
+               ProductID = 1,
+               Amount = 10
+
            }, new
            {
                UserID = 3,
-               ProductID = 5
+               ProductID = 5,
+               Amount = 12
            });
 
 
@@ -156,36 +167,41 @@ namespace API.Context
                Username = "JanneBonde07",
                Password = "lösen123",
                Email = "test@test.com",
-               Type = UserType.Seller
+               Type = UserType.Seller,
+               Salt = GenerateSalt()
            }, new
            {
                UserID = 2,
                Username = "Bengtan555",
                Password = "lösen123",
                Email = "test@test.com",
-               Type = UserType.Buyer
+               Type = UserType.Buyer,
+               Salt = GenerateSalt()
            }, new
            {
                UserID = 3,
                Username = "Henrik123",
                Password = "KlDioL123!",
                Email = "test@test.com",
-               Type = UserType.Buyer
+               Type = UserType.Buyer,
+               Salt = GenerateSalt()
            }, new
            {
                UserID = 4,
                Username = "BondenLisa1",
                Password = "lösen123",
                Email = "test@test.com",
-               Type = UserType.Seller
+               Type = UserType.Seller,
+               Salt = GenerateSalt()
            }, new
            {
                UserID = 5,
                Username = "HannesFarm",
                Password = "lösen123",
                Email = "test@test.com",
-               Type = UserType.Seller
-           });
+               Type = UserType.Seller,
+               Salt = GenerateSalt()
+           }); ; ;
 
 
             modelBuilder.Entity<SellerPage>().ToTable("SellerPage");
@@ -196,19 +212,22 @@ namespace API.Context
 
                  SellerPageID = 1,
                  Name = "Jannes Online-Gård",
-                 SellerUserID = 1
+                 SellerUserID = 1,
+                 Description = "Här på Jannes gård säljer vi dem färskaste varorna i hela Västra Götaland!"
+
              }, new
              {
                  SellerPageID = 2,
                  Name = "Lisas Näroldat",
-                 SellerUserID = 4
+                 SellerUserID = 4,
+                 Description = "Lisas Näroldat: Bättre grönsaker finns inte!"
              }, new
              {
                  SellerPageID = 3,
                  Name = "Hannes eko-farm",
-                 SellerUserID = 4
+                 SellerUserID = 4,
+                 Description = "Vi säljer dem bästa varorna i hela Göteborg!"
              });
-
 
             modelBuilder.Entity<SellerPageProduct>().ToTable("SellerPageProduct");
             modelBuilder.Entity<SellerPageProduct>().HasKey(k => new { k.ProductID, k.SellerPageID });

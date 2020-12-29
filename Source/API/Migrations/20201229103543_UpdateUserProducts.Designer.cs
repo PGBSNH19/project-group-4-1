@@ -4,14 +4,16 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(NearbyProduceContext))]
-    partial class NearbyProduceContextModelSnapshot : ModelSnapshot
+    [Migration("20201229103543_UpdateUserProducts")]
+    partial class UpdateUserProducts
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -147,10 +149,6 @@ namespace API.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(150)
-                        .HasColumnType("VARCHAR(150)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -167,21 +165,18 @@ namespace API.Migrations
                         new
                         {
                             SellerPageID = 1,
-                            Description = "Här på Jannes gård säljer vi dem färskaste varorna i hela Västra Götaland!",
                             Name = "Jannes Online-Gård",
                             SellerUserID = 1
                         },
                         new
                         {
                             SellerPageID = 2,
-                            Description = "Lisas Näroldat: Bättre grönsaker finns inte!",
                             Name = "Lisas Näroldat",
                             SellerUserID = 4
                         },
                         new
                         {
                             SellerPageID = 3,
-                            Description = "Vi säljer dem bästa varorna i hela Göteborg!",
                             Name = "Hannes eko-farm",
                             SellerUserID = 4
                         });
@@ -244,9 +239,6 @@ namespace API.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("Salt")
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -263,7 +255,6 @@ namespace API.Migrations
                             UserID = 1,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 187, 146, 218, 185, 61, 152, 74, 200, 150, 34, 131, 60, 237, 76, 43, 233 },
                             Type = 1,
                             Username = "JanneBonde07"
                         },
@@ -272,7 +263,6 @@ namespace API.Migrations
                             UserID = 2,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 170, 210, 179, 143, 114, 144, 6, 176, 133, 81, 138, 238, 137, 248, 170, 81 },
                             Type = 0,
                             Username = "Bengtan555"
                         },
@@ -281,7 +271,6 @@ namespace API.Migrations
                             UserID = 3,
                             Email = "test@test.com",
                             Password = "KlDioL123!",
-                            Salt = new byte[] { 28, 97, 96, 195, 186, 83, 40, 170, 230, 148, 12, 214, 24, 42, 146, 7 },
                             Type = 0,
                             Username = "Henrik123"
                         },
@@ -290,7 +279,6 @@ namespace API.Migrations
                             UserID = 4,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 111, 144, 233, 113, 240, 124, 14, 15, 238, 190, 30, 163, 76, 95, 152, 70 },
                             Type = 1,
                             Username = "BondenLisa1"
                         },
@@ -299,7 +287,6 @@ namespace API.Migrations
                             UserID = 5,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 194, 89, 251, 187, 235, 243, 143, 182, 180, 76, 249, 56, 154, 174, 184, 41 },
                             Type = 1,
                             Username = "HannesFarm"
                         });
