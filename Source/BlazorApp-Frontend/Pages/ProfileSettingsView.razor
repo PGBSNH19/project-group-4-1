@@ -12,7 +12,7 @@
         </div>
         <div class="col-md-5 mb-3">
             <label for="newUserName">Nytt Användarnamn</label>
-            <input type="text" @bind="newUser.Username" class="form-control" id="newUserName" placeholder="Användarnamn">
+            <input type="text" @bind="NewUsername" class="form-control" id="newUserName" placeholder="Användarnamn">
         </div>
 
         <div class="col-md-5 mb-3 ml-2">
@@ -21,7 +21,7 @@
         </div>
         <div class="col-md-5 mb-3">
             <label for="newPassword">Nytt Lösenord</label>
-            <input type="text" @bind="newUser.Password" class="form-control" id="newPassword" placeholder="Nytt lösenord ">
+            <input type="text" @bind="NewPassword" class="form-control" id="newPassword" placeholder="Nytt lösenord ">
         </div>
 
         <div class="col-md-5 mb-3  ml-2">
@@ -30,7 +30,7 @@
         </div>
         <div class="col-md-5 mb-3">
             <label for="newEmail">Ny mailadress</label>
-            <input type="text" @bind="newUser.Email" class="form-control" id="newEmail" placeholder="Mailadress">
+            <input type="text" @bind="NewEmail" class="form-control" id="newEmail" placeholder="Mailadress">
         </div>
     </div>
 
@@ -54,13 +54,21 @@
     protected override async Task OnInitializedAsync()
     {
         currentUser = await userRepo.GetUserById(1);
-        newUser = currentUser;
     }
 
     public async void SaveChanges()
     {
-        if (newUser != null)
-            await userRepo.PutUser(newUser);
+        currentUser = await userRepo.GetUserById(1);
+        newUser = currentUser;
+
+        if (NewUsername != null)
+            newUser.Username = NewUsername;
+        if (NewPassword != null)
+            newUser.Password = NewPassword;
+        if (NewEmail != null)
+            newUser.Email = NewEmail;
+
+        await userRepo.PutUser(newUser);
     }
 
     public async void DeleteAccount()
