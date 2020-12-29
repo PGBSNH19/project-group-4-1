@@ -7,47 +7,64 @@
 <form id="form">
     <div class="form-row">
         <div class="col-md-5 mb-3 ml-2">
-            <label for="validationDefault01">Användarnamn</label>
-            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@user.Username disabled>
+            <label for="currentUserName">Användarnamn</label>
+            <input type="text" class="form-control disabled" id="currentUserName" placeholder="Användarnamn" value=@currentUser.Username disabled>
         </div>
         <div class="col-md-5 mb-3">
-            <label for="validationDefault02">Nytt Användarnamn</label>
-            <input type="text" class="form-control" id="validationDefault02" placeholder="Användarnamn" required>
+            <label for="newUserName">Nytt Användarnamn</label>
+            <input type="text" @bind="newUser.Username" class="form-control" id="newUserName" placeholder="Användarnamn">
         </div>
 
         <div class="col-md-5 mb-3 ml-2">
-            <label for="validationDefault01">Lösenord</label>
-            <input type="text" class="form-control" id="validationDefault01" placeholder="Lösenord" value="*********" disabled>
+            <label for="currentPassword">Lösenord</label>
+            <input type="text" class="form-control" id="currentPassword" placeholder="Lösenord" value="*********" disabled>
         </div>
         <div class="col-md-5 mb-3">
-            <label for="validationDefault02">Nytt Lösenord</label>
-            <input type="text" class="form-control" id="validationDefault02" placeholder="Nytt lösenord " required>
+            <label for="newPassword">Nytt Lösenord</label>
+            <input type="text" @bind="newUser.Password" class="form-control" id="newPassword" placeholder="Nytt lösenord ">
         </div>
 
         <div class="col-md-5 mb-3  ml-2">
-            <label for="validationDefault01">Mailadress</label>
-            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@user.Email disabled>
+            <label for="currentMail">Mailadress</label>
+            <input type="text" class="form-control" id="currentMail" placeholder="mailadress" value=@currentUser.Email disabled>
         </div>
         <div class="col-md-5 mb-3">
-            <label for="validationDefault02">Ny mailadress</label>
-            <input type="text" class="form-control" id="validationDefault02" placeholder="Mailadress" required>
+            <label for="newEmail">Ny mailadress</label>
+            <input type="text" @bind="newUser.Email" class="form-control" id="newEmail" placeholder="Mailadress">
         </div>
     </div>
 
     <div class="pb-2">
 
         <p class="text-center ">
-            <button class="btn btn-outline-success" data-toggle="Spara ändringar">Spara ändringa</button>
-            <button type="button" class="btn btn-outline-danger">Ta bort mitt konto</button>
+            <button class="btn btn-outline-success" @onclick="SaveChanges">Spara ändringar</button>
+            <button type="button" class="btn btn-outline-danger" @onclick="DeleteAccount">Ta bort mitt konto</button>
         </p>
     </div>
 </form>
 
 @code {
-    private User user = new User { };
+    private User currentUser = new User();
+    private User newUser = new User();
+    private string NewUsername { get; set; }
+    private string NewPassword { get; set; }
+    private string NewEmail { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
-        user = await userRepo.GetUserById(1);
+        currentUser = await userRepo.GetUserById(1);
+        newUser = currentUser;
+    }
+
+    public async void SaveChanges()
+    {
+        if (newUser != null)
+            await userRepo.PutUser(newUser);
+    }
+
+    public async void DeleteAccount()
+    {
+        await userRepo.DeleteUser(currentUser);
     }
 }

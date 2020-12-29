@@ -22,6 +22,10 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets all Marketplaces
+        /// </summary>
+        /// 
         [HttpGet("GetMarketplaces")]
         public async Task<ActionResult<MarketplaceDto[]>> GetMarketplaces()
         {
@@ -42,6 +46,11 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {exception.Message}");
             }
         }
+
+        /// <summary>
+        /// Gets a Marketplace based on a id
+        /// </summary>
+        /// 
 
         [HttpGet("GetMarketplace/{id}")]
         public async Task<ActionResult<MarketplaceDto>> GetMarketplaceById(int id)
@@ -64,6 +73,10 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Post a new Marketplaces
+        /// </summary>
+        ///
         [HttpPost]
         public async Task<ActionResult<Marketplace>> PostMarketplace(MarketplaceDto marketplace)
         {
@@ -83,7 +96,10 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
-
+        /// <summary>
+        /// Deletes a  Marketplace based on its id
+        /// </summary>
+        ///
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMarketplace(int id)
         {
