@@ -69,6 +69,8 @@
             newUser.Email = NewEmail;
 
         await userRepo.PutUser(newUser);
+
+        this.StateHasChanged();
     }
 
     public async void DeleteAccount()
