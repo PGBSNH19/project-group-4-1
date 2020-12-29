@@ -17,6 +17,9 @@ namespace BlazorApp_Frontend.Data
         [JsonProperty("password")]
         public string Password { get; set; }
 
+        [JsonProperty("salt")]
+        public byte[] Salt { get; set; }
+
         [JsonProperty("type")]
         public UserType Type { get; set; }
 
