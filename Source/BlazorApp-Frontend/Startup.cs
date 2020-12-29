@@ -33,7 +33,7 @@ namespace BlazorApp_Frontend
             });
             services.AddSingleton<ProductRepository>();
             services.AddSingleton<SellerPageRepository>();
-            services.AddSingleton<LoginService>();
+            services.AddSingleton<UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
