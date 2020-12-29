@@ -139,7 +139,7 @@ namespace API.Controllers
         /// Puts a User.
         /// </summary>
         [HttpPut("{userId}")]
-        public async Task<ActionResult<User>> PutUser(int userId, UserDto userDto)
+        public async Task<ActionResult<User>> PutUser(int userId,[FromBody] UserDto userDto)
         {
             try
             {
@@ -147,9 +147,9 @@ namespace API.Controllers
                 if (oldUser == null)
                     return NotFound($"Can't find any user with id: {userId}");
                 var newUser = _mapper.Map(userDto, oldUser);
-                _userRepository.Add(newUser);
+                _userRepository.Update(newUser);
                 if (await _userRepository.Save())
-                    return NoContent();
+                    return Ok(newUser);
             }
             catch (Exception e)
             {
