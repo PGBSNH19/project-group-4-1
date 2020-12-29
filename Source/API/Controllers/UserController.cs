@@ -112,6 +112,7 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
         /// <summary>
         /// Post a new User.
         /// </summary>
@@ -134,7 +135,28 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
-
+        /// <summary>
+        /// Puts a User.
+        /// </summary>
+        [HttpPut("{userId}")]
+        public async Task<ActionResult<User>> PutUser(int userId,[FromBody] UserDto userDto)
+        {
+            try
+            {
+                var oldUser = await _userRepository.GetUserById(userId);
+                if (oldUser == null)
+                    return NotFound($"Can't find any user with id: {userId}");
+                var newUser = _mapper.Map(userDto, oldUser);
+                _userRepository.Update(newUser);
+                if (await _userRepository.Save())
+                    return Ok(newUser);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
+            }
+            return BadRequest();
+        }
         private void Debugger()
         {
             throw new NotImplementedException();
