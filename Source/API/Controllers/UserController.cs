@@ -1,11 +1,11 @@
-﻿using API.Models;
+﻿using API.Dtos;
+using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
 
 namespace API.Controllers
 {
@@ -55,6 +55,7 @@ namespace API.Controllers
             {
                 var result = await _userRepository.GetUserById(id);
                 var mappedEntity = _mapper.Map<UserDto>(result);
+                mappedEntity.UserID = result.UserID;
                 if (mappedEntity == null)
                 {
                     return NotFound();
@@ -78,6 +79,7 @@ namespace API.Controllers
             {
                 var result = await _userRepository.GetUserByName(name);
                 var mappedEntity = _mapper.Map<UserDto>(result);
+                mappedEntity.UserID = result.UserID;
                 if (mappedEntity == null)
                 {
                     return NotFound();
@@ -101,6 +103,7 @@ namespace API.Controllers
             {
                 var result = await _userRepository.GetUserByEmail(email);
                 var mappedEntity = _mapper.Map<UserDto>(result);
+                mappedEntity.UserID = result.UserID;
                 if (mappedEntity == null)
                 {
                     return NotFound();
