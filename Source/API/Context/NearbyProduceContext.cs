@@ -166,7 +166,7 @@ namespace API.Context
                UserID = 1,
                Username = "JanneBonde07",
                Password = "lösen123",
-               Email = "test@test.com",
+               Email = "test1@test.com",
                Type = UserType.Seller,
                Salt = GenerateSalt()
            }, new
@@ -174,7 +174,7 @@ namespace API.Context
                UserID = 2,
                Username = "Bengtan555",
                Password = "lösen123",
-               Email = "test@test.com",
+               Email = "test2@test.com",
                Type = UserType.Buyer,
                Salt = GenerateSalt()
            }, new
@@ -182,7 +182,7 @@ namespace API.Context
                UserID = 3,
                Username = "Henrik123",
                Password = "KlDioL123!",
-               Email = "test@test.com",
+               Email = "test3@test.com",
                Type = UserType.Buyer,
                Salt = GenerateSalt()
            }, new
@@ -190,7 +190,7 @@ namespace API.Context
                UserID = 4,
                Username = "BondenLisa1",
                Password = "lösen123",
-               Email = "test@test.com",
+               Email = "test4@test.com",
                Type = UserType.Seller,
                Salt = GenerateSalt()
            }, new
@@ -198,7 +198,7 @@ namespace API.Context
                UserID = 5,
                Username = "HannesFarm",
                Password = "lösen123",
-               Email = "test@test.com",
+               Email = "test5@test.com",
                Type = UserType.Seller,
                Salt = GenerateSalt()
            }); ; ;

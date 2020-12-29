@@ -79,7 +79,6 @@ namespace API.Controllers
             {
                 var result = await _userRepository.GetUserByName(name);
                 var mappedEntity = _mapper.Map<UserDto>(result);
-                mappedEntity.UserID = result.UserID;
                 if (mappedEntity == null)
                 {
                     return NotFound();
@@ -103,7 +102,6 @@ namespace API.Controllers
             {
                 var result = await _userRepository.GetUserByEmail(email);
                 var mappedEntity = _mapper.Map<UserDto>(result);
-                mappedEntity.UserID = result.UserID;
                 if (mappedEntity == null)
                 {
                     return NotFound();
