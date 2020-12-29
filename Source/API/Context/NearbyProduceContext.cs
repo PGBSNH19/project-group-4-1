@@ -3,13 +3,13 @@ using API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Security.Cryptography;
 
 namespace API.Context
 {
     public class NearbyProduceContext : DbContext
     {
         private readonly IConfiguration _configuration;
+
         public NearbyProduceContext() { }
         AzureKeyvaultService _aKVService = new AzureKeyvaultService();
         public NearbyProduceContext(IConfiguration config, DbContextOptions options) : base(options)
@@ -43,14 +43,7 @@ namespace API.Context
                 optionsBuilder.UseSqlServer(azureDbCon);
             }
         }
-        public byte[] GenerateSalt()
-        {
-            byte[] salt = new byte[128 / 8]; using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
-            return salt;
-        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 

@@ -55,7 +55,6 @@ namespace API.Controllers
             {
                 var result = await _userRepository.GetUserById(id);
                 var mappedEntity = _mapper.Map<UserDto>(result);
-                mappedEntity.UserID = result.UserID;
                 if (mappedEntity == null)
                 {
                     return NotFound();
