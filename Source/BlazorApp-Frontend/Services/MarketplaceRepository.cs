@@ -32,7 +32,7 @@ namespace BlazorApp_Frontend.Services
         {
             var data = new StringContent(JsonConvert.SerializeObject(marketplaceToCreate), Encoding.UTF8, "application/json");
 
-            var marketplace = await http.PostJsonAsync<Marketplace>(http.BaseAddress + "api/v1.0/Marketplace", data);
+            var marketplace = await http.PostJsonAsync<Marketplace>(http.BaseAddress + "/api/v1.0/Marketplace", data);
             return marketplace;
         }
     }
