@@ -86,9 +86,13 @@ namespace API.Controllers
             try
             {
                 var product = _mapper.Map<Product>(productDto);
-                var manualMapper = new ManualMapper();
-                var manualObj = manualMapper.ManualMapperPictures(product, productDto);
-                _productRepository.Add(manualObj);
+                if (productDto.Picture != null)
+                {
+                    var manualMapper = new ManualMapper();
+                    var manualObj = manualMapper.ManualMapperPictures(product, productDto);
+                    _productRepository.Add(manualObj);
+                }
+                _productRepository.Add(product);
                 if (await _productRepository.Save())
                 {
                     return Created("/api/v1.0/[controller]/" + product.ProductID, new Product { ProductID = product.ProductID });
