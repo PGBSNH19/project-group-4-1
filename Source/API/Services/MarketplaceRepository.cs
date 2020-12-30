@@ -15,13 +15,17 @@ namespace API.Services
 
         public async Task<ICollection<Marketplace>> GetMarketplaces()
         {
-            IQueryable<Marketplace> query = _context.Marketplaces.Include(MarketplaceSeller => MarketplaceSeller.MarketplaceSellers);
+            IQueryable<Marketplace> query = _context.Marketplaces
+                .Include(MarketplaceSeller => MarketplaceSeller.MarketplaceSellers)
+                .ThenInclude(MarketplaceSellers => MarketplaceSellers.Seller);
             return await query.ToArrayAsync();
         }
 
         public async Task<Marketplace> GetMarketplaceById(int id)
         {
-            IQueryable<Marketplace> query = _context.Marketplaces.Where(x => x.MarketplaceID == id).Include(MarketplaceSeller => MarketplaceSeller.MarketplaceSellers);
+            IQueryable<Marketplace> query = _context.Marketplaces.Where(x => x.MarketplaceID == id)
+                .Include(MarketplaceSellers => MarketplaceSellers.MarketplaceSellers)
+                .ThenInclude(MarketplaceSellers => MarketplaceSellers.Seller);
             return await query.FirstOrDefaultAsync();
         }
     }
