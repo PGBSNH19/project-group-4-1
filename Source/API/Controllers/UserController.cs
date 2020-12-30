@@ -2,6 +2,7 @@
 using API.Models;
 using API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 namespace API.Controllers
 {
     [Route("api/v1.0/[controller]")]
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
