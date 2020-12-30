@@ -40,7 +40,7 @@ namespace API.Migrations
 
                     b.HasKey("MarketplaceID");
 
-                    b.ToTable("Marketplace");
+                    b.ToTable("Marketplaces");
 
                     b.HasData(
                         new
@@ -73,7 +73,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerID");
 
-                    b.ToTable("MarketplaceSeller");
+                    b.ToTable("MarketplaceSellers");
 
                     b.HasData(
                         new
@@ -102,6 +102,9 @@ namespace API.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PictureBytes")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int?>("SellerPageID")
                         .HasColumnType("int");
@@ -161,7 +164,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerUserID");
 
-                    b.ToTable("SellerPage");
+                    b.ToTable("SellerPages");
 
                     b.HasData(
                         new
@@ -205,7 +208,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerPageID");
 
-                    b.ToTable("SellerPageProduct");
+                    b.ToTable("SellerPageProducts");
 
                     b.HasData(
                         new
@@ -255,7 +258,7 @@ namespace API.Migrations
 
                     b.HasKey("UserID");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
@@ -263,7 +266,6 @@ namespace API.Migrations
                             UserID = 1,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 187, 146, 218, 185, 61, 152, 74, 200, 150, 34, 131, 60, 237, 76, 43, 233 },
                             Type = 1,
                             Username = "JanneBonde07"
                         },
@@ -272,7 +274,6 @@ namespace API.Migrations
                             UserID = 2,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 170, 210, 179, 143, 114, 144, 6, 176, 133, 81, 138, 238, 137, 248, 170, 81 },
                             Type = 0,
                             Username = "Bengtan555"
                         },
@@ -281,7 +282,6 @@ namespace API.Migrations
                             UserID = 3,
                             Email = "test@test.com",
                             Password = "KlDioL123!",
-                            Salt = new byte[] { 28, 97, 96, 195, 186, 83, 40, 170, 230, 148, 12, 214, 24, 42, 146, 7 },
                             Type = 0,
                             Username = "Henrik123"
                         },
@@ -290,7 +290,6 @@ namespace API.Migrations
                             UserID = 4,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 111, 144, 233, 113, 240, 124, 14, 15, 238, 190, 30, 163, 76, 95, 152, 70 },
                             Type = 1,
                             Username = "BondenLisa1"
                         },
@@ -299,7 +298,6 @@ namespace API.Migrations
                             UserID = 5,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 194, 89, 251, 187, 235, 243, 143, 182, 180, 76, 249, 56, 154, 174, 184, 41 },
                             Type = 1,
                             Username = "HannesFarm"
                         });
@@ -320,7 +318,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("UserProduct");
+                    b.ToTable("UserProducts");
 
                     b.HasData(
                         new

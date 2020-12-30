@@ -36,7 +36,7 @@ namespace API.Controllers
                 var mappedEntities = _mapper.Map<ProductDto[]>(results);
 
                 var manualMapper = new ManualMapper();
-                manualMapper.ManualMapperRecordingsReverse(results, mappedEntities);
+                manualMapper.ManualMapperPicturesReverse(results, mappedEntities);
 
                 if (mappedEntities.Length == 0)
                 {

@@ -17,7 +17,7 @@ namespace API.Configuration
             return product;
         }
 
-        public void ManualMapperRecordingsReverse(ICollection<Product> products, ProductDto[] productDtos)
+        public void ManualMapperPicturesReverse(ICollection<Product> products, ProductDto[] productDtos)
         {
             var productDtoList = new List<ProductDto>();
             for (int i = 0; i < products.Count; i++)

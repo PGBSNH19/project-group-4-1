@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(NearbyProduceContext))]
-    [Migration("20201229103543_UpdateUserProducts")]
-    partial class UpdateUserProducts
+    [Migration("20201230100607_Tryingtofixdb")]
+    partial class Tryingtofixdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,7 +42,7 @@ namespace API.Migrations
 
                     b.HasKey("MarketplaceID");
 
-                    b.ToTable("Marketplace");
+                    b.ToTable("Marketplaces");
 
                     b.HasData(
                         new
@@ -75,7 +75,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerID");
 
-                    b.ToTable("MarketplaceSeller");
+                    b.ToTable("MarketplaceSellers");
 
                     b.HasData(
                         new
@@ -104,6 +104,9 @@ namespace API.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PictureBytes")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int?>("SellerPageID")
                         .HasColumnType("int");
@@ -149,6 +152,10 @@ namespace API.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(150)
+                        .HasColumnType("VARCHAR(150)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -159,24 +166,27 @@ namespace API.Migrations
 
                     b.HasIndex("SellerUserID");
 
-                    b.ToTable("SellerPage");
+                    b.ToTable("SellerPages");
 
                     b.HasData(
                         new
                         {
                             SellerPageID = 1,
+                            Description = "Här på Jannes gård säljer vi dem färskaste varorna i hela Västra Götaland!",
                             Name = "Jannes Online-Gård",
                             SellerUserID = 1
                         },
                         new
                         {
                             SellerPageID = 2,
+                            Description = "Lisas Näroldat: Bättre grönsaker finns inte!",
                             Name = "Lisas Näroldat",
                             SellerUserID = 4
                         },
                         new
                         {
                             SellerPageID = 3,
+                            Description = "Vi säljer dem bästa varorna i hela Göteborg!",
                             Name = "Hannes eko-farm",
                             SellerUserID = 4
                         });
@@ -200,7 +210,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerPageID");
 
-                    b.ToTable("SellerPageProduct");
+                    b.ToTable("SellerPageProducts");
 
                     b.HasData(
                         new
@@ -239,6 +249,9 @@ namespace API.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Salt")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -247,7 +260,7 @@ namespace API.Migrations
 
                     b.HasKey("UserID");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
@@ -307,7 +320,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("UserProduct");
+                    b.ToTable("UserProducts");
 
                     b.HasData(
                         new
