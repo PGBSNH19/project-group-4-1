@@ -8,5 +8,6 @@ namespace API.Dtos
         public User user { get; set; }
         public int ProductID { get; set; }
         public Product product { get; set; }
+        public int Amount { get; set; }
     }
 }

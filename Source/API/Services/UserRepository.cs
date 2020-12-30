@@ -20,7 +20,7 @@ namespace API.Services
 
         public async Task<User> GetUserById(int id)
         {
-            IQueryable<User> query = _context.Users.Where(x => x.UserID == id).Include(UserProduct => UserProduct.UserProducts);
+            IQueryable<User> query = _context.Users.Where(x => x.UserID == id).Include(UserProduct => UserProduct.UserProducts).ThenInclude(Products => Products.product);
             return await query.FirstOrDefaultAsync();
         }
 
