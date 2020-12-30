@@ -27,23 +27,41 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /SellerPage/GetSellerPages
+        ///    
         ///    {
+        ///    
         ///         "SellerPageID": 1,
+        ///         
         ///         "Name": "Example Farm",
+        ///         
         ///         "SellerUserID": 2,
+        ///         
         ///         "Description": "A nice little farm",
+        ///         
         ///         "Seller": [],
+        ///         
         ///         "Products": [],
+        ///         
         ///         "SellerPageProducts": []
+        ///         
         ///    }, 
-        ///      {
+        ///    
+        ///    {
+        ///    
         ///         "SellerPageID": 2,
+        ///         
         ///         "Name": "Example Farm number 2",
+        ///         
         ///         "SellerUserID": 5,
+        ///         
         ///         "Description": "A Cozy little farm",
+        ///         
         ///         "Seller": [],
+        ///         
         ///         "Products": [],
+        ///         
         ///         "SellerPageProducts": []
+        ///         
         ///    }
         ///</remarks>
         [HttpGet("GetSellerPages")]
@@ -71,15 +89,25 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /SellerPage/GetSellerPageByUserId/1
+        ///    
         ///    {
+        ///    
         ///         "SellerPageID": 1,
+        ///         
         ///         "Name": "Example Farm",
+        ///         
         ///         "SellerUserID": 2,
+        ///         
         ///         "Description": "A nice little farm",
+        ///         
         ///         "Seller": [],
+        ///         
         ///         "Products": [],
+        ///         
         ///         "SellerPageProducts": []
+        ///         
         ///    }
+        ///    
         ///</remarks>
         /// <param name="id"></param>
         [HttpGet("GetSellerPageByUserID/{id}")]
@@ -108,14 +136,23 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Post /SellerPage
+        ///    
         ///    {
+        ///    
         ///         "SellerPageID": 1,
+        ///         
         ///         "Name": "Example Farm",
+        ///         
         ///         "SellerUserID": 2,
+        ///         
         ///         "Description": "A nice little farm",
+        ///         
         ///         "Seller": [],
+        ///         
         ///         "Products": [],
+        ///         
         ///         "SellerPageProducts": []
+        ///         
         ///    }
         ///</remarks>
         /// <param name="sellerPage"></param>

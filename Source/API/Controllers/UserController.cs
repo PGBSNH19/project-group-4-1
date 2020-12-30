@@ -28,25 +28,45 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /User/GetUsers
+        ///
         ///    {
+        ///    
         ///         "UserID": 1,
+        ///         
         ///         "Username": "Example",
+        ///         
         ///         "Email": "Example@Example.com",
+        ///         
         ///         "Password": "*********",
+        ///         
         ///         "Salt": "jdakjgo21ok4k==",
+        ///         
         ///         "UserType": 2,
+        ///         
         ///         "MarketplaceSellers": [],
+        ///         
         ///         "UserProducts": []
+        ///         
         ///    },
+        ///    
         ///    {
+        ///    
         ///         "UserID": 2,
+        ///         
         ///         "Username": "Example again",
+        ///         
         ///         "Email": "Example.example@Example.com",
+        ///         
         ///         "Password": "******",
+        ///         
         ///         "Salt": "asdh786"#¤sdasd==,
+        ///         
         ///         "UserType": 1,
+        ///         
         ///         "MarketplaceSellers": [],
+        ///         
         ///         "UserProducts": []
+        ///         
         ///    }
         ///    
         ///
@@ -77,15 +97,25 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /User/GetUser/1
+        ///     
         ///    {
+        ///    
         ///         "UserID": 1,
+        ///         
         ///         "Username": "Example",
+        ///         
         ///         "Email": "Example@Example.com",
+        ///         
         ///         "Password": "*********",
+        ///         
         ///         "Salt": "jdakjgo21ok4k==",
+        ///         
         ///         "UserType": 2,
+        ///         
         ///         "MarketplaceSellers": [],
+        ///         
         ///         "UserProducts": []
+        ///         
         ///    }
         ///
         ///</remarks>
@@ -116,15 +146,25 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /User/GetUserByName/Example
+        ///    
         ///    {
+        ///    
         ///         "UserID": 1,
+        ///         
         ///         "Username": "Example",
+        ///         
         ///         "Email": "Example@Example.com",
+        ///         
         ///         "Password": "*********",
+        ///         
         ///         "Salt": "jdakjgo21ok4k==",
+        ///         
         ///         "UserType": 2,
+        ///         
         ///         "MarketplaceSellers": [],
+        ///         
         ///         "UserProducts": []
+        ///         
         ///    }
         ///
         ///</remarks>
@@ -156,15 +196,25 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /User/GetUserByEmail/Example@Example.com
+        ///    
         ///    {
+        ///    
         ///         "UserID": 1,
+        ///         
         ///         "Username": "Example",
+        ///         
         ///         "Email": "Example@Example.com",
+        ///         
         ///         "Password": "*********",
+        ///         
         ///         "Salt": "jdakjgo21ok4k==",
+        ///         
         ///         "UserType": 2,
+        ///         
         ///         "MarketplaceSellers": [],
+        ///         
         ///         "UserProducts": []
+        ///         
         ///    }
         ///
         ///</remarks>
@@ -196,15 +246,25 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Post /User
+        ///    
         ///    {
+        ///    
         ///         "UserID": 1,
+        ///         
         ///         "Username": "Example",
+        ///         
         ///         "Email": "Example@Example.com",
+        ///         
         ///         "Password": "*********",
+        ///         
         ///         "Salt": "jdakjgo21ok4k==",
+        ///         
         ///         "UserType": 2,
+        ///         
         ///         "MarketplaceSellers": [],
+        ///         
         ///         "UserProducts": []
+        ///         
         ///    }
         ///
         ///</remarks>
@@ -235,14 +295,23 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Put /User/1
+        ///    
         ///    {
+        ///    
         ///         "UserID": 1,
+        ///         
         ///         "Username": "Example",
+        ///         
         ///         "Email": "Example@Example.com",
+        ///         
         ///         "Password": "*********",
+        ///         
         ///         "Salt": "jdakjgo21ok4k==",
+        ///         
         ///         "UserType": 2,
+        ///         
         ///         "MarketplaceSellers": [],
+        ///         
         ///         "UserProducts": []
         ///    }
         ///

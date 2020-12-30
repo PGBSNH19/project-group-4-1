@@ -29,21 +29,36 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /Marketplace/GetMarketplaces
+        ///    
         ///    {
+        ///    
         ///         "MarketplaceID": 1,
+        ///         
         ///         "Name": "Example",
+        ///         
         ///         "Location": "Gothenburg",
+        ///         
         ///         "StartDateTime": 2020:12:31:12:00:00,
+        ///         
         ///         "EndDateTime": 2020:12:31:18:00:00,
+        ///         
         ///         "MarketplaceSellers": []
+        ///         
         ///    },
+        ///    
         ///     {
         ///         "MarketplaceID": 2,
+        ///         
         ///         "Name": "Example  again",
+        ///         
         ///         "Location": "Gothenburg",
+        ///         
         ///         "StartDateTime": 2021:01:31:12:00:00,
+        ///         
         ///         "EndDateTime": 2021:01:31:18:00:00,
+        ///         
         ///         "MarketplaceSellers": []
+        ///         
         ///    }
         ///    
         ///
@@ -76,13 +91,21 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /Marketplace/GetMarketplace/1
+        ///    
         ///    {
+        ///    
         ///         "MarketplaceID": 1,
+        ///         
         ///         "Name": "Example",
+        ///         
         ///         "Location": "Gothenburg",
+        ///         
         ///         "StartDateTime": 2020:12:31:12:00:00,
+        ///         
         ///         "EndDateTime": 2020:12:31:18:00:00,
+        ///         
         ///         "MarketplaceSellers": []
+        ///         
         ///    }
         ///
         ///</remarks>
@@ -117,13 +140,21 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Post /Marketplace/
+        ///    
         ///    {
+        ///    
         ///         "MarketplaceID": 1,
+        ///         
         ///         "Name": "Example",
+        ///         
         ///         "Location": "Gothenburg",
+        ///         
         ///         "StartDateTime": 2020:12:31:12:00:00,
+        ///         
         ///         "EndDateTime": 2020:12:31:18:00:00,
+        ///         
         ///         "MarketplaceSellers": []
+        ///         
         ///    }
         ///
         ///</remarks>

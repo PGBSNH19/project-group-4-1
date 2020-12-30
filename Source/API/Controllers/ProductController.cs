@@ -29,17 +29,29 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /Product/GetProducts
+        ///    
         ///    {
+        ///    
         ///         "ProductID": 1,
+        ///         
         ///         "Name": "Potato",
+        ///         
         ///         "UserProducts": [],
+        ///         
         ///         "SellerPageProducts": []
+        ///         
         ///    },
+        ///    
         ///     {
+        ///     
         ///         "ProductID": 2,
+        ///         
         ///         "Name": "Apple",
+        ///         
         ///         "UserProducts": [],
+        ///         
         ///         "SellerPageProducts": []
+        ///         
         ///    }
         ///
         ///</remarks>
@@ -72,11 +84,17 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Get /Product/GetProduct/1
+        ///    
         ///    {
+        ///    
         ///         "ProductID": 1,
+        ///         
         ///         "Name": "Potato",
+        ///         
         ///         "UserProducts": [],
+        ///         
         ///         "SellerPageProducts": []
+        ///         
         ///    }
         ///</remarks>
         /// <param name="id"></param>
@@ -109,11 +127,17 @@ namespace API.Controllers
         /// Sample Request: 
         ///
         ///    Post /Product
+        ///    
         ///    {
+        ///    
         ///         "ProductID": 1,
+        ///         
         ///         "Name": "Potato",
+        ///         
         ///         "UserProducts": [],
+        ///         
         ///         "SellerPageProducts": []
+        ///         
         ///    }
         ///</remarks>
         /// <param name="product"></param>
