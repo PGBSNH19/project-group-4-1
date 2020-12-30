@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using API.Dtos;
 using API.Models;
 using Microsoft.AspNetCore.Http;
@@ -16,23 +17,23 @@ namespace API.Configuration
             return product;
         }
 
-        public ICollection<ProductDto> ManualMapperPicturesReverse(ICollection<Product> products, ICollection<ProductDto> productDtos)
+        public List<ProductDto> ManualMapperPicturesReverse(ICollection<Product> products, ProductDto[] productDtos)
         {
-            foreach (var product in products)
+            var productDtoList = new List<ProductDto>();
+            for (int i = 0; i < products.Count; i++)
             {
+                var product = products.ElementAt(i);
+                var productDto = productDtos.ElementAt(i);
                 if (product.PictureBytes != null)
                 {
                     var picture = product.PictureBytes;
                     var stream = new MemoryStream(product.PictureBytes);
                     IFormFile file = new FormFile(stream, 0, product.PictureBytes.Length, "name", "fileName");
-                    foreach (var productDto in productDtos)
-                    {
-                        productDto.Picture = file;
-                        productDtos.Add(productDto);
-                    }
+                    productDto.Picture = file;
                 }
+                productDtoList.Add(productDto);
             }
-            return productDtos;
+            return productDtoList;
         }
     }
 }
