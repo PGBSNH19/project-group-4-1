@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(NearbyProduceContext))]
-    [Migration("20201229103543_UpdateUserProducts")]
-    partial class UpdateUserProducts
+    [Migration("20201229133654_SeedMoreData")]
+    partial class SeedMoreData
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -149,6 +149,10 @@ namespace API.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(150)
+                        .HasColumnType("VARCHAR(150)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -165,18 +169,21 @@ namespace API.Migrations
                         new
                         {
                             SellerPageID = 1,
+                            Description = "Här på Jannes gård säljer vi dem färskaste varorna i hela Västra Götaland!",
                             Name = "Jannes Online-Gård",
                             SellerUserID = 1
                         },
                         new
                         {
                             SellerPageID = 2,
+                            Description = "Lisas Näroldat: Bättre grönsaker finns inte!",
                             Name = "Lisas Näroldat",
                             SellerUserID = 4
                         },
                         new
                         {
                             SellerPageID = 3,
+                            Description = "Vi säljer dem bästa varorna i hela Göteborg!",
                             Name = "Hannes eko-farm",
                             SellerUserID = 4
                         });
@@ -239,6 +246,9 @@ namespace API.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Salt")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -253,40 +263,45 @@ namespace API.Migrations
                         new
                         {
                             UserID = 1,
-                            Email = "test@test.com",
+                            Email = "test1@test.com",
                             Password = "lösen123",
+                            Salt = new byte[] { 98, 242, 193, 225, 215, 239, 23, 188, 144, 175, 97, 36, 49, 221, 171, 186 },
                             Type = 1,
                             Username = "JanneBonde07"
                         },
                         new
                         {
                             UserID = 2,
-                            Email = "test@test.com",
+                            Email = "test2@test.com",
                             Password = "lösen123",
+                            Salt = new byte[] { 161, 204, 146, 147, 219, 192, 115, 82, 46, 32, 157, 129, 136, 184, 104, 238 },
                             Type = 0,
                             Username = "Bengtan555"
                         },
                         new
                         {
                             UserID = 3,
-                            Email = "test@test.com",
+                            Email = "test3@test.com",
                             Password = "KlDioL123!",
+                            Salt = new byte[] { 45, 150, 38, 1, 127, 253, 85, 87, 29, 12, 19, 194, 214, 13, 53, 255 },
                             Type = 0,
                             Username = "Henrik123"
                         },
                         new
                         {
                             UserID = 4,
-                            Email = "test@test.com",
+                            Email = "test4@test.com",
                             Password = "lösen123",
+                            Salt = new byte[] { 151, 172, 85, 144, 23, 23, 173, 80, 121, 237, 39, 238, 186, 9, 248, 177 },
                             Type = 1,
                             Username = "BondenLisa1"
                         },
                         new
                         {
                             UserID = 5,
-                            Email = "test@test.com",
+                            Email = "test5@test.com",
                             Password = "lösen123",
+                            Salt = new byte[] { 17, 90, 218, 23, 39, 171, 16, 249, 5, 211, 26, 138, 64, 150, 254, 125 },
                             Type = 1,
                             Username = "HannesFarm"
                         });
