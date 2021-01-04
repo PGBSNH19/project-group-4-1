@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using API.Configuration;
+﻿using API.Configuration;
 using API.Context;
 using API.Controllers;
 using API.Dtos;
@@ -10,6 +8,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Moq.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace API.Tests.ControllerTests
@@ -54,6 +54,41 @@ namespace API.Tests.ControllerTests
 
             //Act
             var result = await userController.GetUser(1);
+            var contentResult = result.Result as OkObjectResult;
+            var resultUsers = contentResult.Value as UserDto;
+
+            //Assert
+            Assert.NotNull(resultUsers);
+        }
+
+        [Fact]
+        public async void GetByName_IfExist_ExpectedNotNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+            var userController = new UserController(userRepository, _mapper);
+
+            //Act
+            var result = await userController.GetUserByName("Example1");
+            var contentResult = result.Result as OkObjectResult;
+            var resultUsers = contentResult.Value as UserDto;
+
+            //Assert
+            Assert.NotNull(resultUsers);
+        }
+        [Fact]
+        public async void GetByEmail_IfExist_ExpectedNotNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+            var userController = new UserController(userRepository, _mapper);
+
+            //Act
+            var result = await userController.GetUserByEmail("example1@examplesson.se");
             var contentResult = result.Result as OkObjectResult;
             var resultUsers = contentResult.Value as UserDto;
 

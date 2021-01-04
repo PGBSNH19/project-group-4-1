@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using API.Context;
+﻿using API.Context;
 using API.Models;
 using API.Services;
 using Moq;
 using Moq.EntityFrameworkCore;
+using System.Collections.Generic;
 using Xunit;
 
 namespace API.Tests.RepositoryTests
@@ -35,6 +35,36 @@ namespace API.Tests.RepositoryTests
 
             //Act
             var result = await userRepository.GetUserById(1);
+
+            //Assert
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async void GetByUsername_IfExist_ExpectedNotNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+
+            //Act
+            var result = await userRepository.GetUserByName("Example1");
+
+            //Assert
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async void GetByEmail_IfExist_ExpectedNotNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+
+            //Act
+            var result = await userRepository.GetUserByEmail("example1@examplesson.se");
 
             //Assert
             Assert.NotNull(result);
