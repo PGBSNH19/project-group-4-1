@@ -10,7 +10,7 @@
         @foreach (var Marketplace in marketplaces)
         {
             <div class="card">
-                <img alt="Rekommenderad marknad" class="card-img-top" src="Images/placeholder.png" />
+                <img alt="Rekommenderad marknad" class="card-img-top" src=@Marketplace.Picturesrc/>
                 <div class="card-body">
                     <h4 class="card-title">@Marketplace.Name</h4>
                     <p class="card-text">@Marketplace.Location</p>
