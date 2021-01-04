@@ -9,6 +9,7 @@ namespace API.Dtos
         public int ProductID { get; set; }
         public string Name { get; set; }
         public IFormFile Picture { get; set; }
+        public string Picturesrc { get; set; }
         public ICollection<UserProduct> UserProducts { get; set; }
         public ICollection<SellerPageProduct> SellerPageProducts { get; set; }
     }

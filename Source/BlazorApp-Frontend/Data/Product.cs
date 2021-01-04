@@ -21,6 +21,9 @@ namespace BlazorApp_Frontend.Data
         [JsonProperty("picture")]
         public IFormFile Picture { get; set; }
 
+        [JsonProperty("picturesrc")]
+        public string Picturesrc { get; set; }
+
         [JsonProperty("userproduct")]
         public ICollection<UserProduct> UserProducts { get; set; }
 

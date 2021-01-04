@@ -19,7 +19,7 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<List<Product>> GetProducts()
         {
-            var products = await http.GetJsonAsync<List<Product>>(http.BaseAddress + "/api/v1.0/Product/GetProducts");
+            var products = await http.GetJsonAsync<List<Product>>("https://localhost:5002/api/v1.0/Product/GetProducts");
             return products;
         }
 

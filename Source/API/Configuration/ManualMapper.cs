@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using API.Dtos;
@@ -26,10 +27,10 @@ namespace API.Configuration
                 var productDto = productDtos.ElementAt(i);
                 if (product.PictureBytes != null)
                 {
-                    var picture = product.PictureBytes;
                     var stream = new MemoryStream(product.PictureBytes);
-                    IFormFile file = new FormFile(stream, 0, product.PictureBytes.Length, "name", "fileName");
-                    productDto.Picture = file;
+                    var fileBytes = stream.ToArray();
+                    var base64 = Convert.ToBase64String(fileBytes);
+                    productDto.Picturesrc = string.Format("data:image/jpg;base64,{0}", base64);
                 }
                 productDtoList.Add(productDto);
             }

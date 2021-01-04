@@ -1,7 +1,9 @@
 ﻿@page "/reservations"
 @using BlazorApp_Frontend.Data
 @using BlazorApp_Frontend.Services
+@using System.IO
 @inject UserRepository userRepo
+@inject ProductRepository productRepo
 
 <div class="flex-container-reservation">
     <div class="reservationtitle">
@@ -27,6 +29,10 @@
                         <td>@userProduct.product.Name</td>
                         <td>@userProduct.Amount</td>
                         <td>@userProduct.product.Price</td>
+                        @if(userProduct.product.Picturesrc != null)
+                        {
+                            <img src="@userProduct.product.Picturesrc"/>
+                        }
                         <td><button type="button" class="btn btn-outline-danger"/></td>
                     </tr>
                 }
@@ -45,6 +51,7 @@
 @code {
 
     User user = new User();
+    List<Product> _products = new List<Product>();
     protected override async Task OnInitializedAsync()
     {
         user = await userRepo.GetUserById(2);
