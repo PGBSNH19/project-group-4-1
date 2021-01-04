@@ -1,7 +1,6 @@
 ﻿@page "/SellerPage"
 @inject HttpClient http;
 @inject SellerPageRepository selllerPageRepository;
-@inject ProductRepository productRepository;
 @using Data;
 @using Services;
 
@@ -10,29 +9,25 @@
 <h3 class ="text-center font-weight-normal">@sellerpage1.Description </h3>
 
 <div class="d-flex flex-wrap">
-
-
-    <div class="card d-flex">
-        <img alt="Standard Seller" class="card-img-top" src="Images/placeholder.png" />
-        <div class="card-body">
-            <h4 class="card-title">Potatis</h4>
-            <p class="card-text">10 kr styck</p>
-            <p class="card-text">100 potatisar i lager</p>
-        </div>
-    </div>
-    <div class="card d-flex">
-        <img alt="Standard Seller" class="card-img-top" src="Images/placeholder.png" />
-        <div class="card-body">
-            <h4 class="card-title">Äpplen</h4>
-            <p class="card-text">5 kr styck</p>
-            <p class="card-text">35 Äpplen i lager</p>
-        </div>
-    </div>
+    @if (sellerpage1.SellerPageProducts != null)
+    {
+        @foreach (var sellerpageProduct in sellerpage1.SellerPageProducts)
+        {
+            <div class="card d-flex">
+                <img src="@sellerpageProduct.product.image"/>
+                <div class="card-body">
+                    <h4 class="card-title">@sellerpageProduct.product.Name</h4>
+                    <p class="card-text">@sellerpageProduct.Price</p>
+                    <p class="card-text">@sellerpageProduct.Stock</p>
+                    <a href="/editsellerpageproduct?id=@sellerpageProduct.ProductID">Edit</a>
+                </div>
+            </div>
+        }
+    }
 </div>
 @code {
 
     SellerPage sellerpage1 = new SellerPage();
-    List<Product> products = new List<Product>();
 
     protected override async Task OnInitializedAsync()
     {

@@ -96,7 +96,7 @@ namespace API.Controllers
             try
             {
                 var product = _mapper.Map<Product>(productDto);
-                if (productDto.Picture != null)
+                if (productDto.Image != null)
                 {
                     var manualMapper = new ManualMapper();
                     var manualObj = manualMapper.ManualMapperPictures(product, productDto);
@@ -114,6 +114,31 @@ namespace API.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
+        }
+
+        /// <summary>
+        /// Puts a Product.
+        /// </summary>
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Product>> PutProduct(int id, [FromBody] ProductDto productDto)
+        {
+            try
+            {
+                var oldProduct = await _productRepository.GetProductById(id);
+                if (oldProduct == null)
+                    return NotFound($"Can't find any product with id: {id}");
+                var newProduct = _mapper.Map(productDto, oldProduct);
+                var manualMapper = new ManualMapper();
+                var manualObj = manualMapper.ManualMapperPictures(newProduct, productDto);
+                _productRepository.Update(manualObj);
+                if (await _productRepository.Save())
+                    return Ok(manualObj);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
+            }
+            return BadRequest();
         }
 
         /// <summary>

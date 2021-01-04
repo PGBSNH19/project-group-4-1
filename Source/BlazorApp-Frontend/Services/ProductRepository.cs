@@ -34,8 +34,17 @@ namespace BlazorApp_Frontend.Services
         {
             var data = new StringContent(JsonConvert.SerializeObject(productToCreate), Encoding.UTF8, "application/json");
 
-            var product = await http.PostJsonAsync<Product>(http.BaseAddress + "/api/v1.0/Product", data);
+            var product = await http.PostJsonAsync<Product>("/api/v1.0/Product", data);
             return product;
+        }
+
+        public async Task<HttpResponseMessage> PutProduct(Product productToChange)
+        {
+
+            var data = new StringContent(JsonConvert.SerializeObject(productToChange), Encoding.UTF8, "application/json");
+            var response = await http.PutAsync($"https://localhost:5002/api/v1.0/User/{productToChange.ProductID}", data);
+
+            return response;
         }
     }
 }
