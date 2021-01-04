@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 
 namespace API.Dtos
@@ -10,6 +11,8 @@ namespace API.Dtos
         public string Name { get; set; }
 
         public string Location { get; set; }
+        public IFormFile Picture { get; set; }
+        public string Picturesrc { get; set; }
 
         public DateTime StartDateTime { get; set; }
 

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using API.Dtos;
+﻿using API.Dtos;
 using API.Models;
-using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
 
 namespace API.Configuration
 {
@@ -28,6 +25,27 @@ namespace API.Configuration
                 productDto.Picturesrc = string.Format("data:image/jpg;base64,{0}", base64);
             }
             return productDto;
+        }
+
+
+        public Marketplace ManualMapperMarketplacePictures(Marketplace marketplace, MarketplaceDto marketplaceDto)
+        {
+            using var memoryStream = new MemoryStream();
+            marketplaceDto.Picture.CopyToAsync(memoryStream);
+            marketplace.PictureBytes = memoryStream.ToArray();
+            return marketplace;
+        }
+
+        public MarketplaceDto ManualMapperMarketplacePicturesReverse(Marketplace marketplace, MarketplaceDto marketplaceDto)
+        {
+            if (marketplace.PictureBytes != null)
+            {
+                var stream = new MemoryStream(marketplace.PictureBytes);
+                var fileBytes = stream.ToArray();
+                var base64 = Convert.ToBase64String(fileBytes);
+                marketplaceDto.Picturesrc = string.Format("data:image/jpg;base64,{0}", base64);
+            }
+            return marketplaceDto;
         }
     }
 }
