@@ -3,6 +3,8 @@ using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Configuration;
 using API.Dtos;
@@ -36,7 +38,12 @@ namespace API.Controllers
                 var mappedEntities = _mapper.Map<ProductDto[]>(results);
 
                 var manualMapper = new ManualMapper();
-                var manualObjects = manualMapper.ManualMapperPicturesReverse(results, mappedEntities);
+                var manualObjects = new List<ProductDto>();
+                for (int i = 0; i < results.Count; i++)
+                {
+                    var manualObject = manualMapper.ManualMapperPicturesReverse(results.ElementAt(i), mappedEntities[i]);
+                    manualObjects.Add(manualObject);
+                }
 
                 if (mappedEntities.Length == 0)
                 {
@@ -63,12 +70,15 @@ namespace API.Controllers
                 var result = await _productRepository.GetProductById(id);
                 var mappedEntity = _mapper.Map<ProductDto>(result);
 
+                var manualMapper = new ManualMapper();
+                var manualObject = manualMapper.ManualMapperPicturesReverse(result, mappedEntity);
+
                 if (mappedEntity == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(mappedEntity);
+                return Ok(manualObject);
             }
             catch (Exception e)
             {

@@ -18,23 +18,16 @@ namespace API.Configuration
             return product;
         }
 
-        public List<ProductDto> ManualMapperPicturesReverse(ICollection<Product> products, ProductDto[] productDtos)
+        public ProductDto ManualMapperPicturesReverse(Product product, ProductDto productDto)
         {
-            var productDtoList = new List<ProductDto>();
-            for (int i = 0; i < products.Count; i++)
+            if (product.PictureBytes != null)
             {
-                var product = products.ElementAt(i);
-                var productDto = productDtos.ElementAt(i);
-                if (product.PictureBytes != null)
-                {
-                    var stream = new MemoryStream(product.PictureBytes);
-                    var fileBytes = stream.ToArray();
-                    var base64 = Convert.ToBase64String(fileBytes);
-                    productDto.Picturesrc = string.Format("data:image/jpg;base64,{0}", base64);
-                }
-                productDtoList.Add(productDto);
+                var stream = new MemoryStream(product.PictureBytes);
+                var fileBytes = stream.ToArray();
+                var base64 = Convert.ToBase64String(fileBytes);
+                productDto.Picturesrc = string.Format("data:image/jpg;base64,{0}", base64);
             }
-            return productDtoList;
+            return productDto;
         }
     }
 }

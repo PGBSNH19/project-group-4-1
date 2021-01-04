@@ -29,10 +29,7 @@
                         <td>@userProduct.product.Name</td>
                         <td>@userProduct.Amount</td>
                         <td>@userProduct.product.Price</td>
-                        @if(userProduct.product.Picturesrc != null)
-                        {
-                            <img src="@userProduct.product.Picturesrc"/>
-                        }
+                        <img src="@_product.Picturesrc"/>
                         <td><button type="button" class="btn btn-outline-danger"/></td>
                     </tr>
                 }
@@ -51,10 +48,11 @@
 @code {
 
     User user = new User();
-    List<Product> _products = new List<Product>();
+    Product _product = new Product();
     protected override async Task OnInitializedAsync()
     {
         user = await userRepo.GetUserById(2);
+        _product = await productRepo.GetProductById(6);
     }
 
 }
