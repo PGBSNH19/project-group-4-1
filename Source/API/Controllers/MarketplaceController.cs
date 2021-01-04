@@ -116,6 +116,33 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
+
+        [HttpPut("{marketplaceId}")]
+        public async Task<ActionResult<Marketplace>> PutMarketplace(int marketplaceId, [FromForm] MarketplaceDto marketplace)
+        {
+            try
+            {
+                var oldMarketplace = await _marketplaceRepository.GetMarketplaceById(marketplaceId);
+                if (oldMarketplace == null)
+                {
+                    return NotFound($"Cant't find any marketplaces with id: {marketplaceId}");
+                }
+
+                var newMarketplace = _mapper.Map(marketplace, oldMarketplace);
+                var manualMapper = new ManualMapper();
+                var manualObject = manualMapper.ManualMapperMarketplacePictures(newMarketplace, marketplace);
+                _marketplaceRepository.Update(manualObject);
+                if (await _marketplaceRepository.Save())
+                {
+                    return Ok(manualObject);
+                }
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
+            }
+            return BadRequest();
+        }
         /// <summary>
         /// Deletes a  Marketplace based on its id
         /// </summary>
