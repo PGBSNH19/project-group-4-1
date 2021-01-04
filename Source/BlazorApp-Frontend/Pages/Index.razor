@@ -9,12 +9,12 @@
     <div id="hero-card" class="card">
         <div class="row no-gutters">
             <div class="col-sm-5">
-                <img src="Images/placeholder.png" class="card-img-top" alt="Populäraste marknaden">
+                <img src=@marketplaces[1].Picturesrc class="card-img-top" alt="Populäraste marknaden">
             </div>
             <div class="col-sm-7">
                 <div class="card-body">
-                    <h4 class="card-title">Namn på populäraste marknaden</h4>
-                    <p class="card-text">Exempel location</p>
+                    <h4 class="card-title">@marketplaces[1].Name</h4>
+                    <p class="card-text">@marketplaces[1].Location</p>
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
         @foreach (var Marketplace in marketplaces)
         {
             <div class="card flex-item">
-                <img alt="Rekommenderad marknad" class="card-img-top" src="Images/placeholder.png" />
+                <img alt="Rekommenderad marknad" class="card-img-top" src=@Marketplace.Picturesrc />
                 <div class="card-body">
                     <h4 class="card-title">@Marketplace.Name</h4>
                     <p class="card-text">@Marketplace.Location</p>

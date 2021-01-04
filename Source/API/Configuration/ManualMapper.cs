@@ -24,5 +24,26 @@ namespace API.Configuration
             }
             return productDto;
         }
+
+
+        public Marketplace ManualMapperMarketplacePictures(Marketplace marketplace, MarketplaceDto marketplaceDto)
+        {
+            using var memoryStream = new MemoryStream();
+            marketplaceDto.Picture.CopyToAsync(memoryStream);
+            marketplace.PictureBytes = memoryStream.ToArray();
+            return marketplace;
+        }
+
+        public MarketplaceDto ManualMapperMarketplacePicturesReverse(Marketplace marketplace, MarketplaceDto marketplaceDto)
+        {
+            if (marketplace.PictureBytes != null)
+            {
+                var stream = new MemoryStream(marketplace.PictureBytes);
+                var fileBytes = stream.ToArray();
+                var base64 = Convert.ToBase64String(fileBytes);
+                marketplaceDto.Picturesrc = string.Format("data:image/jpg;base64,{0}", base64);
+            }
+            return marketplaceDto;
+        }
     }
 }
