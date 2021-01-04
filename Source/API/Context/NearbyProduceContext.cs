@@ -3,13 +3,13 @@ using API.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Security.Cryptography;
 
 namespace API.Context
 {
     public class NearbyProduceContext : DbContext
     {
         private readonly IConfiguration _configuration;
+
         public NearbyProduceContext() { }
         AzureKeyvaultService _aKVService = new AzureKeyvaultService();
         public NearbyProduceContext(IConfiguration config, DbContextOptions options) : base(options)
@@ -28,7 +28,7 @@ namespace API.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/NearByProduce-Connectionstring2/7acfdcff94724f948b6e03e2addd6301");
+            var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/NearByProduce-Connectionstring2/54a471f3aa5040508f39273f3ceb220c");
             var builder = new ConfigurationBuilder();
             if (string.IsNullOrEmpty(azureDbCon))
             {
@@ -43,18 +43,11 @@ namespace API.Context
                 optionsBuilder.UseSqlServer(azureDbCon);
             }
         }
-        public byte[] GenerateSalt()
-        {
-            byte[] salt = new byte[128 / 8]; using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
-            return salt;
-        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
-            modelBuilder.Entity<Marketplace>().ToTable("Marketplace");
+            modelBuilder.Entity<Marketplace>().ToTable("Marketplaces");
             modelBuilder.Entity<Marketplace>().HasKey(x => x.MarketplaceID);
             modelBuilder.Entity<Marketplace>()
             .HasData(new
@@ -74,7 +67,7 @@ namespace API.Context
             });
 
 
-            modelBuilder.Entity<MarketplaceSeller>().ToTable("MarketplaceSeller");
+            modelBuilder.Entity<MarketplaceSeller>().ToTable("MarketplaceSellers");
             modelBuilder.Entity<MarketplaceSeller>().HasKey(hu => new { hu.MarketplaceID, hu.SellerID });
             modelBuilder.Entity<MarketplaceSeller>()
                 .HasOne(m => m.Marketplace)
@@ -128,7 +121,7 @@ namespace API.Context
            });
 
 
-            modelBuilder.Entity<UserProduct>().ToTable("UserProduct");
+            modelBuilder.Entity<UserProduct>().ToTable("UserProducts");
             modelBuilder.Entity<UserProduct>()
                 .HasKey(k => new { k.UserID, k.ProductID });
             modelBuilder.Entity<UserProduct>()
@@ -157,54 +150,48 @@ namespace API.Context
                Amount = 12
            });
 
-
-            modelBuilder.Entity<User>().ToTable("User");
+            modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<User>().HasKey(k => k.UserID);
             modelBuilder.Entity<User>()
-           .HasData(new
-           {
-               UserID = 1,
-               Username = "JanneBonde07",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Seller,
-               Salt = GenerateSalt()
-           }, new
-           {
-               UserID = 2,
-               Username = "Bengtan555",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Buyer,
-               Salt = GenerateSalt()
-           }, new
-           {
-               UserID = 3,
-               Username = "Henrik123",
-               Password = "KlDioL123!",
-               Email = "test@test.com",
-               Type = UserType.Buyer,
-               Salt = GenerateSalt()
-           }, new
-           {
-               UserID = 4,
-               Username = "BondenLisa1",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Seller,
-               Salt = GenerateSalt()
-           }, new
-           {
-               UserID = 5,
-               Username = "HannesFarm",
-               Password = "lösen123",
-               Email = "test@test.com",
-               Type = UserType.Seller,
-               Salt = GenerateSalt()
-           }); ; ;
+                .HasData(new
+                {
+                    UserID = 1,
+                    Username = "JanneBonde07",
+                    Password = "lösen123",
+                    Email = "test@test.com",
+                    Type = UserType.Seller
+                }, new
+                {
+                    UserID = 2,
+                    Username = "Bengtan555",
+                    Password = "lösen123",
+                    Email = "test@test.com",
+                    Type = UserType.Buyer
+                }, new
+                {
+                    UserID = 3,
+                    Username = "Henrik123",
+                    Password = "KlDioL123!",
+                    Email = "test@test.com",
+                    Type = UserType.Buyer
+                }, new
+                {
+                    UserID = 4,
+                    Username = "BondenLisa1",
+                    Password = "lösen123",
+                    Email = "test@test.com",
+                    Type = UserType.Seller
+                }, new
+                {
+                    UserID = 5,
+                    Username = "HannesFarm",
+                    Password = "lösen123",
+                    Email = "test@test.com",
+                    Type = UserType.Seller
+                });
 
 
-            modelBuilder.Entity<SellerPage>().ToTable("SellerPage");
+            modelBuilder.Entity<SellerPage>().ToTable("SellerPages");
             modelBuilder.Entity<SellerPage>().HasKey(k => k.SellerPageID);
             modelBuilder.Entity<SellerPage>()
              .HasData(new
@@ -229,7 +216,7 @@ namespace API.Context
                  Description = "Vi säljer dem bästa varorna i hela Göteborg!"
              });
 
-            modelBuilder.Entity<SellerPageProduct>().ToTable("SellerPageProduct");
+            modelBuilder.Entity<SellerPageProduct>().ToTable("SellerPageProducts");
             modelBuilder.Entity<SellerPageProduct>().HasKey(k => new { k.ProductID, k.SellerPageID });
             modelBuilder.Entity<SellerPageProduct>()
                 .HasOne(s => s.sellerPage)

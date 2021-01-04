@@ -22,6 +22,7 @@ namespace BlazorApp_Frontend.Services
             var users = await http.GetJsonAsync<List<User>>(http.BaseAddress + "/api/v1.0/User/GetUsers");
             return users;
         }
+
         public async Task<User> GetUserById(int id)
         {
             var user = await http.GetJsonAsync<User>(http.BaseAddress + $"/api/v1.0/User/GetUser/{id}");
@@ -37,14 +38,28 @@ namespace BlazorApp_Frontend.Services
             return response;
         }
 
+        public async Task<User> GetUserByUsername(string username)
+        {
+            var user = await http.GetJsonAsync<User>(http.BaseAddress + $"/api/v1.0/User/GetUserByName/{username}");
+
+            return user;
+        }
+
+        public async Task<User> GetUserByEmail(string email)
+        {
+            var user = await http.GetJsonAsync<User>(http.BaseAddress + $"/api/v1.0/User/GetUserByEmail/{email}");
+
+            return user;
+        }
+
         public async Task<HttpResponseMessage> PostUser(User userToCreate)
         {
-
             var data = new StringContent(JsonConvert.SerializeObject(userToCreate), Encoding.UTF8, "application/json");
             var response = await http.PostAsync(http.BaseAddress + $"/api/v1.0/User", data);
 
             return response;
         }
+
         public async Task<HttpResponseMessage> DeleteUser(User userToDelete)
         {
             var response = await http.DeleteAsync(http.BaseAddress + $"/api/v1.0/User/{userToDelete.UserID}");
