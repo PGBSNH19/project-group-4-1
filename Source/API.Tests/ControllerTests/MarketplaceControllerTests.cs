@@ -1,16 +1,16 @@
+using API.Configuration;
 using API.Context;
 using API.Controllers;
+using API.Dtos;
 using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Moq.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.Configuration;
-using API.Dtos;
-using AutoMapper;
 using Xunit;
 
 namespace API.Tests.ControllerTests
@@ -60,6 +60,23 @@ namespace API.Tests.ControllerTests
 
             //Assert
             Assert.NotNull(resultMarketplace);
+        }
+
+        [Fact]
+        public async void GetById_IfNotExist_ExpectedNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
+            var marketplaceRepository = new MarketplaceRepository(mockContext.Object);
+            var marketplaceController = new MarketplaceController(marketplaceRepository, _mapper);
+
+            //Act
+            var result = await marketplaceController.GetMarketplaceById(1);
+            var contentResult = result.Result as NotFoundObjectResult;
+
+            //Assert
+            Assert.Null(result.Value);
         }
 
         [Fact]

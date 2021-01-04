@@ -62,6 +62,23 @@ namespace API.Tests.ControllerTests
         }
 
         [Fact]
+        public async void GetById_IfNotExist_ExpectedNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+            var userController = new UserController(userRepository, _mapper);
+
+            //Act
+            var result = await userController.GetUser(4);
+            var contentResult = result.Result as NotFoundObjectResult;
+
+            //Assert
+            Assert.Null(result.Value);
+        }
+
+        [Fact]
         public async void GetByName_IfExist_ExpectedNotNull()
         {
             //Arrange
@@ -78,6 +95,25 @@ namespace API.Tests.ControllerTests
             //Assert
             Assert.NotNull(resultUsers);
         }
+
+        [Fact]
+        public async void GetByName_IfNotExist_ExpectedNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+            var userController = new UserController(userRepository, _mapper);
+
+            //Act
+            var result = await userController.GetUserByName("Klas");
+            var contentResult = result.Result as NotFoundObjectResult;
+
+            //Assert
+            Assert.Null(result.Value);
+        }
+
+
         [Fact]
         public async void GetByEmail_IfExist_ExpectedNotNull()
         {
@@ -95,6 +131,24 @@ namespace API.Tests.ControllerTests
             //Assert
             Assert.NotNull(resultUsers);
         }
+
+        [Fact]
+        public async void GetByEmail_IfNotExist_ExpectedNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+            var userController = new UserController(userRepository, _mapper);
+
+            //Act
+            var result = await userController.GetUserByEmail("Hejsan");
+            var contentResult = result.Result as NotFoundObjectResult;
+
+            //Assert
+            Assert.Null(result.Value);
+        }
+
 
         [Fact]
         public async void PostUser_IfUserPosted_Expected201StatusCode()

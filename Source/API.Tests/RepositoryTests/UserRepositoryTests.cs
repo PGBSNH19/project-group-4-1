@@ -41,6 +41,21 @@ namespace API.Tests.RepositoryTests
         }
 
         [Fact]
+        public async void GetById_IfNotExist_ExpectedNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+
+            //Act
+            var result = await userRepository.GetUserById(4);
+
+            //Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async void GetByUsername_IfExist_ExpectedNotNull()
         {
             //Arrange
@@ -56,6 +71,21 @@ namespace API.Tests.RepositoryTests
         }
 
         [Fact]
+        public async void GetByUsername_IfNotExist_ExpectedNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+
+            //Act
+            var result = await userRepository.GetUserByName("Klas");
+
+            //Assert
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async void GetByEmail_IfExist_ExpectedNotNull()
         {
             //Arrange
@@ -68,6 +98,21 @@ namespace API.Tests.RepositoryTests
 
             //Assert
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async void GetByEmail_IfNotExist_ExpectedNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(GetUsers());
+            var userRepository = new UserRepository(mockContext.Object);
+
+            //Act
+            var result = await userRepository.GetUserByEmail("WrongMail@exmaple.com");
+
+            //Assert
+            Assert.Null(result);
         }
 
         public List<User> GetUsers()
