@@ -1,46 +1,30 @@
 ﻿using System;
+using System.Net.Http;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using BlazorApp_Frontend.Data;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Newtonsoft.Json;
 
 namespace BlazorApp_Frontend.Services
 {
     public class UserService
     {
         private readonly UserRepository _userRepository;
-
+        public HttpClient http { get; }
         public UserService(UserRepository userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public async Task<bool> LoginAsync(User user)
+        public async Task<UserManagerResponse> LoginUserAsync(LoginRequest request)
         {
-            try
-            {
-                var dbUser = await _userRepository.GetUserByEmail(user.Email);
-                if (dbUser != null)
-                {
-                    string hashedPasswordClient = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                        password: user.Password,
-                        salt: dbUser.Salt,
-                        prf: KeyDerivationPrf.HMACSHA1,
-                        iterationCount: 10000,
-                        numBytesRequested: 256 / 8));
+            var data = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
 
-                    if (dbUser.Password == hashedPasswordClient)
-                    {
-                        return true;
-                    }
-                    return false;
-                }
-                return false;
-            }
-            catch (Exception exception)
-            {
-                throw new Exception($"Database Failure: {exception.Message}");
-            }
+            var response = await http.PostJsonAsync<UserManagerResponse>(http.BaseAddress + "/api/auth/login", data);
+            return response;
         }
 
         public byte[] GenerateSalt()

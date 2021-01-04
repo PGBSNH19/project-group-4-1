@@ -5,22 +5,30 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
 namespace API.Controllers
 {
     [Route("api/v1.0/[controller]")]
-    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
+        private IConfiguration _configuration;
 
         public UserController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+        }
+
+        public UserController(IUserRepository userRepository, IMapper mapper, IConfiguration configuration)
+        {
+            _userRepository = userRepository;
+            _mapper = mapper;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -113,6 +121,27 @@ namespace API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
+        }
+
+        /// <summary>
+        /// Log in User.
+        /// </summary>
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _userRepository.LoginUserAsync(model);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result);
+                }
+
+                return BadRequest(result);
+            }
+
+            return BadRequest("Some properties are not valid");
         }
 
         /// <summary>

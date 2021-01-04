@@ -1,42 +1,111 @@
 ﻿@page  "/login"
 @using BlazorApp_Frontend.Data
 @using BlazorApp_Frontend.Services
+@using BlazorApp_Frontend.Shared
 @inject NavigationManager NavigationManager
 @inject UserService UserService
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider  authenticationStateProvider
+@inject ILocalStorageService storageService
+@*<div class="flex-container-login">
+        <div class="login card">
+            <EditForm Model="@user" OnValidSubmit="@ValidateUser">
+                <div>
+                    <h3>Nearby-Produce Login</h3>
+                </div>
+                <div>
+                    <input placeholder="email" class="form-control" @bind="user.Email"/>
+                </div>
+                <div>
+                    <input type="password" class="form-control" placeholder="password" @bind="user.Password"/>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-outline-primary btn-lg" value="Login" />
+                    <br/>
+                    <a href="/signup">Sign up</a>
+                </div>
+            </EditForm>
+            @if (correctLogin)
+            {
+                <p>Log in successful</p>
+            }
+        </div>
+    </div>*@
+<div class="row">
+    <div class="col-12">
+        <h2>Login to your account</h2>
+        <EditForm Model="loginRequest" OnValidSubmit="LoginUser">
+            <RadzenCard>
+                <AlertMessage Message="@message" MessageType="@messageType" />
 
-<div class="flex-container-login">
-    <div class="login card">
-        <EditForm Model="@user" OnValidSubmit="@ValidateUser">
-            <div>
-                <h3>Nearby-Produce Login</h3>
-            </div>
-            <div>
-                <input placeholder="email" class="form-control" @bind="user.Email"/>
-            </div>
-            <div>
-                <input type="password" class="form-control" placeholder="password" @bind="user.Password"/>
-            </div>
-            <div>
-                <input type="submit" class="btn btn-outline-primary btn-lg" value="Login" />
-                <br/>
-                <a href="/signup">Sign up</a>
-            </div>
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <label>Email</label>
+                <RadzenTextBox @bind-Value="loginRequest.Email"></RadzenTextBox>
+
+                <label>Password</label>
+                <RadzenPassword @bind-Value="loginRequest.Password"></RadzenPassword>
+
+                <hr />
+                <RadzenButton ButtonType="Radzen.ButtonType.Submit" Text="Login"
+                              ButtonStyle="Radzen.ButtonStyle.Primary" class="btn-block mr-2"
+                              Disabled="isBusy" />
+                <RadzenButton ButtonType="Radzen.ButtonType.Button" Text="Register"
+                              ButtonStyle="Radzen.ButtonStyle.Secondary" class="btn-block mr-2"
+                              Disabled="isBusy" Click="GoToRegister" />
+            </RadzenCard>
         </EditForm>
-        @if (correctLogin)
-        {
-            <p>Log in successful</p>
-        }
     </div>
 </div>
 
 @code {
 
-    private User user = new User();
-    private bool correctLogin;
+    //private User user = new User();
+    //private bool correctLogin;
 
-    private async Task<bool> ValidateUser()
+    //private async Task<bool> ValidateUser()
+    //{
+    //    return correctLogin = await UserService.LoginAsync(user);
+    //}
+
+    LoginRequest loginRequest = new LoginRequest();
+    bool isBusy = false;
+    string message = string.Empty;
+    AlertMessageType messageType = AlertMessageType.Success;
+
+    Dictionary<string, string> userInfo = new Dictionary<string, string>();
+
+    public async Task LoginUser()
     {
-        return correctLogin = await UserService.LoginAsync(user);
+        isBusy = true;
+        var result = await UserService.LoginUserAsync(loginRequest);
+        if (result.IsSuccess)
+        {
+            var userInfo = new BlazorApp_Frontend.Data.LocalUserInfo()
+            {
+                AccessToken = result.Message,
+                Email = result.UserInfo["Email"],
+                UserName = result.UserInfo["UserName"],
+                Id = result.UserInfo[System.Security.Claims.ClaimTypes.NameIdentifier],
+            };
+
+            await storageService.SetItemAsync("User", userInfo);
+            await authenticationStateProvider.GetAuthenticationStateAsync();
+
+            navigationManager.NavigateTo("/");
+        }
+        else
+        {
+            message = "Felaktigt användarnamn eller lösenord";
+
+        }
+        isBusy = false;
+    }
+
+    void GoToRegister()
+    {
+        navigationManager.NavigateTo("/register");
     }
 
 }
