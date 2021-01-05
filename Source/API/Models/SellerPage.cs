@@ -9,6 +9,9 @@ namespace API.Models
         public int SellerPageID { get; set; }
         public string Name { get; set; }
         public int SellerUserID { get; set; }
+        [Column(TypeName = "VARCHAR")]
+        [StringLength(150)]
+        public string Description { get; set; }
         public User Seller { get; set; }
         public ICollection<Product> Products { get; set; }
         public ICollection<SellerPageProduct> SellerPageProducts { get; set; }

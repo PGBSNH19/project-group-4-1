@@ -27,6 +27,21 @@ namespace API
             services.AddScoped<IMarketplaceRepository, MarketplaceRepository>();
             services.AddScoped<ISellerPageRepository, SellerPageRepository>();
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "NearbyProduceAPI",
+                    Description = "A simple ASP.NET REST API used for the NearbyProduce site",
+
+                });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappedProfile());

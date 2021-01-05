@@ -1,4 +1,4 @@
-﻿using API.Models;
+using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -65,7 +65,8 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Marketplace>> PostMarketplace(MarketplaceDto marketplace)
+
+        public async Task<ActionResult<Marketplace>> PostMarketplace([FromBody] MarketplaceDto marketplace)
         {
             try
             {
