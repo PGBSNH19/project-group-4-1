@@ -3,9 +3,11 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AKSoftware.WebApi.Client;
 using BlazorApp_Frontend.Data;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.Rest;
 using Newtonsoft.Json;
 
 namespace BlazorApp_Frontend.Services
@@ -14,6 +16,8 @@ namespace BlazorApp_Frontend.Services
     {
         private readonly UserRepository _userRepository;
         public HttpClient http { get; }
+
+        ServiceClient client = new ServiceClient();
         public UserService(UserRepository userRepository)
         {
             _userRepository = userRepository;
@@ -21,10 +25,8 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<UserManagerResponse> LoginUserAsync(LoginRequest request)
         {
-            var data = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
-
-            var response = await http.PostJsonAsync<UserManagerResponse>(http.BaseAddress + "/api/auth/login", data);
-            return response;
+            var response = await client.PostAsync<UserManagerResponse>("https://localhost:5002/api/v1.0/User/login", request);
+            return response.Result;
         }
 
         public byte[] GenerateSalt()

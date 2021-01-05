@@ -51,7 +51,8 @@ namespace API.Services
 
             var claims = new[]
             {
-                new Claim("Email", model.Email),
+                new Claim("Email", user.Email),
+                new Claim("UserName", user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
             };
 
@@ -68,6 +69,7 @@ namespace API.Services
 
             return new UserManagerResponse
             {
+                UserInfo = claims.ToDictionary(c => c.Type, c => c.Value),
                 Message = tokenAsString,
                 IsSuccess = true,
                 ExpireDate = token.ValidTo

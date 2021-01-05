@@ -16,19 +16,11 @@ namespace API.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
-        private IConfiguration _configuration;
 
         public UserController(IUserRepository userRepository, IMapper mapper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
-        }
-
-        public UserController(IUserRepository userRepository, IMapper mapper, IConfiguration configuration)
-        {
-            _userRepository = userRepository;
-            _mapper = mapper;
-            _configuration = configuration;
         }
 
         /// <summary>
