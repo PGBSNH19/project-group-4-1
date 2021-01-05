@@ -16,6 +16,7 @@ namespace API.Services
         public async Task<SellerPage> GetSellerPageByUserID(int id)
         {
             IQueryable<SellerPage> query = _context.SellerPages.Where(x => x.SellerUserID == id)
+            .Include(SellerPage => SellerPage.Products)
             .Include(SellerPageProduct => SellerPageProduct.SellerPageProducts)
             .ThenInclude(SellerPageProduct => SellerPageProduct.product);
 
@@ -24,7 +25,10 @@ namespace API.Services
 
         public async Task<ICollection<SellerPage>> GetSellerPages()
         {
-            IQueryable<SellerPage> query = _context.SellerPages;
+            IQueryable<SellerPage> query = _context.SellerPages.Include(SellerPage => SellerPage.Products)
+                                                                .Include(SellerPageProduct => SellerPageProduct.SellerPageProducts)
+                                                                .ThenInclude(SellerPageProduct => SellerPageProduct.product);
+
             return await query.ToArrayAsync();
         }
     }

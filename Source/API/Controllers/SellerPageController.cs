@@ -1,11 +1,11 @@
-﻿using API.Models;
+﻿using API.Dtos;
+using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
 
 namespace API.Controllers
 {
@@ -20,7 +20,50 @@ namespace API.Controllers
             _sellerPageRepository = sellerPageRepository;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// Gets all users
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /SellerPage/GetSellerPages
+        ///    
+        ///    {
+        ///    
+        ///         "SellerPageID": 1,
+        ///         
+        ///         "Name": "Example Farm",
+        ///         
+        ///         "SellerUserID": 2,
+        ///         
+        ///         "Description": "A nice little farm",
+        ///         
+        ///         "Seller": [],
+        ///         
+        ///         "Products": [],
+        ///         
+        ///         "SellerPageProducts": []
+        ///         
+        ///    }, 
+        ///    
+        ///    {
+        ///    
+        ///         "SellerPageID": 2,
+        ///         
+        ///         "Name": "Example Farm number 2",
+        ///         
+        ///         "SellerUserID": 5,
+        ///         
+        ///         "Description": "A Cozy little farm",
+        ///         
+        ///         "Seller": [],
+        ///         
+        ///         "Products": [],
+        ///         
+        ///         "SellerPageProducts": []
+        ///         
+        ///    }
+        ///</remarks>
         [HttpGet("GetSellerPages")]
         public async Task<ActionResult<SellerPageDto[]>> GetSellerPages()
         {
@@ -39,7 +82,34 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
-
+        /// <summary>
+        /// Gets a SellerPage by a user id
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /SellerPage/GetSellerPageByUserId/1
+        ///    
+        ///    {
+        ///    
+        ///         "SellerPageID": 1,
+        ///         
+        ///         "Name": "Example Farm",
+        ///         
+        ///         "SellerUserID": 2,
+        ///         
+        ///         "Description": "A nice little farm",
+        ///         
+        ///         "Seller": [],
+        ///         
+        ///         "Products": [],
+        ///         
+        ///         "SellerPageProducts": []
+        ///         
+        ///    }
+        ///    
+        ///</remarks>
+        /// <param name="id"></param>
         [HttpGet("GetSellerPageByUserID/{id}")]
         public async Task<ActionResult<SellerPageDto>> GetSellerPageByUserId(int id)
         {
@@ -59,6 +129,34 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Posts a user
+        /// </summary>
+        /// <remarks>
+        /// Sample Request: 
+        ///
+        ///    Post /SellerPage
+        ///    
+        ///    {
+        ///    
+        ///         "SellerPageID": 1,
+        ///         
+        ///         "Name": "Example Farm",
+        ///         
+        ///         "SellerUserID": 2,
+        ///         
+        ///         "Description": "A nice little farm",
+        ///         
+        ///         "Seller": [],
+        ///         
+        ///         "Products": [],
+        ///         
+        ///         "SellerPageProducts": []
+        ///         
+        ///    }
+        ///</remarks>
+        /// <param name="sellerPage"></param>
+
         [HttpPost]
         public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPageDto sellerPage)
         {
@@ -77,6 +175,10 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
+        /// <summary>
+        /// Deletes a users
+        /// </summary>
+        /// <param name="id"></param>
 
         [HttpDelete]
         public async Task<ActionResult> DeleteSellerPage(int id)
