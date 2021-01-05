@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using API.Dtos;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -64,6 +66,7 @@ namespace API.Controllers
         ///         
         ///    }
         ///</remarks>
+
         [HttpGet("GetSellerPages")]
         public async Task<ActionResult<SellerPageDto[]>> GetSellerPages()
         {
@@ -82,6 +85,7 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
         /// <summary>
         /// Gets a SellerPage by a user id
         /// </summary>
@@ -175,10 +179,12 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
+
         /// <summary>
         /// Deletes a users
         /// </summary>
         /// <param name="id"></param>
+
 
         [HttpDelete]
         public async Task<ActionResult> DeleteSellerPage(int id)
