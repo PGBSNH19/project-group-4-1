@@ -1,6 +1,6 @@
 ﻿@page "/markets"
 @inject HttpClient http;
-@inject MarketplaceRepository MarketplaceRepository;
+@inject MarketplaceRepository marketplaceRepository;
 @using Data;
 @using Services;
 
@@ -25,7 +25,7 @@
     List<Marketplace> marketplaces = new List<Marketplace>();
     protected override async Task OnInitializedAsync()
     {
-        marketplaces = await MarketplaceRepository.GetMarketplaces();
+        marketplaces = await marketplaceRepository.GetMarketplaces();
     }
 
 }
