@@ -7,9 +7,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-                <span class="navbar-text col-6 font-weight-bold text-white text-center">Nearby Produce</span>
             <div class="collapse navbar-collapse row" id="collapse_target">
-                <ul class="navbar-nav col-sm-6 text-center">
+                <span class="navbar-text col-6 font-weight-bold text-white text-center">Nearby Produce</span>
+                <ul class="navbar-nav ">
                     <li class="nav-item">
                         <NavLink class="nav-link" href="/">
                             <span class="oi oi-home" aria-hidden="true"></span> Hem
@@ -20,35 +20,23 @@
                             <span class="oi oi-basket" aria-hidden="true"></span> Marknader
                         </NavLink>
                     </li>
-                    <li>
-                        @if (expandSubNav != true)
-                        {
-                            <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
-                                <span class="oi oi-person" aria-hidden="false"></span> Konto <span class="oi oi-chevron-bottom" aria-hidden="true"></span>
-                            </NavLink>
-                        }
-                        else
-                        {
-                            <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
-                                <span class="oi oi-person" aria-hidden="true"></span> Konto <span class="oi oi-chevron-top" aria-hidden="true"></span>
-                            </NavLink>
-                        }
-                        @if (expandSubNav)
-                        {<div class="dropdown-menu show">
-                                <NavLink class="expand-menu" href="/profilesettingsview">
-                                    <span class="text-black-50 nav-link-span">Profil</span>
-                                </NavLink>
-                                <NavLink class="" href="/reservations">
-                                    <span class="text-black-50 nav-link-span">Reservationer</span>
-                                </NavLink>
-                                <NavLink class="" href="/sellerpage">
-                                    <span class="text-black-50 nav-link-span">Säljarsida</span>
-                                </NavLink>
-                                <NavLink class="" href="/">
-                                    <span class="text-black-50 nav-link-span">Logga ut</span>
-                                </NavLink>
+                    <li class="nav-item dropdown">
+                        <NavLink class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                            <span class="oi oi-person" aria-hidden="true"></span> Konto
+                            <div class="dropdown-menu" aria-labelledby="dropdown_target">
+                                <ul class="navbar-nav not-logged-in-menu">
+                                    <NavLink class="dropdown-item" href="/login">Logga in</NavLink>
+                                    <NavLink class="dropdown-item" href="/signup">Registrera</NavLink>
+                                </ul>
+
+                                <ul class="navbar-nav logged-in-menu">
+                                    <NavLink class="dropdown-item" href="/profilesettingsview">Profil</NavLink>
+                                    <NavLink class="dropdown-item" href="/reservations">Reservationer</NavLink>
+                                    <NavLink  class="dropdown-item" href="/Sellerpage">Min Sida</NavLink>
+                                    <NavLink class ="dropdown-item" href="/">Logga ut</NavLink>
+                                </ul>
                             </div>
-                        }
+                        </NavLink>
                     </li>
                 </ul>
             </div>
@@ -63,5 +51,5 @@
     </div>
 </div>
 @code{
-    private bool expandSubNav;
+   
 }

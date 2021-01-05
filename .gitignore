@@ -13,8 +13,6 @@
 .vs/
 Source/API/appsettings.Development.json
 
-#github
-*.github
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

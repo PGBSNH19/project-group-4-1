@@ -1,5 +1,5 @@
-﻿using API.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using API.Models;
 
 namespace API.Dtos
 {
@@ -11,6 +11,5 @@ namespace API.Dtos
         public User Seller { get; set; }
         public ICollection<Product> Products { get; set; }
         public ICollection<SellerPageProduct> SellerPageProducts { get; set; }
-        public string Description { get; set; }
     }
 }
