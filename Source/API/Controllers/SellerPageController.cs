@@ -125,10 +125,14 @@ namespace API.Controllers
             try
             {
                 var result = await _sellerPageRepository.GetSellerPageByUserID(id);
-                var products = result.SellerPageProducts.ElementAt(0).product;
-                var productDto = await GetProductByIdInternal(products.ProductID);
                 var mappedEntity = _mapper.Map<SellerPageDto>(result);
-                mappedEntity.SellerPageProducts.ElementAt(0).product = productDto;
+                for (int i = 0; i < result.SellerPageProducts.Count(); i++)
+                {
+                    var products = result.SellerPageProducts.ElementAt(i).product;
+                    var productDto = await GetProductByIdInternal(products.ProductID);
+                    mappedEntity.SellerPageProducts.ElementAt(i).product = productDto;
+                }
+
                 if (mappedEntity == null)
                 {
                     return NotFound();
