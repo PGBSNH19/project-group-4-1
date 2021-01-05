@@ -19,7 +19,7 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<List<Marketplace>> GetMarketplaces()
         {
-            var marketplaces = await http.GetJsonAsync<List<Marketplace>>("https://localhost:5002/api/v1.0/Marketplace/GetMarketplaces");
+            var marketplaces = await http.GetJsonAsync<List<Marketplace>>(http.BaseAddress + "/api/v1.0/Marketplace/GetMarketplaces");
             return marketplaces;
         }
 

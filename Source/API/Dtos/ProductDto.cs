@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using API.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace API.Dtos
 {

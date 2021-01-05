@@ -42,7 +42,7 @@ namespace BlazorApp_Frontend.Services
         {
 
             var data = new StringContent(JsonConvert.SerializeObject(productToChange), Encoding.UTF8, "application/json");
-            var response = await http.PutAsync($"https://localhost:5002/api/v1.0/User/{productToChange.ProductID}", data);
+            var response = await http.PutAsync($"https://localhost:44317/api/v1.0/Product/{productToChange.ProductID}", data);
 
             return response;
         }
