@@ -7,36 +7,34 @@
 @inject NavigationManager navigationManager
 @inject AuthenticationStateProvider  authenticationStateProvider
 @inject ILocalStorageService storageService
-@*<div class="flex-container-login">
+  
+<div class="flex-container-login">
         <div class="login card">
-            <EditForm Model="@user" OnValidSubmit="@ValidateUser">
+            <EditForm Model="@loginRequest" class="login-form" OnValidSubmit="@LoginUser">
                 <div>
                     <h3>Nearby-Produce Login</h3>
+                    <AlertMessage Message="@message" MessageType="@messageType" />
                 </div>
                 <div>
-                    <input placeholder="email" class="form-control" @bind="user.Email"/>
+                    <input placeholder="e-post" class="form-control" @bind="loginRequest.Email"/>
                 </div>
                 <div>
-                    <input type="password" class="form-control" placeholder="password" @bind="user.Password"/>
+                    <input type="password" class="form-control" placeholder="lösenord" @bind="loginRequest.Password"/>
                 </div>
-                <div>
+                <div class="text-center">
                     <input type="submit" class="btn btn-outline-primary btn-lg" value="Login" />
                     <br/>
                     <a href="/signup">Sign up</a>
                 </div>
             </EditForm>
-            @if (correctLogin)
-            {
-                <p>Log in successful</p>
-            }
         </div>
-    </div>*@
-<div class="row">
-    <div class="col-12">
+    </div>
+@*<div class="row">
+    <div class="col-xl-6">
         <h2>Login to your account</h2>
         <EditForm Model="loginRequest" OnValidSubmit="LoginUser">
             <RadzenCard>
-                <AlertMessage Message="@message" MessageType="@messageType" />
+                
 
                 <DataAnnotationsValidator />
                 <ValidationSummary />
@@ -57,22 +55,14 @@
             </RadzenCard>
         </EditForm>
     </div>
-</div>
+</div>*@
 
 @code {
-
-    //private User user = new User();
-    //private bool correctLogin;
-
-    //private async Task<bool> ValidateUser()
-    //{
-    //    return correctLogin = await UserService.LoginAsync(user);
-    //}
 
     LoginRequest loginRequest = new LoginRequest();
     bool isBusy = false;
     string message = string.Empty;
-    AlertMessageType messageType = AlertMessageType.Success;
+    AlertMessageType messageType = AlertMessageType.Error;
 
     Dictionary<string, string> userInfo = new Dictionary<string, string>();
 
@@ -97,15 +87,15 @@
         }
         else
         {
-            message = "Felaktigt användarnamn eller lösenord";
-
+            message = "Felaktig epost eller lösenord";
         }
+
         isBusy = false;
     }
 
     void GoToRegister()
     {
-        navigationManager.NavigateTo("/register");
+        navigationManager.NavigateTo("/signup");
     }
 
 }

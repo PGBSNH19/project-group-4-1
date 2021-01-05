@@ -11,18 +11,19 @@
         <EditForm Model="@user" class="signup-form" OnValidSubmit="@RegisterUser">
             <div>
                 <h3>Nearby-Produce Register</h3>
+                <AlertMessage Message="@LoginMesssage" MessageType="@messageType" />
             </div>
             <div>
-                <input @bind="user.Username" class="form-control" placeholder="username" />
+                <input @bind="user.Username" class="form-control" placeholder="användarnamn" />
             </div>
             <div>
-                <input @bind="user.Email" class="form-control" placeholder="email address" />
+                <input @bind="user.Email" class="form-control" type="email" placeholder="e-post" />
             </div>
             <div>
-                <input type="password" @bind="user.Password" class="form-control" placeholder="password" />
+                <input type="password" @bind="user.Password" class="form-control" placeholder="lösenord" />
             </div>
             <div>
-                <input type="password" @bind="ConfirmPassword" class="form-control" placeholder="confirm password" />
+                <input type="password" @bind="ConfirmPassword" class="form-control" placeholder="upprepa lösenord" />
             </div>
             <div class="text-center">
                 <input type="submit" class="btn btn-outline-primary btn-lg" value="Sign up" />
@@ -38,6 +39,8 @@
     private User user;
     private string ConfirmPassword;
     public string LoginMesssage { get; set; }
+    AlertMessageType messageType = AlertMessageType.Error;
+
 
     protected override Task OnInitializedAsync()
     {
