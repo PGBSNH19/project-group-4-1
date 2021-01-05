@@ -4,20 +4,24 @@
 @using BlazorApp_Frontend.Services
 @inject NavigationManager NavManager
 @inject ProductRepository ProductRepository;
+@inject NavigationManager NavigationManager;
 
-<EditForm Model="@product" OnValidSubmit="@ValidateProduct">
-    <p>Current count: @id</p>
-    <div>
-        <h3>Edit seller page</h3>
+<div class="flex-container-editsellerpage">
+    <div class="editsellerpage card">
+        <EditForm Model="@product" class="editsellerpage-form" OnValidSubmit="@ValidateProduct">
+            <div>
+                <h3>Edit seller page: </h3>
+            </div>
+            <div>
+                <p>Add file to seller page: </p>
+                <InputFile OnChange="@OnInputFileChange"></InputFile>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-outline-primary btn-lg" value="Upload" />
+            </div>
+        </EditForm>
     </div>
-    <div>
-        <p>Add file to seller page</p>
-        <InputFile OnChange="@OnInputFileChange"></InputFile>
-    </div>
-    <div>
-        <input type="submit" class="btn btn-outline-primary btn-lg" value="Upload" />
-    </div>
-</EditForm>
+</div>
 @code {
 
     int id = 0;
@@ -39,7 +43,7 @@
     {
         var format = "image/png";
 
-        var resizedImageFile = await e.File.RequestImageFileAsync(format, 100, 100);
+        var resizedImageFile = await e.File.RequestImageFileAsync(format, 240, 240);
         var buffer = new byte[resizedImageFile.Size];
         await resizedImageFile.OpenReadStream().ReadAsync(buffer);
         var imageDataUrl = Convert.ToBase64String(buffer);
@@ -54,6 +58,12 @@
             Name = product.Name,
             ProductID = product.ProductID
         };
-        return response = await productRepository.PutProduct(productPut);
+        var response = await ProductRepository.PutProduct(productPut);
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/SellerPage");
+        }
+        return response;
     }
+
 }

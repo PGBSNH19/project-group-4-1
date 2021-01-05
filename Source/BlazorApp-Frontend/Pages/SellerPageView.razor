@@ -4,21 +4,19 @@
 @using Data;
 @using Services;
 
-
 <h2 class="text-center font-weight-bold">@sellerpage1.Name</h2>
-<h3 class ="text-center font-weight-normal">@sellerpage1.Description </h3>
-
-<div class="d-flex flex-wrap">
+<h3 class="text-center font-weight-normal">@sellerpage1.Description </h3>
+<div class="flex-container-sellerpage">
     @if (sellerpage1.SellerPageProducts != null)
     {
         @foreach (var sellerpageProduct in sellerpage1.SellerPageProducts)
         {
-            <div class="card d-flex">
+            <div class="sellerpage card">
                 <img src="@sellerpageProduct.product.Image"/>
                 <div class="card-body">
                     <h4 class="card-title">@sellerpageProduct.product.Name</h4>
-                    <p class="card-text">@sellerpageProduct.Price</p>
-                    <p class="card-text">@sellerpageProduct.Stock</p>
+                    <p class="card-text">Pris: @sellerpageProduct.Price kr</p>
+                    <p class="card-text">Antal: @sellerpageProduct.Stock st</p>
                     <a href="/editsellerpageproduct?id=@sellerpageProduct.ProductID">Edit</a>
                 </div>
             </div>

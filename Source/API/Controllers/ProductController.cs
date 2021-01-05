@@ -191,7 +191,6 @@ namespace API.Controllers
         {
             try
             {
-                Debugger.Launch();
                 var oldProduct = await _productRepository.GetProductById(id);
                 if (oldProduct == null)
                     return NotFound($"Can't find any product with id: {id}");
