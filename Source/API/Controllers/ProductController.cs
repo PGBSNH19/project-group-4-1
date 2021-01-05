@@ -1,5 +1,8 @@
-﻿using API.Models;
+﻿using API.Configuration;
+using API.Dtos;
+using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -7,9 +10,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Configuration;
-using API.Dtos;
-using AutoMapper;
 
 namespace API.Controllers
 {
@@ -121,16 +121,17 @@ namespace API.Controllers
         /// Puts a Product.
         /// </summary>
         [HttpPut("{id}")]
-        public async Task<ActionResult<Product>> PutProduct(int id, [FromBody] ProductDto productDto)
+        public async Task<ActionResult<Product>> PutProduct(int id, [FromBody] ProductPutDto productDto)
         {
             try
             {
+                Debugger.Launch();
                 var oldProduct = await _productRepository.GetProductById(id);
                 if (oldProduct == null)
                     return NotFound($"Can't find any product with id: {id}");
                 var newProduct = _mapper.Map(productDto, oldProduct);
                 var manualMapper = new ManualMapper();
-                var manualObj = manualMapper.ManualMapperPictures(newProduct, productDto);
+                var manualObj = manualMapper.ManualMapperPutPictures(newProduct, productDto);
                 _productRepository.Update(manualObj);
                 if (await _productRepository.Save())
                     return Ok(manualObj);

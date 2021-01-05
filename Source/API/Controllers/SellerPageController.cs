@@ -1,10 +1,12 @@
-﻿using API.Dtos;
+﻿using API.Configuration;
+using API.Dtos;
 using API.Models;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -13,12 +15,14 @@ namespace API.Controllers
     public class SellerPageController : Controller
     {
         private readonly ISellerPageRepository _sellerPageRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public SellerPageController(ISellerPageRepository sellerPageRepository, IMapper mapper)
+        public SellerPageController(ISellerPageRepository sellerPageRepository, IMapper mapper, IProductRepository productRepository)
         {
             _sellerPageRepository = sellerPageRepository;
             _mapper = mapper;
+            _productRepository = productRepository;
         }
 
         [HttpGet("GetSellerPages")]
@@ -28,6 +32,7 @@ namespace API.Controllers
             {
                 var results = await _sellerPageRepository.GetSellerPages();
                 var mappedEntities = _mapper.Map<SellerPageDto[]>(results);
+
                 if (mappedEntities.Length == 0)
                 {
                     return NotFound();
@@ -46,7 +51,10 @@ namespace API.Controllers
             try
             {
                 var result = await _sellerPageRepository.GetSellerPageByUserID(id);
+                var products = result.SellerPageProducts.ElementAt(0).product;
+                var productDto = await GetProductByIdInternal(products.ProductID);
                 var mappedEntity = _mapper.Map<SellerPageDto>(result);
+                mappedEntity.SellerPageProducts.ElementAt(0).product = productDto;
                 if (mappedEntity == null)
                 {
                     return NotFound();
@@ -104,6 +112,28 @@ namespace API.Controllers
             catch (Exception e)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {e.Message}");
+            }
+        }
+        public async Task<ProductDto> GetProductByIdInternal(int id)
+        {
+            try
+            {
+                var result = await _productRepository.GetProductById(id);
+                var mappedEntity = _mapper.Map<ProductDto>(result);
+
+                var manualMapper = new ManualMapper();
+                var manualObject = manualMapper.ManualMapperPicturesReverse(result, mappedEntity);
+
+                if (mappedEntity == null)
+                {
+                    return null;
+                }
+
+                return manualObject;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"{e}");
             }
         }
     }

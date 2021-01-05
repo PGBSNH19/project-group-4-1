@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using API.Models;
 
 namespace API.Dtos
 {
@@ -8,7 +7,7 @@ namespace API.Dtos
         public int ProductID { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
-        public ICollection<UserProduct> UserProducts { get; set; }
-        public ICollection<SellerPageProduct> SellerPageProducts { get; set; }
+        public ICollection<UserProductDto> UserProducts { get; set; }
+        public ICollection<SellerPageProductDto> SellerPageProducts { get; set; }
     }
 }

@@ -48,6 +48,12 @@
 
     private async Task<HttpResponseMessage> ValidateProduct()
     {
-        return response = await ProductRepository.PutProduct(product);
+        var productPut = new ProductPut
+        {
+            Image = product.Image,
+            Name = product.Name,
+            ProductID = product.ProductID
+        };
+        return response = await productRepository.PutProduct(productPut);
     }
 }
