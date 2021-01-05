@@ -230,3 +230,16 @@ img {
     background-color: lightgray;
     opacity: .8;
 }
+.card-img-top {
+    max-height: 300px;
+    object-fit: cover;
+    padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.card-img-header {
+    max-width: 750px;
+    padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
+}
