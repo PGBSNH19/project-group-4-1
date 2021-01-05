@@ -25,7 +25,7 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<SellerPage> GetSellerPageByUserId(int id)
         {
-            var sellerPage = await http.GetJsonAsync<SellerPage>(http.BaseAddress + $"/api/v1.0/SellerPage/GetSellerPageByUserID/{id}");
+            var sellerPage = await http.GetJsonAsync<SellerPage>($"https://localhost:5002/api/v1.0/SellerPage/GetSellerPageByUserID/{id}");
             return sellerPage;
         }
         public async Task<SellerPage> PostSellerPage(SellerPage sellerPageToCreate)

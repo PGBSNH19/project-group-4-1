@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Http;
 
 namespace BlazorApp_Frontend.Data
 {
@@ -18,10 +17,10 @@ namespace BlazorApp_Frontend.Data
         [JsonProperty("stock")]
         public int Stock { get; set; }
 
-        [JsonProperty("picturesrc")]
-        public string image { get; set; }
+        [JsonProperty("image")]
+        public string Image { get; set; }
 
-        [JsonProperty("userproduct")]
+        [JsonProperty("userproducts")]
         public ICollection<UserProduct> UserProducts { get; set; }
 
         [JsonProperty("sellerpageproducts")]

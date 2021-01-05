@@ -97,7 +97,7 @@ namespace API.Controllers
             try
             {
                 var mappedEntity = _mapper.Map<Marketplace>(marketplace);
-                if (marketplace.Picture != null)
+                if (marketplace.Image != null)
                 {
                     var manualMapper = new ManualMapper();
                     var manualObject = manualMapper.ManualMapperMarketplacePictures(mappedEntity, marketplace);

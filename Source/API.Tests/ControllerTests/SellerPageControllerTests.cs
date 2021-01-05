@@ -1,15 +1,15 @@
-﻿using API.Context;
+﻿using API.Configuration;
+using API.Context;
 using API.Controllers;
+using API.Dtos;
 using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Moq.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.Configuration;
-using API.Dtos;
-using AutoMapper;
 using Xunit;
 
 
@@ -33,7 +33,8 @@ namespace API.Tests.ControllerTests
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
             var sellerPageRepository = new SellerPageRepository(mockContext.Object);
-            var sellerpageController = new SellerPageController(sellerPageRepository, _mapper);
+            var productPageRepository = new ProductRepository(mockContext.Object);
+            var sellerpageController = new SellerPageController(sellerPageRepository, _mapper, productPageRepository);
 
             var result = await sellerpageController.GetSellerPages();
             var contentResult = result.Result as OkObjectResult;
@@ -49,7 +50,8 @@ namespace API.Tests.ControllerTests
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
             var sellerPagesRepository = new SellerPageRepository(mockContext.Object);
-            var sellPageController = new SellerPageController(sellerPagesRepository, _mapper);
+            var productPageRepository = new ProductRepository(mockContext.Object);
+            var sellPageController = new SellerPageController(sellerPagesRepository, _mapper, productPageRepository);
 
             var result = await sellPageController.GetSellerPageByUserId(1);
             var contentResult = result.Result as OkObjectResult;
@@ -62,9 +64,10 @@ namespace API.Tests.ControllerTests
         public async void PostSellerPage_IfPostSellerPages_Expected201StatusCode()
         {
             var sellerPagesRepository = new Mock<ISellerPageRepository>();
+            var productRepository = new Mock<IProductRepository>();
             sellerPagesRepository.Setup(x => x.Save()).Returns(Task.FromResult(true));
-
-            var sellerController = new SellerPageController(sellerPagesRepository.Object, _mapper);
+            productRepository.Setup(x => x.Save()).Returns(Task.FromResult(true));
+            var sellerController = new SellerPageController(sellerPagesRepository.Object, _mapper, productRepository.Object);
 
             var createdResult = await sellerController.PostSellerPage(new SellerPageDto
             {

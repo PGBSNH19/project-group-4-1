@@ -43,11 +43,17 @@
         var buffer = new byte[resizedImageFile.Size];
         await resizedImageFile.OpenReadStream().ReadAsync(buffer);
         var imageDataUrl = Convert.ToBase64String(buffer);
-        product.image = imageDataUrl;
+        product.Image = imageDataUrl;
     }
 
     private async Task<HttpResponseMessage> ValidateProduct()
     {
-        return response = await productRepository.PutProduct(product);
+        var productPut = new ProductPut
+        {
+            Image = product.Image,
+            Name = product.Name,
+            ProductID = product.ProductID
+        };
+        return response = await productRepository.PutProduct(productPut);
     }
 }

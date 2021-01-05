@@ -1,13 +1,18 @@
-﻿using System;
-using System.IO;
-using API.Dtos;
+﻿using API.Dtos;
 using API.Models;
+using System;
+using System.IO;
 
 namespace API.Configuration
 {
     public class ManualMapper
     {
         public Product ManualMapperPictures(Product product, ProductDto productDto)
+        {
+            product.PictureBytes = Convert.FromBase64String(productDto.Image);
+            return product;
+        }
+        public Product ManualMapperPutPictures(Product product, ProductPutDto productDto)
         {
             product.PictureBytes = Convert.FromBase64String(productDto.Image);
             return product;
@@ -28,9 +33,7 @@ namespace API.Configuration
 
         public Marketplace ManualMapperMarketplacePictures(Marketplace marketplace, MarketplaceDto marketplaceDto)
         {
-            using var memoryStream = new MemoryStream();
-            marketplaceDto.Picture.CopyToAsync(memoryStream);
-            marketplace.PictureBytes = memoryStream.ToArray();
+            marketplace.PictureBytes = Convert.FromBase64String(marketplaceDto.Image);
             return marketplace;
         }
 
@@ -41,7 +44,7 @@ namespace API.Configuration
                 var stream = new MemoryStream(marketplace.PictureBytes);
                 var fileBytes = stream.ToArray();
                 var base64 = Convert.ToBase64String(fileBytes);
-                marketplaceDto.Picturesrc = string.Format("data:image/jpg;base64,{0}", base64);
+                marketplaceDto.Image = string.Format("data:image/jpg;base64,{0}", base64);
             }
             return marketplaceDto;
         }
