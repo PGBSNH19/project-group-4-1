@@ -3,76 +3,51 @@
 @using Data;
 @using Services;
 
-<div class="flex-container-profilesettings">
-    <div class="card profilesettings">
-        @*<EditForm Model="@user" OnValidSubmit="@ValidateUser">*@
-        <div>
-            <h3>Profil inställningar</h3>
-        </div>
-        <div>
+<div class="display-3 text-center mb-4">Profil inställningar</div>
+<form id="form">
+    <div class="form-row">
+        <div class="col-md-5 mb-3 ml-2">
             <label for="validationDefault01">Användarnamn</label>
-            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@currentUser.Username disabled>
+            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@user.Username disabled>
         </div>
-        <div>
+        <div class="col-md-5 mb-3">
             <label for="validationDefault02">Nytt Användarnamn</label>
-            <input type="text" @bind="NewUsername" class="form-control" id="validationDefault02" placeholder="Användarnamn" required>
+            <input type="text" class="form-control" id="validationDefault02" placeholder="Användarnamn" required>
         </div>
-        <div>
+
+        <div class="col-md-5 mb-3 ml-2">
             <label for="validationDefault01">Lösenord</label>
             <input type="text" class="form-control" id="validationDefault01" placeholder="Lösenord" value="*********" disabled>
         </div>
-        <div>
+        <div class="col-md-5 mb-3">
             <label for="validationDefault02">Nytt Lösenord</label>
-            <input type="text" @bind="NewPassword" class="form-control" id="validationDefault02" placeholder="Nytt lösenord " required>
+            <input type="text" class="form-control" id="validationDefault02" placeholder="Nytt lösenord " required>
         </div>
-        <div>
+
+        <div class="col-md-5 mb-3  ml-2">
             <label for="validationDefault01">Mailadress</label>
-            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@currentUser.Email disabled>
+            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@user.Email disabled>
         </div>
-        <div>
+        <div class="col-md-5 mb-3">
             <label for="validationDefault02">Ny mailadress</label>
-            <input type="text" @bind="NewEmail" class="form-control" id="validationDefault02" placeholder="Mailadress" required>
+            <input type="text" class="form-control" id="validationDefault02" placeholder="Mailadress" required>
         </div>
-        <div class="text-center">
-            <button class="btn btn-outline-success" @onclick="SaveChanges">Spara ändringar</button>
-            <button type="button" class="btn btn-outline-danger" @onclick="DeleteAccount">Ta bort mitt konto</button>
-        </div>
-        @*</EditForm>*@
     </div>
-</div>
+
+    <div class="pb-2">
+
+        <p class="text-center ">
+            <button class="btn btn-outline-success" data-toggle="Spara ändringar">Spara ändringa</button>
+            <button type="button" class="btn btn-outline-danger">Ta bort mitt konto</button>
+        </p>
+    </div>
+</form>
 
 @code {
-    private User currentUser = new User();
-    private User newUser = new User();
-    private string NewUsername { get; set; }
-    private string NewPassword { get; set; }
-    private string NewEmail { get; set; }
-
+    private User user = new User { };
 
     protected override async Task OnInitializedAsync()
     {
-        currentUser = await userRepo.GetUserById(1);
-    }
-
-    public async void SaveChanges()
-    {
-        currentUser = await userRepo.GetUserById(1);
-        newUser = currentUser;
-
-        if (NewUsername != null)
-            newUser.Username = NewUsername;
-        if (NewPassword != null)
-            newUser.Password = NewPassword;
-        if (NewEmail != null)
-            newUser.Email = NewEmail;
-
-        await userRepo.PutUser(newUser);
-
-        this.StateHasChanged();
-    }
-
-    public async void DeleteAccount()
-    {
-        await userRepo.DeleteUser(currentUser);
+        user = await userRepo.GetUserById(1);
     }
 }

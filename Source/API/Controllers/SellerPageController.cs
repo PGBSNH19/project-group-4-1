@@ -1,7 +1,5 @@
-﻿using API.Dtos;
-using API.Models;
+﻿using API.Models;
 using API.Services;
-using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -132,34 +130,6 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
-
-        /// <summary>
-        /// Posts a user
-        /// </summary>
-        /// <remarks>
-        /// Sample Request: 
-        ///
-        ///    Post /SellerPage
-        ///    
-        ///    {
-        ///    
-        ///         "SellerPageID": 1,
-        ///         
-        ///         "Name": "Example Farm",
-        ///         
-        ///         "SellerUserID": 2,
-        ///         
-        ///         "Description": "A nice little farm",
-        ///         
-        ///         "Seller": [],
-        ///         
-        ///         "Products": [],
-        ///         
-        ///         "SellerPageProducts": []
-        ///         
-        ///    }
-        ///</remarks>
-        /// <param name="sellerPage"></param>
 
         [HttpPost]
         public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPageDto sellerPage)

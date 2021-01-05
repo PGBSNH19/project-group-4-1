@@ -12,7 +12,6 @@ namespace API.Dtos
         public User Seller { get; set; }
         public ICollection<Product> Products { get; set; }
         public ICollection<SellerPageProduct> SellerPageProducts { get; set; }
-
         public string Description { get; set; }
 
     }

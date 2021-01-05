@@ -1,7 +1,5 @@
-﻿using API.Dtos;
 using API.Models;
 using API.Services;
-using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -24,47 +22,6 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Gets all Marketplaces
-        /// </summary>
-        /// /// <remarks>
-        /// Sample Request: 
-        ///
-        ///    Get /Marketplace/GetMarketplaces
-        ///    
-        ///    {
-        ///    
-        ///         "MarketplaceID": 1,
-        ///         
-        ///         "Name": "Example",
-        ///         
-        ///         "Location": "Gothenburg",
-        ///         
-        ///         "StartDateTime": 2020:12:31:12:00:00,
-        ///         
-        ///         "EndDateTime": 2020:12:31:18:00:00,
-        ///         
-        ///         "MarketplaceSellers": []
-        ///         
-        ///    },
-        ///    
-        ///     {
-        ///         "MarketplaceID": 2,
-        ///         
-        ///         "Name": "Example  again",
-        ///         
-        ///         "Location": "Gothenburg",
-        ///         
-        ///         "StartDateTime": 2021:01:31:12:00:00,
-        ///         
-        ///         "EndDateTime": 2021:01:31:18:00:00,
-        ///         
-        ///         "MarketplaceSellers": []
-        ///         
-        ///    }
-        ///    
-        ///
-        ///</remarks>
         [HttpGet("GetMarketplaces")]
         public async Task<ActionResult<MarketplaceDto[]>> GetMarketplaces()
         {
@@ -85,34 +42,6 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {exception.Message}");
             }
         }
-
-        /// <summary>
-        /// Gets a Marketplace based on a id
-        /// </summary>
-        /// <remarks>
-        /// Sample Request: 
-        ///
-        ///    Get /Marketplace/GetMarketplace/1
-        ///    
-        ///    {
-        ///    
-        ///         "MarketplaceID": 1,
-        ///         
-        ///         "Name": "Example",
-        ///         
-        ///         "Location": "Gothenburg",
-        ///         
-        ///         "StartDateTime": 2020:12:31:12:00:00,
-        ///         
-        ///         "EndDateTime": 2020:12:31:18:00:00,
-        ///         
-        ///         "MarketplaceSellers": []
-        ///         
-        ///    }
-        ///
-        ///</remarks>
-        /// <param name="id"></param>
-
 
         [HttpGet("GetMarketplace/{id}")]
         public async Task<ActionResult<MarketplaceDto>> GetMarketplaceById(int id)
@@ -135,32 +64,6 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Creates a new Marketplaces
-        /// </summary>
-        /// <remarks>
-        /// Sample Request: 
-        ///
-        ///    Post /Marketplace/
-        ///    
-        ///    {
-        ///    
-        ///         "MarketplaceID": 1,
-        ///         
-        ///         "Name": "Example",
-        ///         
-        ///         "Location": "Gothenburg",
-        ///         
-        ///         "StartDateTime": 2020:12:31:12:00:00,
-        ///         
-        ///         "EndDateTime": 2020:12:31:18:00:00,
-        ///         
-        ///         "MarketplaceSellers": []
-        ///         
-        ///    }
-        ///
-        ///</remarks>
-        ///<param name="marketplace"></param>
         [HttpPost]
 
         public async Task<ActionResult<Marketplace>> PostMarketplace([FromBody] MarketplaceDto marketplace)
@@ -181,11 +84,7 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
-        /// <summary>
-        /// Deletes a  Marketplace based on its id
-        /// </summary>
-        /// <remarks>      
-        ///<param name="id"></param>
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMarketplace(int id)
         {

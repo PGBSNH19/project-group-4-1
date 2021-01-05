@@ -3,35 +3,60 @@
 @using BlazorApp_Frontend.Services
 @inject UserRepository userRepo
 @inject NavigationManager NavigationManager
-@inject UserService UserService
 
 
-<div class="flex-container-signup">
-    <div class="signup card">
-        <EditForm Model="@user" class="signup-form" OnValidSubmit="@RegisterUser">
-            <div>
-                <h3>Nearby-Produce Register</h3>
+<center>
+    <div class="col-8 card">
+        <div class="col-12 row">
+            <p>&nbsp;</p>
+        </div>
+        <div class="col-12 row">
+            <div class="col-6" style="border-left:thick">
+                <EditForm Model="@user" OnValidSubmit="@RegisterUser">
+                    <div>
+                        <br /><br /><br /><br /><br />
+                    </div>
+                    <div>
+                        <h3 style="font-weight:bold; color:purple">Nearby-Produce Register</h3>
+                    </div>
+                    <div>
+                        <br />
+                    </div>
+                    <div class="col-12 row">
+                        <input class="form-control col-12" @bind="user.Username" placeholder="username" />
+                    </div>
+                    <br />
+                    <div class="col-12 row">
+                        <input class="form-control col-12" @bind="user.Email" placeholder="email address" />
+                    </div>
+                    <br />
+                    <div class="col-12 row">
+                        <input type="password" class="form-control col-12" @bind="user.Password" placeholder="password" />
+                    </div>
+                    <br />
+                    <div class="col-12 row">
+                        <input type="password" class="form-control col-12" @bind="ConfirmPassword" placeholder="confirm password" />
+                    </div>
+                    <br />
+                    <div class="col-12 row">
+                        <span class="col-12"></span>
+                        <input type="submit" class="form-control col-6 btn btn-primary" value="Sign up" />
+                        <a href="/login" class="col-6">Already an user?</a>
+                    </div>
+                    <br />
+                    <div class="col-12 row" style="text-align:left; font-weight:bold">
+                    </div>
+                    <br />
+                    <div class="col-12 row" style="text-align:left; font-weight:bold">
+                    </div>
+                </EditForm>
             </div>
-            <div>
-                <input @bind="user.Username" class="form-control" placeholder="username" />
-            </div>
-            <div>
-                <input @bind="user.Email" class="form-control" placeholder="email address" />
-            </div>
-            <div>
-                <input type="password" @bind="user.Password" class="form-control" placeholder="password" />
-            </div>
-            <div>
-                <input type="password" @bind="ConfirmPassword" class="form-control" placeholder="confirm password" />
-            </div>
-            <div class="text-center">
-                <input type="submit" class="btn btn-outline-primary btn-lg" value="Sign up" />
-                <br />
-                <a href="/login">Already an user?</a>
-            </div>
-        </EditForm>
+        </div>
+        <div class="col-12 row">
+            <p>&nbsp;</p>
+        </div>
     </div>
-</div>
+</center>
 
 @code {
 
@@ -51,10 +76,6 @@
         {
 
             user.Type = UserType.Buyer;
-            var salt = UserService.GenerateSalt();
-            var hashedPassword = UserService.GenerateHash(user.Password, salt);
-            user.Salt = salt;
-            user.Password = hashedPassword;
             var response = await userRepo.PostUser(user);
 
             if (response.IsSuccessStatusCode)

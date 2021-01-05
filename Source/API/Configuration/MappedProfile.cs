@@ -20,6 +20,7 @@ namespace API.Configuration
                 .ReverseMap();
             CreateMap<User, UserDto>()
                 .ForMember(dest => dest.UserID, opt => opt.MapFrom(src => src.UserID))
+                 .ReverseMap();
         }
     }
 }
