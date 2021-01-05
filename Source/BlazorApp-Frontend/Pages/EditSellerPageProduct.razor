@@ -42,8 +42,8 @@
         var resizedImageFile = await e.File.RequestImageFileAsync(format, 100, 100);
         var buffer = new byte[resizedImageFile.Size];
         await resizedImageFile.OpenReadStream().ReadAsync(buffer);
-        var imageDataUrl = $"{Convert.ToBase64String(buffer)}";
-        imageDataUrls.Add(imageDataUrl);
+        var imageDataUrl = Convert.ToBase64String(buffer);
+        product.image = imageDataUrl;
     }
 
     private async Task<HttpResponseMessage> ValidateProduct()

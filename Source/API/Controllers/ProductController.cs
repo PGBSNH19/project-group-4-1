@@ -144,8 +144,6 @@ namespace API.Controllers
         /// <summary>
         /// Deletes a product based on its id 
         /// </summary>
-        /// 
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {

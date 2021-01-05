@@ -33,7 +33,7 @@ namespace BlazorApp_Frontend.Services
         {
 
             var data = new StringContent(JsonConvert.SerializeObject(userToChange), Encoding.UTF8, "application/json");
-            var response = await http.PutAsync(http.BaseAddress + $"/api/v1.0/User/{userToChange.UserID}", data);
+            var response = await http.PutAsync( $"https://localhost:5002/api/v1.0/User/{userToChange.UserID}", data);
 
             return response;
         }

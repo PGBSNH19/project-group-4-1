@@ -11,6 +11,8 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
+using API.Dtos;
+using API.Models;
 
 namespace API
 {

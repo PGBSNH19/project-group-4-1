@@ -13,7 +13,6 @@ namespace API.Configuration
             CreateMap<MarketplaceSeller, MarketplaceSellerDto>()
                 .ReverseMap();
             CreateMap<Product, ProductDto>()
-                .ForMember(dest => dest.ProductID, opt => opt.MapFrom(src => src.ProductID))
                 .ReverseMap();
             CreateMap<SellerPage, SellerPageDto>()
                 .ReverseMap();
