@@ -1,15 +1,15 @@
-﻿using API.Context;
+﻿using API.Configuration;
+using API.Context;
 using API.Controllers;
+using API.Dtos;
 using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Moq.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.Configuration;
-using API.Dtos;
-using AutoMapper;
 using Xunit;
 
 
@@ -58,6 +58,21 @@ namespace API.Tests.ControllerTests
             Assert.NotNull(resultSellerPage);
 
         }
+        [Fact]
+
+        public async void GetSellerPageById_IfNotExist_ExpectedNull()
+        {
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
+            var sellerPagesRepository = new SellerPageRepository(mockContext.Object);
+            var sellPageController = new SellerPageController(sellerPagesRepository, _mapper);
+
+            var result = await sellPageController.GetSellerPageByUserId(4);
+            var contentResult = result.Result as NotFoundObjectResult;
+
+            Assert.Null(result.Value);
+        }
+
         [Fact]
         public async void PostSellerPage_IfPostSellerPages_Expected201StatusCode()
         {

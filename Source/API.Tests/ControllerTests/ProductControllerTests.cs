@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using API.Configuration;
+﻿using API.Configuration;
 using API.Context;
 using API.Controllers;
 using API.Dtos;
@@ -10,6 +8,8 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Moq.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace API.Tests.ControllerTests
@@ -59,6 +59,23 @@ namespace API.Tests.ControllerTests
 
             //Assert
             Assert.NotNull(resultProduct);
+        }
+
+        [Fact]
+        public async void GetById_IfNotExist_ExpectedNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Products).ReturnsDbSet(GetProducts());
+            var productRepository = new ProductRepository(mockContext.Object);
+            var productController = new ProductController(productRepository, _mapper);
+
+            //Act
+            var result = await productController.GetProductById(4);
+            var contentResult = result.Result as NotFoundObjectResult;
+
+            //Assert
+            Assert.Null(result.Value);
         }
 
         [Fact]
