@@ -1,11 +1,15 @@
-﻿using API.Dtos;
+﻿using API.Configuration;
+using API.Dtos;
 using API.Models;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using API.Dtos;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -13,13 +17,59 @@ namespace API.Controllers
     public class SellerPageController : Controller
     {
         private readonly ISellerPageRepository _sellerPageRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public SellerPageController(ISellerPageRepository sellerPageRepository, IMapper mapper)
+        public SellerPageController(ISellerPageRepository sellerPageRepository, IMapper mapper, IProductRepository productRepository)
         {
             _sellerPageRepository = sellerPageRepository;
             _mapper = mapper;
+            _productRepository = productRepository;
         }
+        /// <summary>
+        /// Gets all users
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /SellerPage/GetSellerPages
+        ///    
+        ///    {
+        ///    
+        ///         "SellerPageID": 1,
+        ///         
+        ///         "Name": "Example Farm",
+        ///         
+        ///         "SellerUserID": 2,
+        ///         
+        ///         "Description": "A nice little farm",
+        ///         
+        ///         "Seller": [],
+        ///         
+        ///         "Products": [],
+        ///         
+        ///         "SellerPageProducts": []
+        ///         
+        ///    }, 
+        ///    
+        ///    {
+        ///    
+        ///         "SellerPageID": 2,
+        ///         
+        ///         "Name": "Example Farm number 2",
+        ///         
+        ///         "SellerUserID": 5,
+        ///         
+        ///         "Description": "A Cozy little farm",
+        ///         
+        ///         "Seller": [],
+        ///         
+        ///         "Products": [],
+        ///         
+        ///         "SellerPageProducts": []
+        ///         
+        ///    }
+        ///</remarks>
 
         [HttpGet("GetSellerPages")]
         public async Task<ActionResult<SellerPageDto[]>> GetSellerPages()
@@ -28,6 +78,7 @@ namespace API.Controllers
             {
                 var results = await _sellerPageRepository.GetSellerPages();
                 var mappedEntities = _mapper.Map<SellerPageDto[]>(results);
+
                 if (mappedEntities.Length == 0)
                 {
                     return NotFound();
@@ -40,6 +91,34 @@ namespace API.Controllers
             }
         }
 
+        /// <summary>
+        /// Gets a SellerPage by a user id
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /SellerPage/GetSellerPageByUserId/1
+        ///    
+        ///    {
+        ///    
+        ///         "SellerPageID": 1,
+        ///         
+        ///         "Name": "Example Farm",
+        ///         
+        ///         "SellerUserID": 2,
+        ///         
+        ///         "Description": "A nice little farm",
+        ///         
+        ///         "Seller": [],
+        ///         
+        ///         "Products": [],
+        ///         
+        ///         "SellerPageProducts": []
+        ///         
+        ///    }
+        ///    
+        ///</remarks>
+        /// <param name="id"></param>
         [HttpGet("GetSellerPageByUserID/{id}")]
         public async Task<ActionResult<SellerPageDto>> GetSellerPageByUserId(int id)
         {
@@ -47,6 +126,13 @@ namespace API.Controllers
             {
                 var result = await _sellerPageRepository.GetSellerPageByUserID(id);
                 var mappedEntity = _mapper.Map<SellerPageDto>(result);
+                for (int i = 0; i < result.SellerPageProducts.Count(); i++)
+                {
+                    var products = result.SellerPageProducts.ElementAt(i).product;
+                    var productDto = await GetProductByIdInternal(products.ProductID);
+                    mappedEntity.SellerPageProducts.ElementAt(i).product = productDto;
+                }
+
                 if (mappedEntity == null)
                 {
                     return NotFound();
@@ -62,7 +148,30 @@ namespace API.Controllers
         /// <summary>
         /// Posts a user
         /// </summary>
-        /// 
+        /// <remarks>
+        /// Sample Request: 
+        ///
+        ///    Post /SellerPage
+        ///    
+        ///    {
+        ///    
+        ///         "SellerPageID": 1,
+        ///         
+        ///         "Name": "Example Farm",
+        ///         
+        ///         "SellerUserID": 2,
+        ///         
+        ///         "Description": "A nice little farm",
+        ///         
+        ///         "Seller": [],
+        ///         
+        ///         "Products": [],
+        ///         
+        ///         "SellerPageProducts": []
+        ///         
+        ///    }
+        ///</remarks>
+        /// <param name="sellerPage"></param>
 
         [HttpPost]
         public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPageDto sellerPage)
@@ -82,6 +191,12 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
+
+        /// <summary>
+        /// Deletes a users
+        /// </summary>
+        /// <param name="id"></param>
+
 
         [HttpDelete]
         public async Task<ActionResult> DeleteSellerPage(int id)
@@ -104,6 +219,28 @@ namespace API.Controllers
             catch (Exception e)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {e.Message}");
+            }
+        }
+        public async Task<ProductDto> GetProductByIdInternal(int id)
+        {
+            try
+            {
+                var result = await _productRepository.GetProductById(id);
+                var mappedEntity = _mapper.Map<ProductDto>(result);
+
+                var manualMapper = new ManualMapper();
+                var manualObject = manualMapper.ManualMapperPicturesReverse(result, mappedEntity);
+
+                if (mappedEntity == null)
+                {
+                    return null;
+                }
+
+                return manualObject;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"{e}");
             }
         }
     }

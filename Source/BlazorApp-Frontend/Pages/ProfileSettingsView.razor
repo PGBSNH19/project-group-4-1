@@ -34,7 +34,7 @@
             <input type="text" @bind="NewEmail" class="form-control" id="validationDefault02" placeholder="Mailadress" required>
         </div>
         <div class="text-center">
-            <button class="btn btn-outline-success" @onclick="SaveChanges">Spara ändringa</button>
+            <button class="btn btn-outline-success" @onclick="SaveChanges">Spara ändringar</button>
             <button type="button" class="btn btn-outline-danger" @onclick="DeleteAccount">Ta bort mitt konto</button>
         </div>
         @*</EditForm>*@
@@ -67,6 +67,8 @@
             newUser.Email = NewEmail;
 
         await userRepo.PutUser(newUser);
+
+        this.StateHasChanged();
     }
 
     public async void DeleteAccount()

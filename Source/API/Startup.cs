@@ -16,6 +16,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using API.Dtos;
+using API.Models;
 
 namespace API
 {
@@ -67,6 +69,7 @@ namespace API
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMarketplaceRepository, MarketplaceRepository>();
             services.AddScoped<ISellerPageRepository, SellerPageRepository>();
+            services.AddSingleton<ManualMapper>();
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSwaggerGen(c =>
             {
@@ -82,6 +85,7 @@ namespace API
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 mc.AddProfile(new MappedProfile());

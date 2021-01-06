@@ -17,7 +17,10 @@ namespace BlazorApp_Frontend.Data
         [JsonProperty("stock")]
         public int Stock { get; set; }
 
-        [JsonProperty("userproduct")]
+        [JsonProperty("Image")]
+        public string Image { get; set; }
+
+        [JsonProperty("userproducts")]
         public ICollection<UserProduct> UserProducts { get; set; }
 
         [JsonProperty("sellerpageproducts")]

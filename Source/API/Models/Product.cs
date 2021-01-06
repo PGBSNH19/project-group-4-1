@@ -7,6 +7,7 @@ namespace API.Models
         [Key]
         public int ProductID { get; set; }
         public string Name { get; set; }
+        public byte[] PictureBytes { get; set; }
         public ICollection<UserProduct> UserProducts { get; set; }
         public ICollection<SellerPageProduct> SellerPageProducts { get; set; }
     }

@@ -4,16 +4,14 @@ using API.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace API.Migrations
 {
     [DbContext(typeof(NearbyProduceContext))]
-    [Migration("20201229133654_SeedMoreData")]
-    partial class SeedMoreData
+    partial class NearbyProduceContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,12 +35,15 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("PictureBytes")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<DateTime>("StartDateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("MarketplaceID");
 
-                    b.ToTable("Marketplace");
+                    b.ToTable("Marketplaces");
 
                     b.HasData(
                         new
@@ -75,7 +76,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerID");
 
-                    b.ToTable("MarketplaceSeller");
+                    b.ToTable("MarketplaceSellers");
 
                     b.HasData(
                         new
@@ -104,6 +105,9 @@ namespace API.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PictureBytes")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int?>("SellerPageID")
                         .HasColumnType("int");
@@ -163,7 +167,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerUserID");
 
-                    b.ToTable("SellerPage");
+                    b.ToTable("SellerPages");
 
                     b.HasData(
                         new
@@ -207,7 +211,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerPageID");
 
-                    b.ToTable("SellerPageProduct");
+                    b.ToTable("SellerPageProducts");
 
                     b.HasData(
                         new
@@ -257,51 +261,46 @@ namespace API.Migrations
 
                     b.HasKey("UserID");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
                         {
                             UserID = 1,
-                            Email = "test1@test.com",
+                            Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 98, 242, 193, 225, 215, 239, 23, 188, 144, 175, 97, 36, 49, 221, 171, 186 },
                             Type = 1,
                             Username = "JanneBonde07"
                         },
                         new
                         {
                             UserID = 2,
-                            Email = "test2@test.com",
+                            Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 161, 204, 146, 147, 219, 192, 115, 82, 46, 32, 157, 129, 136, 184, 104, 238 },
                             Type = 0,
                             Username = "Bengtan555"
                         },
                         new
                         {
                             UserID = 3,
-                            Email = "test3@test.com",
+                            Email = "test@test.com",
                             Password = "KlDioL123!",
-                            Salt = new byte[] { 45, 150, 38, 1, 127, 253, 85, 87, 29, 12, 19, 194, 214, 13, 53, 255 },
                             Type = 0,
                             Username = "Henrik123"
                         },
                         new
                         {
                             UserID = 4,
-                            Email = "test4@test.com",
+                            Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 151, 172, 85, 144, 23, 23, 173, 80, 121, 237, 39, 238, 186, 9, 248, 177 },
                             Type = 1,
                             Username = "BondenLisa1"
                         },
                         new
                         {
                             UserID = 5,
-                            Email = "test5@test.com",
+                            Email = "test@test.com",
                             Password = "lösen123",
-                            Salt = new byte[] { 17, 90, 218, 23, 39, 171, 16, 249, 5, 211, 26, 138, 64, 150, 254, 125 },
                             Type = 1,
                             Username = "HannesFarm"
                         });
@@ -322,7 +321,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("UserProduct");
+                    b.ToTable("UserProducts");
 
                     b.HasData(
                         new

@@ -28,5 +28,8 @@ namespace BlazorApp_Frontend.Data
 
         [JsonProperty("marketplacesellers")]
         public ICollection<MarketplaceSeller> MarketplaceSellers { get; set; }
+
+        [JsonProperty("image")]
+        public string Image { get; set; }
     }
 }
