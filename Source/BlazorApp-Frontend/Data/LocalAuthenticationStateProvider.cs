@@ -28,6 +28,7 @@ namespace BlazorApp_Frontend
                     new Claim("Email", userInfo.Email),
                     new Claim("UserName", userInfo.UserName),
                     new Claim("AcessToken", userInfo.AccessToken),
+                    new Claim("Type", userInfo.Type),
                     new Claim(ClaimTypes.NameIdentifier, userInfo.Id),
                 };
 

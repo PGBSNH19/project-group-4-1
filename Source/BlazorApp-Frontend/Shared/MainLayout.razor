@@ -23,10 +23,8 @@
                             <span class="oi oi-basket" aria-hidden="true"></span> Marknader
                         </NavLink>
                     </li>
-                    <AuthorizeView>
-
-                        <Authorized>
-                            <li>
+                    <AuthorizeView Policy="IsBuyer">
+                        <li>
 
                                 @if (expandSubNav != true)
                                 {
@@ -48,17 +46,47 @@
                                         <NavLink class="" href="/reservations">
                                             <span class="text-black-50 nav-link-span">Reservationer</span>
                                         </NavLink>
-                                        <NavLink class="" href="/sellerpage">
-                                            <span class="text-black-50 nav-link-span">Säljarsida</span>
-                                        </NavLink>
                                         <NavLink class="" @onclick="Logout">
                                             <span class="text-black-50 nav-link-span">Logga ut</span>
                                         </NavLink>
                                     </div>
                                 }
                             </li>
-                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView Policy="IsSeller">
 
+                        <Authorized>
+                            <li>
+
+                                @if (expandSubNav != true)
+                                {
+                                    <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                                        <span class="oi oi-person" aria-hidden="false"></span> Konto <span class="oi oi-chevron-bottom" aria-hidden="true"></span>
+                                    </NavLink>
+                                }
+                                else
+                                {
+                                    <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                                        <span class="oi oi-person" aria-hidden="true"></span> Konto <span class="oi oi-chevron-top" aria-hidden="true"></span>
+                                    </NavLink>
+                                }
+                                @if (expandSubNav)
+                                {<div class="dropdown-menu show">
+                                     <NavLink class="expand-menu" href="/profilesettingsview">
+                                         <span class="text-black-50 nav-link-span">Profil</span>
+                                     </NavLink>
+                                     <NavLink class="" href="/sellerpage">
+                                         <span class="text-black-50 nav-link-span">Säljarsida</span>
+                                     </NavLink>
+                                     <NavLink class="" @onclick="Logout">
+                                         <span class="text-black-50 nav-link-span">Logga ut</span>
+                                     </NavLink>
+                                 </div>
+                                }
+                            </li>
+                        </Authorized>
+                    </AuthorizeView>
+                    <AuthorizeView>
                         <NotAuthorized>
                             <li class="nav-item">
                                 <NavLink class="nav-link" href="/login">
@@ -66,7 +94,6 @@
                                 </NavLink>
                             </li>
                         </NotAuthorized>
-
                     </AuthorizeView>
                 </ul>
             </div>

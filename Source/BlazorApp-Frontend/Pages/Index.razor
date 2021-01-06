@@ -11,6 +11,16 @@
             <h1>Välkommen @context.User.FindFirst("UserName").Value</h1>
         </Authorized>
     </AuthorizeView>
+    <AuthorizeView Policy="IsBuyer">
+        <Authorized>
+            <h1>Du är en Köpare</h1>
+        </Authorized>
+    </AuthorizeView>
+    <AuthorizeView Policy="IsSeller">
+        <Authorized>
+            <h1>Du är en Säljare @context.User.Claims.  </h1>
+        </Authorized>
+    </AuthorizeView>
     <div id="hero-card" class="card">
         <div class="row no-gutters">
             <div class="col-sm-5">

@@ -142,7 +142,6 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser([FromBody] UserDto user)
         {
-            user.Type = UserType.Buyer;
             try
             {
                 var mappedEntity = _mapper.Map<User>(user);

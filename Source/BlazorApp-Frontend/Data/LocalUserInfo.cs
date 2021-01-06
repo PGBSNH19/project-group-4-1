@@ -11,5 +11,6 @@ namespace BlazorApp_Frontend.Data
         public string UserName { get; set; }
         public string Email { get; set; }
         public string AccessToken { get; set; }
+        public string Type { get; set; }
     }
 }

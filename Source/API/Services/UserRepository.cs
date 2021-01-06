@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -26,7 +27,7 @@ namespace API.Services
             _userManger = userManager;
             _configuration = configuration;
         }
-       
+
         public async Task<UserManagerResponse> LoginUserAsync(LoginViewModel model)
         {
             var user = await GetUserByEmail(model.Email);
@@ -54,6 +55,7 @@ namespace API.Services
                 new Claim("Email", user.Email),
                 new Claim("UserName", user.Username),
                 new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new Claim("Type", user.Type.ToString())
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["AuthSettings:Key"]));
