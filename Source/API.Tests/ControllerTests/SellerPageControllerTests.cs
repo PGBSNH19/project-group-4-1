@@ -67,7 +67,8 @@ namespace API.Tests.ControllerTests
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
             var sellerPagesRepository = new SellerPageRepository(mockContext.Object);
-            var sellPageController = new SellerPageController(sellerPagesRepository, _mapper);
+            var productPagesRepository = new ProductRepository(mockContext.Object);
+            var sellPageController = new SellerPageController(sellerPagesRepository, _mapper, productPagesRepository);
 
             var result = await sellPageController.GetSellerPageByUserId(4);
             var contentResult = result.Result as NotFoundObjectResult;
