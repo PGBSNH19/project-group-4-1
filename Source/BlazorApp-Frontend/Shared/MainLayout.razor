@@ -14,7 +14,7 @@
                 <ul class="navbar-nav col-sm-4 text-center">
                     <li class="nav-item">
                         <NavLink class="nav-link" href="/" @onclick="collapsedNavBar">
-                            <span class="oi oi-home" aria-hidden="true"><span class="ml-2"></span>Hem</span> 
+                            <span class="oi oi-home" aria-hidden="true"><span class="ml-2"></span>Hem</span>
                         </NavLink>
                     </li>
                     <li class="nav-item">
@@ -22,33 +22,71 @@
                             <span class="oi oi-basket" aria-hidden="true"><span class="ml-2"></span>Marknader</span>
                         </NavLink>
                     </li>
-                    <li>
-                        @if (expandSubNav != true)
-                        {
-                           
-                            <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
-                                <span class="oi oi-person" aria-hidden="false"><span class="ml-2">Konto<span class="oi oi-chevron-bottom d-inline ml-2"></span></span></span>
-                            </NavLink>
-                        }
-                        else
-                        {
-                            <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
-                                <span class="oi oi-person" aria-hidden="false"><span class="ml-2">Konto<span class="oi oi-chevron-top d-inline ml-2"></span></span></span>
-                            </NavLink>
-                        }
-                        @if (expandSubNav)
-                        {<div class="dropdown-menu dropdown-primary show">
-                                <NavLink class="expand-menu" href="/profilesettingsview" @onclick="collapsedNavBar">
-                                    <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Profil</span>
+                    <AuthorizeView Policy="IsBuyer">
+                        <li>
+                            @if (expandSubNav != true)
+                            {
+
+                                <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                                    <span class="oi oi-person" aria-hidden="false"><span class="ml-2">Konto<span class="oi oi-chevron-bottom d-inline ml-2"></span></span></span>
                                 </NavLink>
-                                <NavLink class="" href="/reservations" @onclick="collapsedNavBar">
-                                    <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Reservationer</span>
+                            }
+                            else
+                            {
+                                <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                                    <span class="oi oi-person" aria-hidden="false"><span class="ml-2">Konto<span class="oi oi-chevron-top d-inline ml-2"></span></span></span>
                                 </NavLink>
-                                <NavLink class="" href="/sellerpage" @onclick="collapsedNavBar">
-                                    <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Säljarsida</span>
+                            }
+                            @if (expandSubNav)
+                            {<div class="dropdown-menu dropdown-primary show">
+                                    <NavLink class="expand-menu" href="/profilesettingsview" @onclick="collapsedNavBar">
+                                        <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Profil</span>
+                                    </NavLink>
+                                    <NavLink class="" href="/reservations" @onclick="collapsedNavBar">
+                                        <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Reservationer</span>
+                                    </NavLink>
+                                    <NavLink class="" href="/" @onclick="Logout">
+                                        <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Logga ut</span>
+                                    </NavLink>
+                                </div>
+                            }
+                        </li>
+                    </AuthorizeView>
+                    <AuthorizeView Policy="IsSeller">
+                        <li>
+                            @if (expandSubNav != true)
+                            {
+
+                                <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                                    <span class="oi oi-person" aria-hidden="false"><span class="ml-2">Konto<span class="oi oi-chevron-bottom d-inline ml-2"></span></span></span>
                                 </NavLink>
-                                <NavLink class="" href="/" @onclick="collapsedNavBar">
-                                    <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Logga ut</span>
+                            }
+                            else
+                            {
+                                <NavLink style="cursor:pointer" class="nav-link" @onclick="()=>expandSubNav = !expandSubNav">
+                                    <span class="oi oi-person" aria-hidden="false"><span class="ml-2">Konto<span class="oi oi-chevron-top d-inline ml-2"></span></span></span>
+                                </NavLink>
+                            }
+                            @if (expandSubNav)
+                            {<div class="dropdown-menu dropdown-primary show">
+                                    <NavLink class="expand-menu" href="/profilesettingsview" @onclick="collapsedNavBar">
+                                        <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Profil</span>
+                                    </NavLink>
+                                    <NavLink class="" href="/sellerpage" @onclick="collapsedNavBar">
+                                        <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Säljarsida</span>
+                                    </NavLink>
+                                    <NavLink class="" href="/" @onclick="Logout">
+                                        <span class="text-black-50 nav-link-span" @onclick="()=>expandSubNav = !expandSubNav">Logga ut</span>
+                                    </NavLink>
+                                </div>
+                            }
+                        </li>
+                    </AuthorizeView>
+                    <AuthorizeView>
+                        <NotAuthorized>
+                            <li class="nav-item">
+                                <NavLink class="nav-link" href="/login">
+                                    <span class="oi oi-account-login" aria-hidden="true"></span> Logga in
                                 </NavLink>
                             </li>
                         </NotAuthorized>
@@ -73,6 +111,7 @@
         var localStateProvider = (LocalAuthenticationStateProvider)authenticationStateProvider;
         await localStateProvider.LogoutAsync();
         navigationManager.NavigateTo("/");
+    }
     private bool expandedState = false;
     private string cssShowMenu = null;
 

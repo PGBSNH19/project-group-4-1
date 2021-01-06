@@ -25,7 +25,7 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<UserManagerResponse> LoginUserAsync(LoginRequest request)
         {
-            var response = await client.PostAsync<UserManagerResponse>("https://localhost:5002/api/v1.0/User/login", request);
+            var response = await client.PostAsync<UserManagerResponse>(http.BaseAddress + $"/api/v1.0/User/login", request);
             return response.Result;
         }
 

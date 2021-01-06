@@ -1,34 +1,41 @@
 ﻿@page "/SellerPage"
 @inject HttpClient http;
 @inject SellerPageRepository selllerPageRepository;
-@using Data;
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider  authenticationStateProvider
 @using Services;
 
-<h2 class="text-center font-weight-bold">@sellerpage1.Name</h2>
-<h3 class="text-center font-weight-normal">@sellerpage1.Description </h3>
-<div class="flex-container-sellerpage">
-    @if (sellerpage1.SellerPageProducts != null)
-    {
-        @foreach (var sellerpageProduct in sellerpage1.SellerPageProducts)
+<AuthorizeView>
+    <h2 class="text-center font-weight-bold">@sellerpage.Name</h2>
+    <h3 class="text-center font-weight-normal">@sellerpage.Description </h3>
+    <div class="flex-container-sellerpage">
+        @if (sellerpage.SellerPageProducts != null)
         {
-            <div class="sellerpage card">
-                <img src="@sellerpageProduct.product.Image"/>
-                <div class="card-body">
-                    <h4 class="card-title">@sellerpageProduct.product.Name</h4>
-                    <p class="card-text">Pris: @sellerpageProduct.Price kr</p>
-                    <p class="card-text">Antal: @sellerpageProduct.Stock st</p>
-                    <a href="/editsellerpageproduct?id=@sellerpageProduct.ProductID">Edit</a>
+            @foreach (var sellerpageProduct in sellerpage.SellerPageProducts)
+            {
+                <div class="sellerpage card">
+                    <img src="@sellerpageProduct.product.Image" />
+                    <div class="card-body">
+                        <h4 class="card-title">@sellerpageProduct.product.Name</h4>
+                        <p class="card-text">Pris: @sellerpageProduct.Price kr</p>
+                        <p class="card-text">Antal: @sellerpageProduct.Stock st</p>
+                        <a href="/editsellerpageproduct?id=@sellerpageProduct.ProductID">Edit</a>
+                    </div>
                 </div>
-            </div>
+            }
         }
-    }
-</div>
+    </div>
+</AuthorizeView>
 @code {
 
-    SellerPage sellerpage1 = new SellerPage();
+    SellerPage sellerpage = new SellerPage();
 
     protected override async Task OnInitializedAsync()
     {
-        sellerpage1 = await selllerPageRepository.GetSellerPageByUserId(1);
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        var claimsList = user.Claims.ToList();
+        int result = Int32.Parse(claimsList[4].Value);
+        sellerpage = await selllerPageRepository.GetSellerPageByUserId(result);
     }
 }

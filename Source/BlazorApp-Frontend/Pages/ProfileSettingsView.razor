@@ -1,6 +1,6 @@
 ﻿@page "/ProfileSettingsView"
 @inject UserRepository userRepo
-@using Data;
+@inject AuthenticationStateProvider  authenticationStateProvider
 @using Services;
 
 <div class="flex-container-profilesettings">
@@ -51,7 +51,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        currentUser = await userRepo.GetUserById(1);
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var userLoggedIn = authState.User;
+        var claimsList = userLoggedIn.Claims.ToList();
+        int result = Int32.Parse(claimsList[4].Value);
+        currentUser = await userRepo.GetUserById(result);
     }
 
     public async void SaveChanges()

@@ -21,7 +21,6 @@ namespace BlazorApp_Frontend
 
         public IConfiguration Configuration { get; }
 
-        private const string URL = "https://localhost:5002";
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddBlazoredLocalStorage();
@@ -34,7 +33,7 @@ namespace BlazorApp_Frontend
             services.AddSingleton<MarketplaceRepository>();
             services.AddHttpClient("api", client =>
             {
-                client.BaseAddress = new Uri("https://localhost:5002");
+                client.BaseAddress = new Uri("https://nearbyproducetest.azurewebsites.net");
             });
             services.AddScoped<LocalAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<LocalAuthenticationStateProvider>());
@@ -46,6 +45,7 @@ namespace BlazorApp_Frontend
             services.AddSingleton<ProductRepository>();
             services.AddSingleton<SellerPageRepository>();
             services.AddSingleton<UserService>();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

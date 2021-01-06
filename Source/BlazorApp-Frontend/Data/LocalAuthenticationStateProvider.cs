@@ -29,6 +29,7 @@ namespace BlazorApp_Frontend
                     new Claim("UserName", userInfo.UserName),
                     new Claim("AcessToken", userInfo.AccessToken),
                     new Claim("Type", userInfo.Type),
+                    new Claim("Id", userInfo.Id),
                     new Claim(ClaimTypes.NameIdentifier, userInfo.Id),
                 };
 
