@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using API.Dtos;
+using AutoMapper;
 
 namespace API.Controllers
 {
@@ -160,6 +162,7 @@ namespace API.Controllers
         ///</remarks>
         ///<param name="marketplace"></param>
         [HttpPost]
+
         public async Task<ActionResult<Marketplace>> PostMarketplace([FromBody] MarketplaceDto marketplace)
         {
             try
