@@ -13,6 +13,8 @@ namespace API.Models
 
         public string Location { get; set; }
 
+        public byte[] PictureBytes { get; set; }
+
         public DateTime StartDateTime { get; set; }
 
         public DateTime EndDateTime { get; set; }

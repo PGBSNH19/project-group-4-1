@@ -1,0 +1,69 @@
+﻿@page "/editsellerpageproduct"
+@using Microsoft.AspNetCore.WebUtilities
+@using BlazorApp_Frontend.Data
+@using BlazorApp_Frontend.Services
+@inject NavigationManager NavManager
+@inject ProductRepository ProductRepository;
+@inject NavigationManager NavigationManager;
+
+<div class="flex-container-editsellerpage">
+    <div class="editsellerpage card">
+        <EditForm Model="@product" class="editsellerpage-form" OnValidSubmit="@ValidateProduct">
+            <div>
+                <h3>Edit seller page: </h3>
+            </div>
+            <div>
+                <p>Add file to seller page: </p>
+                <InputFile OnChange="@OnInputFileChange"></InputFile>
+            </div>
+            <div>
+                <input type="submit" class="btn btn-outline-primary btn-lg" value="Upload" />
+            </div>
+        </EditForm>
+    </div>
+</div>
+@code {
+
+    int id = 0;
+    HttpResponseMessage response = new HttpResponseMessage();
+    private IList<string> imageDataUrls = new List<string>();
+    Product product = new Product();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
+        if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("id", out var _id))
+        {
+            id = Convert.ToInt32(_id);
+        }
+        product = await ProductRepository.GetProductById(id);
+    }
+
+    private async Task OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        var format = "image/png";
+
+        var resizedImageFile = await e.File.RequestImageFileAsync(format, 240, 240);
+        var buffer = new byte[resizedImageFile.Size];
+        await resizedImageFile.OpenReadStream().ReadAsync(buffer);
+        var imageDataUrl = Convert.ToBase64String(buffer);
+        product.Image = imageDataUrl;
+    }
+
+    private async Task<HttpResponseMessage> ValidateProduct()
+    {
+        var productPut = new ProductPut
+        {
+            Image = product.Image,
+            Name = product.Name,
+            ProductID = product.ProductID
+        };
+        var response = await ProductRepository.PutProduct(productPut);
+        if (response.IsSuccessStatusCode)
+        {
+            NavigationManager.NavigateTo("/SellerPage");
+        }
+        return response;
+    }
+
+}

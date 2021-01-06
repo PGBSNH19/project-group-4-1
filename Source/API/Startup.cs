@@ -11,6 +11,8 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
+using API.Dtos;
+using API.Models;
 
 namespace API
 {
@@ -30,6 +32,7 @@ namespace API
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IMarketplaceRepository, MarketplaceRepository>();
             services.AddScoped<ISellerPageRepository, SellerPageRepository>();
+            services.AddSingleton<ManualMapper>();
             services.AddMvc(option => option.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddSwaggerGen(c =>
             {

@@ -1,13 +1,15 @@
-﻿using API.Dtos;
+﻿using API.Configuration;
+using API.Dtos;
 using API.Models;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
 
 namespace API.Controllers
 {
@@ -66,12 +68,20 @@ namespace API.Controllers
                 var results = await _productRepository.GetProducts();
                 var mappedEntities = _mapper.Map<ProductDto[]>(results);
 
+                var manualMapper = new ManualMapper();
+                var manualObjects = new List<ProductDto>();
+                for (int i = 0; i < results.Count; i++)
+                {
+                    var manualObject = manualMapper.ManualMapperPicturesReverse(results.ElementAt(i), mappedEntities[i]);
+                    manualObjects.Add(manualObject);
+                }
+
                 if (mappedEntities.Length == 0)
                 {
                     return NotFound();
                 }
 
-                return Ok(mappedEntities);
+                return Ok(manualObjects);
             }
             catch (Exception exception)
             {
@@ -109,12 +119,15 @@ namespace API.Controllers
                 var result = await _productRepository.GetProductById(id);
                 var mappedEntity = _mapper.Map<ProductDto>(result);
 
+                var manualMapper = new ManualMapper();
+                var manualObject = manualMapper.ManualMapperPicturesReverse(result, mappedEntity);
+
                 if (mappedEntity == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(mappedEntity);
+                return Ok(manualObject);
             }
             catch (Exception e)
             {
@@ -145,12 +158,18 @@ namespace API.Controllers
         /// <param name="product"></param>
         /// 
         [HttpPost]
-        public async Task<ActionResult<Product>> PostProduct(ProductDto product)
+        public async Task<ActionResult<Product>> PostProduct([FromForm] ProductDto productDto)
         {
             try
             {
-                var _mappedEntity = _mapper.Map<Product>(product);
-                _productRepository.Add(_mappedEntity);
+                var product = _mapper.Map<Product>(productDto);
+                if (productDto.Image != null)
+                {
+                    var manualMapper = new ManualMapper();
+                    var manualObj = manualMapper.ManualMapperPictures(product, productDto);
+                    _productRepository.Add(manualObj);
+                }
+                _productRepository.Add(product);
                 if (await _productRepository.Save())
                 {
                     return Created("/api/v1.0/[controller]/" + product.ProductID, new Product { ProductID = product.ProductID });
@@ -165,10 +184,33 @@ namespace API.Controllers
         }
 
         /// <summary>
+        /// Puts a Product.
+        /// </summary>
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Product>> PutProduct(int id, [FromBody] ProductPutDto productDto)
+        {
+            try
+            {
+                var oldProduct = await _productRepository.GetProductById(id);
+                if (oldProduct == null)
+                    return NotFound($"Can't find any product with id: {id}");
+                var newProduct = _mapper.Map(productDto, oldProduct);
+                var manualMapper = new ManualMapper();
+                var manualObj = manualMapper.ManualMapperPutPictures(newProduct, productDto);
+                _productRepository.Update(manualObj);
+                if (await _productRepository.Save())
+                    return Ok(manualObj);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
+            }
+            return BadRequest();
+        }
+
+        /// <summary>
         /// Deletes a product
         /// </summary>
-        /// <param name="id"></param>
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {

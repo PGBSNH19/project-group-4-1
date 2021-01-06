@@ -1,13 +1,14 @@
-﻿using API.Dtos;
+﻿using API.Configuration;
+using API.Dtos;
 using API.Models;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
 
 namespace API.Controllers
 {
@@ -73,12 +74,20 @@ namespace API.Controllers
                 var results = await _marketplaceRepository.GetMarketplaces();
                 var mappedEntities = _mapper.Map<MarketplaceDto[]>(results);
 
+                var manualMapper = new ManualMapper();
+                var manualObjects = new List<MarketplaceDto>();
+                for (int i = 0; i < results.Count; i++)
+                {
+                    var manualObject =
+                        manualMapper.ManualMapperMarketplacePicturesReverse(results.ElementAt(i), mappedEntities[i]);
+                    manualObjects.Add(manualObject);
+                }
                 if (mappedEntities.Length == 0)
                 {
                     return NotFound();
                 }
 
-                return Ok(mappedEntities);
+                return Ok(manualObjects);
             }
             catch (Exception exception)
             {
@@ -122,12 +131,15 @@ namespace API.Controllers
                 var result = await _marketplaceRepository.GetMarketplaceById(id);
                 var mappedEntity = _mapper.Map<MarketplaceDto>(result);
 
+                var manualMapper = new ManualMapper();
+                var manualObject = manualMapper.ManualMapperMarketplacePicturesReverse(result, mappedEntity);
+
                 if (mappedEntity == null)
                 {
                     return NotFound();
                 }
 
-                return Ok(mappedEntity);
+                return Ok(manualObject);
             }
             catch (Exception e)
             {
@@ -162,12 +174,17 @@ namespace API.Controllers
         ///</remarks>
         ///<param name="marketplace"></param>
         [HttpPost]
-
-        public async Task<ActionResult<Marketplace>> PostMarketplace([FromBody] MarketplaceDto marketplace)
+        public async Task<ActionResult<Marketplace>> PostMarketplace([FromForm] MarketplaceDto marketplace)
         {
             try
             {
                 var mappedEntity = _mapper.Map<Marketplace>(marketplace);
+                if (marketplace.Image != null)
+                {
+                    var manualMapper = new ManualMapper();
+                    var manualObject = manualMapper.ManualMapperMarketplacePictures(mappedEntity, marketplace);
+                    _marketplaceRepository.Add(manualObject);
+                }
                 _marketplaceRepository.Add(mappedEntity);
                 if (await _marketplaceRepository.Save())
                 {
@@ -180,6 +197,33 @@ namespace API.Controllers
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
+        }
+
+        [HttpPut("{marketplaceId}")]
+        public async Task<ActionResult<Marketplace>> PutMarketplace(int marketplaceId, [FromForm] MarketplaceDto marketplace)
+        {
+            try
+            {
+                var oldMarketplace = await _marketplaceRepository.GetMarketplaceById(marketplaceId);
+                if (oldMarketplace == null)
+                {
+                    return NotFound($"Cant't find any marketplaces with id: {marketplaceId}");
+                }
+
+                var newMarketplace = _mapper.Map(marketplace, oldMarketplace);
+                var manualMapper = new ManualMapper();
+                var manualObject = manualMapper.ManualMapperMarketplacePictures(newMarketplace, marketplace);
+                _marketplaceRepository.Update(manualObject);
+                if (await _marketplaceRepository.Save())
+                {
+                    return Ok(manualObject);
+                }
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
+            }
+            return BadRequest();
         }
         /// <summary>
         /// Deletes a  Marketplace based on its id

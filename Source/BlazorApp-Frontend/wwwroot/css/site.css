@@ -21,6 +21,7 @@ h3 {
 }
 
 img {
+    max-width: 100%;
     height: 600px;
 }
 
@@ -62,7 +63,7 @@ img {
     align-items: center;
 }
 
-.login >div{
+.login > div {
     margin:15px;
 }
 
@@ -132,6 +133,40 @@ img {
     flex-basis: 20%;
 }
 
+.flex-container-sellerpage {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 56px;
+    margin-bottom: 49px;
+}
+
+.sellerpage {
+    margin: 10px;
+    flex-basis: 20%;
+    height: 600px;
+}
+
+.flex-container-editsellerpage {
+    display: grid;
+    margin-top: 56px;
+    width: calc(100vw-20px);
+    margin-bottom: 49px;
+    height: calc(100vh - 105px);
+    grid-template-columns: 25% auto 25%;
+    grid-template-rows: 10% auto 25%;
+}
+
+.editsellerpage {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 20px;
+    align-items: center;
+}
+
+.editsellerpage-form > * {
+    margin: 10px;
+}
+
 @media (max-width: 320px) {
     .flex-container-reservation {
         grid-template-columns: 1% auto 1%;
@@ -143,6 +178,9 @@ img {
 
 @media (max-width: 767px) {
     .flex-container {
+        flex-direction: column;
+    }
+    .flex-container-sellerpage {
         flex-direction: column;
     }
     .flex-container-signup {
@@ -167,12 +205,26 @@ img {
         grid-template-rows: 10% auto 5%;
         margin-bottom: 73px;
     }
+    .flex-container-editsellerpage {
+        grid-template-columns: 5% auto 5%;
+        grid-template-rows: 5% auto 5%;
+        margin-top: 56px;
+        margin-bottom: 49px;
+    }
+    .editsellerpage-form > * {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
 }
 
 @media (min-width: 768px) and (max-width: 1024px) {
     .flex-container > * {
         margin: 10px;
         flex-basis: calc(50% - 20px);
+    }
+    .editsellerpage-form > * {
+        margin-top: 30px;
+        margin-bottom: 30px;
     }
 }
 
@@ -183,6 +235,11 @@ img {
     .profilesettings > div {
         margin-top: 10px;
         margin-bottom: 10px;
+    }
+
+    .editsellerpage-form > * {
+        margin-top: 50px;
+        margin-bottom: 50px;
     }
 }
 
@@ -229,4 +286,17 @@ img {
 #form {
     background-color: lightgray;
     opacity: .8;
+}
+.card-img-top {
+    max-height: 300px;
+    object-fit: cover;
+    padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.card-img-header {
+    max-width: 750px;
+    padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
 }

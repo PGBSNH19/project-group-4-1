@@ -23,10 +23,12 @@
                 @foreach (var userProduct in user.UserProducts)
                 {
                     <tr>
+                        <td>@userProduct.product.Image</td>
                         <td>@userProduct.product.Name</td>
                         <td>@userProduct.Amount</td>
                         <td>@userProduct.product.Price</td>
-                        <td><button type="button" class="btn btn-outline-danger" /></td>
+                        <img src="@userProduct.product.Image"/>
+                        <td><button type="button" class="btn btn-outline-danger"/></td>
                     </tr>
                 }
             }
