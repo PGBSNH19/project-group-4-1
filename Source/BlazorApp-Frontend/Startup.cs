@@ -1,14 +1,13 @@
-using System;
 using BlazorApp_Frontend.Services;
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Net.Http;
-using Blazored.LocalStorage;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorApp_Frontend
 {
@@ -33,7 +32,7 @@ namespace BlazorApp_Frontend
             services.AddSingleton<MarketplaceRepository>();
             services.AddHttpClient("api", client =>
             {
-                client.BaseAddress = new Uri("https://nearbyproducetest.azurewebsites.net");
+                client.BaseAddress = new Uri("https://nearbyproduceapitest.azurewebsites.net");
             });
             services.AddScoped<LocalAuthenticationStateProvider>();
             services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<LocalAuthenticationStateProvider>());
