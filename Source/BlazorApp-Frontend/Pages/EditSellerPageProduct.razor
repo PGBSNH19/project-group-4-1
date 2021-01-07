@@ -4,26 +4,25 @@
 @using BlazorApp_Frontend.Services
 @inject NavigationManager NavManager
 @inject ProductRepository ProductRepository
-@inject SellerPageRepository sellerPageRepository 
 @inject NavigationManager NavigationManager
 @inject AuthenticationStateProvider  authenticationStateProvider
 
-<div class="flex-container-editsellerpage">
-    <div class="editsellerpage card">
-        <EditForm Model="@product" class="editsellerpage-form" OnValidSubmit="@ValidateProduct">
-            <div>
-                <h3>Edit seller page: </h3>
-            </div>
-            <div>
-                <p>Add file to seller page: </p>
-                <InputFile OnChange="@OnInputFileChange"></InputFile>
-            </div>
-            <div>
-                <input type="submit" class="btn btn-outline-primary btn-lg" value="Upload" />
-            </div>
-        </EditForm>
+    <div class="flex-container-editsellerpage">
+        <div class="editsellerpage card">
+            <EditForm Model="@product" class="editsellerpage-form" OnValidSubmit="@ValidateProduct">
+                <div>
+                    <h3>Edit seller page: </h3>
+                </div>
+                <div>
+                    <p>Add file to seller page: </p>
+                    <InputFile OnChange="@OnInputFileChange"></InputFile>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-outline-primary btn-lg" value="Upload" />
+                </div>
+            </EditForm>
+        </div>
     </div>
-</div>
 @code {
     int id = 0;
     HttpResponseMessage response = new HttpResponseMessage();
@@ -33,19 +32,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-        var claimsList = user.Claims.ToList();
-        int result = Int32.Parse(claimsList[4].Value);
-        sellerPage = await sellerPageRepository.GetSellerPageByUserId(result);
-
         var uri = NavManager.ToAbsoluteUri(NavManager.Uri);
         if (QueryHelpers.ParseQuery(uri.Query).TryGetValue("id", out var _id))
         {
             id = Convert.ToInt32(_id);
         }
-
-        product = await ProductRepository.GetProductById(sellerPage.SellerPageProducts.ElementAt(0).product.ProductID);
+        product = await ProductRepository.GetProductById(id);
     }
 
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
