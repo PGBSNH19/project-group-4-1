@@ -1,54 +1,61 @@
 ﻿@page "/reservations"
 @using BlazorApp_Frontend.Data
 @using BlazorApp_Frontend.Services
+@inject AuthenticationStateProvider  authenticationStateProvider
 @inject UserRepository userRepo
 
-<div class="flex-container-reservation">
-    <div class="reservationtitle">
-        <h3>Mina reservationer</h3>
-    </div>
-    <div class="card reservation">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">Produkt</th>
-                    <th scope="col">Antal</th>
-                    <th scope="col">Pris</th>
-                    <th scope="col">Ta bort</th>
-                </tr>
-            </thead>
-            <tbody>
-            @if (user.UserProducts != null)
-            {
-                @foreach (var userProduct in user.UserProducts)
-                {
-                    <tr>
-                        <td>@userProduct.product.Image</td>
-                        <td>@userProduct.product.Name</td>
-                        <td>@userProduct.Amount</td>
-                        <td>@userProduct.product.Price</td>
-                        <img src="@userProduct.product.Image"/>
-                        <td><button type="button" class="btn btn-outline-danger"/></td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td>Loading...</td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </div>
-</div>
+    <AuthorizeView>
+        <div class="flex-container-reservation">
+            <div class="reservationtitle">
+                <h3>Mina reservationer</h3>
+            </div>
+            <div class="card reservation">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Produkt</th>
+                            <th scope="col">Antal</th>
+                            <th scope="col">Pris</th>
+                            <th scope="col">Ta bort</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (user.UserProducts != null)
+                        {
+                            @foreach (var userProduct in user.UserProducts)
+                            {
+                                <tr>
+                                    <td>@userProduct.product.Image</td>
+                                    <td>@userProduct.product.Name</td>
+                                    <td>@userProduct.Amount</td>
+                                    <td>@userProduct.product.Price</td>
+                                    <img src="@userProduct.product.Image" />
+                                    <td><button type="button" class="btn btn-outline-danger" /></td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>Loading...</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </AuthorizeView>
+    @code {
 
-@code {
+        User user = new User();
 
-    User user = new User();
-    protected override async Task OnInitializedAsync()
-    {
-        user = await userRepo.GetUserById(2);
+        protected override async Task OnInitializedAsync()
+        {
+            var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+            var userLoggedIn = authState.User;
+            var claimsList = userLoggedIn.Claims.ToList();
+            int result = Int32.Parse(claimsList[4].Value);
+            user = await userRepo.GetUserById(result);
+        }
+
     }
-
-}

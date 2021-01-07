@@ -3,31 +3,32 @@
 @using BlazorApp_Frontend.Data
 @using BlazorApp_Frontend.Services
 @inject NavigationManager NavManager
-@inject ProductRepository ProductRepository;
-@inject NavigationManager NavigationManager;
+@inject ProductRepository ProductRepository
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider  authenticationStateProvider
 
-<div class="flex-container-editsellerpage">
-    <div class="editsellerpage card">
-        <EditForm Model="@product" class="editsellerpage-form" OnValidSubmit="@ValidateProduct">
-            <div>
-                <h3>Edit seller page: </h3>
-            </div>
-            <div>
-                <p>Add file to seller page: </p>
-                <InputFile OnChange="@OnInputFileChange"></InputFile>
-            </div>
-            <div>
-                <input type="submit" class="btn btn-outline-primary btn-lg" value="Upload" />
-            </div>
-        </EditForm>
+    <div class="flex-container-editsellerpage">
+        <div class="editsellerpage card">
+            <EditForm Model="@product" class="editsellerpage-form" OnValidSubmit="@ValidateProduct">
+                <div>
+                    <h3>Edit seller page: </h3>
+                </div>
+                <div>
+                    <p>Add file to seller page: </p>
+                    <InputFile OnChange="@OnInputFileChange"></InputFile>
+                </div>
+                <div>
+                    <input type="submit" class="btn btn-outline-primary btn-lg" value="Upload" />
+                </div>
+            </EditForm>
+        </div>
     </div>
-</div>
 @code {
-
     int id = 0;
     HttpResponseMessage response = new HttpResponseMessage();
     private IList<string> imageDataUrls = new List<string>();
     Product product = new Product();
+    SellerPage sellerPage = new SellerPage();
 
     protected override async Task OnInitializedAsync()
     {

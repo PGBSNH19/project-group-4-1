@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Net.Http;
+using Blazored.LocalStorage;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorApp_Frontend
 {
@@ -18,10 +21,11 @@ namespace BlazorApp_Frontend
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddBlazoredLocalStorage();
+            services.AddOptions();
+            services.AddAuthorizationCore();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<HttpClient>();
@@ -29,11 +33,19 @@ namespace BlazorApp_Frontend
             services.AddSingleton<MarketplaceRepository>();
             services.AddHttpClient("api", client =>
             {
-                client.BaseAddress = new Uri("https://nearbyproduceapiTest.azurewebsites.net");
+                client.BaseAddress = new Uri("https://nearbyproducetest.azurewebsites.net");
+            });
+            services.AddScoped<LocalAuthenticationStateProvider>();
+            services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<LocalAuthenticationStateProvider>());
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy("IsBuyer", policy => policy.RequireClaim("Type", "Buyer"));
+                config.AddPolicy("IsSeller", policy => policy.RequireClaim("Type", "Seller"));
             });
             services.AddSingleton<ProductRepository>();
             services.AddSingleton<SellerPageRepository>();
             services.AddSingleton<UserService>();
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,8 +64,9 @@ namespace BlazorApp_Frontend
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

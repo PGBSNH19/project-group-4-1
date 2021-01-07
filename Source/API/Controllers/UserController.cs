@@ -2,8 +2,10 @@
 using API.Models;
 using API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -241,7 +243,28 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Creates a new User.
+        /// Log in User.
+        /// </summary>
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _userRepository.LoginUserAsync(model);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result);
+                }
+
+                return BadRequest(result);
+            }
+
+            return BadRequest("Some properties are not valid");
+        }
+
+        /// <summary>
+        /// Post a new User.
         /// </summary>
         /// <remarks>
         /// Sample Request: 
@@ -273,7 +296,6 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<User>> PostUser([FromBody] UserDto user)
         {
-            user.Type = UserType.Buyer;
             try
             {
                 var mappedEntity = _mapper.Map<User>(user);

@@ -9,25 +9,32 @@
 <div class="flex-container-signup">
     <div class="signup card">
         <EditForm Model="@user" class="signup-form" OnValidSubmit="@RegisterUser">
-            <div>
-                <h3>Nearby-Produce Register</h3>
+            <div class="text-center">
+                <h3>Registrera ny användare</h3>
+                <AlertMessage Message="@LoginMesssage" MessageType="@messageType" />
+            </div>
+
+            <div style="margin: 20px; text-align: center; font: bold ">
+                <h5>Välj användartyp:</h5>
+                <input type="radio" value="@userType.1"  id="@userType" name="@userType" @onchange="buyerSelectionChanged" /> Köpare
+                <input type="radio" value="@userType.2"  id="@userType" name="@userType" @onchange="sellerSelectionChanged"/> Säljare
             </div>
             <div>
-                <input @bind="user.Username" class="form-control" placeholder="username" />
+                <input @bind="user.Username" class="form-control" placeholder="användarnamn" />
             </div>
             <div>
-                <input @bind="user.Email" class="form-control" placeholder="email address" />
+                <input @bind="user.Email" class="form-control" type="email" placeholder="e-post" />
             </div>
             <div>
-                <input type="password" @bind="user.Password" class="form-control" placeholder="password" />
+                <input type="password" @bind="user.Password" class="form-control" placeholder="lösenord" />
             </div>
             <div>
-                <input type="password" @bind="ConfirmPassword" class="form-control" placeholder="confirm password" />
+                <input type="password" @bind="ConfirmPassword" class="form-control" placeholder="upprepa lösenord" />
             </div>
             <div class="text-center">
-                <input type="submit" class="btn btn-outline-primary btn-lg" value="Sign up" />
+                <input style="margin-bottom: 10px" type="submit" class="btn btn-outline-primary btn-lg" value="Gå vidare" />
                 <br />
-                <a href="/login">Already an user?</a>
+                <a href="/login">Redan en användare?</a>
             </div>
         </EditForm>
     </div>
@@ -38,19 +45,31 @@
     private User user;
     private string ConfirmPassword;
     public string LoginMesssage { get; set; }
+    AlertMessageType messageType = AlertMessageType.Error;
+    UserType userType = new UserType();
+
 
     protected override Task OnInitializedAsync()
     {
         user = new User();
         return base.OnInitializedAsync();
     }
+    public void buyerSelectionChanged(ChangeEventArgs args)
+    {
+        user.Type = UserType.Buyer;
+    }
+
+    public void sellerSelectionChanged(ChangeEventArgs args)
+    {
+        user.Type = UserType.Seller;
+    }
+
 
     private async Task<bool> RegisterUser()
     {
         if (user.Password == ConfirmPassword)
         {
-
-            user.Type = UserType.Buyer;
+            
             var salt = UserService.GenerateSalt();
             var hashedPassword = UserService.GenerateHash(user.Password, salt);
             user.Salt = salt;
