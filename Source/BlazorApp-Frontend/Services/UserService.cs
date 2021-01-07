@@ -1,14 +1,10 @@
-﻿using System;
+﻿using AKSoftware.WebApi.Client;
+using BlazorApp_Frontend.Data;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System;
 using System.Net.Http;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
-using AKSoftware.WebApi.Client;
-using BlazorApp_Frontend.Data;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.Rest;
-using Newtonsoft.Json;
 
 namespace BlazorApp_Frontend.Services
 {
@@ -25,7 +21,7 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<UserManagerResponse> LoginUserAsync(LoginRequest request)
         {
-            var response = await client.PostAsync<UserManagerResponse>(http.BaseAddress + $"/api/v1.0/User/login", request);
+            var response = await client.PostAsync<UserManagerResponse>("https://nearbyproduceapitest.azurewebsites.net/api/v1.0/User/login", request);
             return response.Result;
         }
 

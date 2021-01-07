@@ -2,10 +2,8 @@
 using API.Models;
 using API.Services;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 
@@ -248,6 +246,7 @@ namespace API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel model)
         {
+
             if (ModelState.IsValid)
             {
                 var result = await _userRepository.LoginUserAsync(model);
