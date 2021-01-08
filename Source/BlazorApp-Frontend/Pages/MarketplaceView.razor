@@ -1,0 +1,31 @@
+﻿@page "/markets"
+@inject HttpClient http;
+@inject MarketplaceRepository marketplaceRepository;
+@using Data;
+@using Services;
+
+<div class="flex-container">
+    @if (marketplaces.Count != 0)
+    {
+        @foreach (var Marketplace in marketplaces)
+        {
+            <div class="card">
+                <img alt="Rekommenderad marknad" class="card-img-top" src=@Marketplace.Image/>
+                <div class="card-body">
+                    <h4 class="card-title">@Marketplace.Name</h4>
+                    <p class="card-text">@Marketplace.Location</p>
+                    <p class="card-footer">Börjar: @Marketplace.StartDateTime <br/> Slutar: @Marketplace.EndDateTime</p>
+                </div>
+            </div>
+        }
+    }
+</div>
+@code {
+
+    List<Marketplace> marketplaces = new List<Marketplace>();
+    protected override async Task OnInitializedAsync()
+    {
+        marketplaces = await marketplaceRepository.GetMarketplaces();
+    }
+
+}

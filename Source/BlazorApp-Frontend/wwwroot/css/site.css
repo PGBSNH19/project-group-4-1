@@ -1,0 +1,304 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+a, .btn-link {
+    color: #0366d6;
+}
+
+h3 {
+    font-weight: bold;
+    color: purple;
+}
+
+#hero-card {
+    height: 600px;
+    margin-top:66px;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+img {
+    max-width: 100%;
+    height: 600px;
+}
+
+.flex-container-signup {
+    display: grid;
+    margin-top: 56px;
+    margin-bottom: 49px;
+    width: calc(100vw-20px);
+    height: calc(100vh - 105px);
+    grid-template-columns: 25% auto 25%;
+    grid-template-rows: 10% auto 25%;
+}
+
+
+
+.signup {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 30px;
+    align-items: center;
+}
+
+.signup > .signup-form > div {
+    margin: 15px;
+}
+
+.flex-container-login {
+    display: grid;
+    margin-top: 56px;
+    width: calc(100vw-20px);
+    margin-bottom: 49px;
+    height: calc(100vh - 105px);
+    grid-template-columns: 25% auto 25%;
+    grid-template-rows: 10% auto 25%;
+}
+
+.login {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 30px;
+    align-items: center;
+}
+
+.login > .login-form > div{
+    margin:15px;
+}
+
+.reservationtitle{
+    margin:10px;
+    grid-column-start:2;
+    grid-row-start:1;
+    align-self:center;
+}
+
+.reservation {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 30px;
+    align-items: center;
+}
+
+.flex-container-reservation {
+    display: grid;
+    margin-top: 104px;
+    width: calc(100vw-20px);
+    margin-bottom: 49px;
+    height: calc(100vh - 153px);
+    grid-template-columns: 15% auto 15%;
+    grid-template-rows: 10% auto 25%;
+}
+
+.flex-container-profilesettings {
+    display: grid;
+    margin-top: 56px;
+    width: calc(100vw-20px);
+    margin-bottom: 49px;
+    height: calc(100vh - 105px);
+    grid-template-columns: 15% auto 15%;
+    grid-template-rows: 5% auto 25%;
+}
+
+.profilesettings {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 30px;
+    align-items: center;
+}
+
+.profilesettings > div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.profilesettings > div > button {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.flex-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flex-container > flex-item {
+    margin: 10px;
+    flex-basis: 33%;
+}
+
+.flex-container > * {
+    margin: 10px;
+    flex-basis: 20%;
+}
+
+.flex-container-sellerpage {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 56px;
+    margin-bottom: 49px;
+}
+
+.sellerpage {
+    margin: 10px;
+    flex-basis: 20%;
+    height: 600px;
+}
+
+.flex-container-editsellerpage {
+    display: grid;
+    margin-top: 56px;
+    width: calc(100vw-20px);
+    margin-bottom: 49px;
+    height: calc(100vh - 105px);
+    grid-template-columns: 25% auto 25%;
+    grid-template-rows: 10% auto 25%;
+}
+
+.editsellerpage {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 20px;
+    align-items: center;
+}
+
+.editsellerpage-form > * {
+    margin: 10px;
+}
+
+@media (max-width: 320px) {
+    .flex-container-reservation {
+        grid-template-columns: 1% auto 1%;
+        grid-template-rows: 10% auto 5%;
+        margin-top: 80px;
+        margin-bottom: 73px;
+    }
+}
+
+@media (max-width: 767px) {
+    .flex-container {
+        flex-direction: column;
+    }
+    .flex-container-sellerpage {
+        flex-direction: column;
+    }
+    .flex-container-signup {
+        grid-template-columns: 10% auto 10%;
+        grid-template-rows: 5% auto 30%;
+        margin-top: 56px;
+        margin-bottom: 49px;
+    }
+    .flex-container-login {
+        grid-template-columns: 10% auto 10%;
+        grid-template-rows: 5% auto 5%;
+        margin-top: 56px;
+        margin-bottom: 49px;
+    }
+    .flex-container-profilesettings {
+        grid-template-columns: 10% auto 10%;
+        grid-template-rows: 5% auto 5%;
+        margin-bottom: 73px;
+    }
+    .flex-container-reservation {
+        grid-template-columns: 1% auto 1%;
+        grid-template-rows: 10% auto 5%;
+        margin-bottom: 73px;
+    }
+    .flex-container-editsellerpage {
+        grid-template-columns: 5% auto 5%;
+        grid-template-rows: 5% auto 5%;
+        margin-top: 56px;
+        margin-bottom: 49px;
+    }
+    .editsellerpage-form > * {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .flex-container > * {
+        margin: 10px;
+        flex-basis: calc(50% - 20px);
+    }
+    .editsellerpage-form > * {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .flex-container-profilesettings {
+        grid-template-columns: 25% auto 25%;
+    }
+    .profilesettings > div {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .editsellerpage-form > * {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.index-title {
+    text-align: center;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+ #blazor-error-ui .dismiss {
+    cursor: pointer;
+     position: absolute;
+       right: 0.75rem;
+     top: 0.5rem;
+ }
+#form {
+    background-color: lightgray;
+    opacity: .8;
+}
+.card-img-top {
+    max-height: 300px;
+    object-fit: cover;
+    padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.card-img-header {
+    max-width: 750px;
+    padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
+}
