@@ -42,7 +42,7 @@ Själva produktionsmiljön deployas efter att test/utvecklings branchen har merg
 
 ## Branching och merging strategi
 
-![Merge](G:\Producera och leverera mjukvara\Review\Presentation\Merge.png)
+![Merge](Merge.png)
 
 I main branchen ska endast finnas färdig och testad kod. 
 
@@ -54,4 +54,4 @@ Test-branchen deployas till en testmiljö där testarna kontrollerar att feature
 
 ## C4
 
-![Review C4](G:\Producera och leverera mjukvara\Review\Presentation\Review C4.png) 
+![Review C4](Review%20C4.png) 
