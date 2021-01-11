@@ -2,75 +2,104 @@
 @using BlazorApp_Frontend.Data
 @using Newtonsoft.Json
 @using BlazorApp_Frontend.Services
-@using System.Security.Claims
+@using BlazorApp_Frontend.Shared
 @inject NavigationManager NavigationManager
-
-<center>
-    <div class="col-8 card">
-        <div class="col-12 row">
-            <p>&nbsp;</p>
-        </div>
-        <div class="col-12 row">
-            <div class="col-6" style="border-left:thick">
-                @*<EditForm Model="@user" OnValidSubmit="@ValidateUser">*@
-                    <div>
-                        <br /><br /><br /><br /><br />
-                    </div>
-                    <div>
-                        <h3 style="font-weight:bold; color:purple">Nearby-Produce Login</h3>
-                    </div>
-                    <div>
-                        <br />
-                    </div>
-                    <div class="col-12 row">
-                        <input class="form-control col-12" placeholder="email address or username" />
-                    </div>
-                    <br />
-                    <div class="col-12 row">
-                        <input type="password" class="form-control col-12" placeholder="password" />
-                    </div>
-                    <br />
-                    <div class="col-12 row">
-                        <span class="col-12"></span>
-                        <input type="submit" class="form-control col-6 btn btn-primary" value="Login" />
-                        <a href="/signup" class="col-3">Sign up</a>
-                    </div>*
-                    <br />
-                    <div class="col-12 row" style="text-align:left; font-weight:bold">
-                    </div>
-                @*</EditForm>*@
-            </div>
-        </div>
-        <div class="col-12 row">
-            <p>&nbsp;</p>
+@inject UserService UserService
+@inject NavigationManager navigationManager
+@inject AuthenticationStateProvider  authenticationStateProvider
+@inject ILocalStorageService storageService
+  
+<div class="flex-container-login">
+        <div class="login card">
+            <EditForm Model="@loginRequest" class="login-form" OnValidSubmit="@LoginUser">
+                <div class="text-center">
+                    <h3>Logga in</h3>
+                    <AlertMessage Message="@message" MessageType="@messageType" />
+                </div>
+                <div>
+                    <input placeholder="e-post" class="form-control" @bind="loginRequest.Email"/>
+                </div>
+                <div>
+                    <input type="password" class="form-control" placeholder="lösenord" @bind="loginRequest.Password"/>
+                </div>
+                <div class="text-center">
+                    <input style="margin-bottom: 10px" type="submit" class="btn btn-outline-primary btn-lg" value="Logga in" />
+                    <br/>
+                    <a href="/signup">Bli medlem</a>
+                </div>
+            </EditForm>
         </div>
     </div>
-</center>
+@*<div class="row">
+    <div class="col-xl-6">
+        <h2>Login to your account</h2>
+        <EditForm Model="loginRequest" OnValidSubmit="LoginUser">
+            <RadzenCard>
+                
 
-@*@code {
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <label>Email</label>
+                <RadzenTextBox @bind-Value="loginRequest.Email"></RadzenTextBox>
+
+                <label>Password</label>
+                <RadzenPassword @bind-Value="loginRequest.Password"></RadzenPassword>
+
+                <hr />
+                <RadzenButton ButtonType="Radzen.ButtonType.Submit" Text="Login"
+                              ButtonStyle="Radzen.ButtonStyle.Primary" class="btn-block mr-2"
+                              Disabled="isBusy" />
+                <RadzenButton ButtonType="Radzen.ButtonType.Button" Text="Register"
+                              ButtonStyle="Radzen.ButtonStyle.Secondary" class="btn-block mr-2"
+                              Disabled="isBusy" Click="GoToRegister" />
+            </RadzenCard>
+        </EditForm>
+    </div>
+</div>*@
 
     private User user;
     public string LoginMesssage { get; set; }
     ClaimsPrincipal claimsPrincipal;
 
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
+            LoginRequest loginRequest = new LoginRequest();
+            bool isBusy = false;
+            string message = string.Empty;
+            AlertMessageType messageType = AlertMessageType.Error;
 
-    private async Task<bool> ValidateUser()
-    {
-                var returnedUser = await userService.LoginAsync(user);  //Needs to be re-written or altered once services are in place.
+            Dictionary<string, string> userInfo = new Dictionary<string, string>();
 
-        if (returnedUser.Email != null && returnedUser.Username != null)
-        {
-            await ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsAuthenticated(returnedUser);  //Needs to be re-written or altered once services are in place.
+            public async Task LoginUser()
+            {
+                isBusy = true;
+                var result = await UserService.LoginUserAsync(loginRequest);
+                if (result.IsSuccess)
+                {
+                    var userInfo = new BlazorApp_Frontend.Data.LocalUserInfo()
+                    {
+                        AccessToken = result.Message,
+                        Email = result.UserInfo["Email"],
+                        UserName = result.UserInfo["UserName"],
+                        Type = result.UserInfo["Type"],
+                        Id = result.UserInfo[System.Security.Claims.ClaimTypes.NameIdentifier],
+            };
 
-            NavigationManager.NavigateTo("/"); // Needs to Navigate to profile pages depending on type when that is in place
-        }
+                await storageService.SetItemAsync("User", userInfo);
+                await authenticationStateProvider.GetAuthenticationStateAsync();
+
+                navigationManager.NavigateTo("/");
+            }
         else
         {
-            LoginMesssage = "Invalid username or password";
+            message = "Felaktig epost eller lösenord";
         }
 
-        return await Task.FromResult(true);
+        isBusy = false;
+    }
+
+    void GoToRegister()
+    {
+        navigationManager.NavigateTo("/signup");
     }
 
 }*@

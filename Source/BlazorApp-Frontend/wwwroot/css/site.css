@@ -10,10 +10,109 @@ a, .btn-link {
 
 #hero-card {
     height: 600px;
+    margin-top:66px;
+    margin-left:10px;
+    margin-right:10px;
 }
 
 img {
+    max-width: 100%;
     height: 600px;
+}
+
+.flex-container-signup {
+    display: grid;
+    margin-top: 56px;
+    margin-bottom: 49px;
+    width: calc(100vw-20px);
+    height: calc(100vh - 105px);
+    grid-template-columns: 25% auto 25%;
+    grid-template-rows: 10% auto 25%;
+}
+
+
+
+.signup {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 30px;
+    align-items: center;
+}
+
+.signup > .signup-form > div {
+    margin: 15px;
+}
+
+.flex-container-login {
+    display: grid;
+    margin-top: 56px;
+    width: calc(100vw-20px);
+    margin-bottom: 49px;
+    height: calc(100vh - 105px);
+    grid-template-columns: 25% auto 25%;
+    grid-template-rows: 10% auto 25%;
+}
+
+.login {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 30px;
+    align-items: center;
+}
+
+.login > .login-form > div{
+    margin:15px;
+}
+
+.reservationtitle{
+    margin:10px;
+    grid-column-start:2;
+    grid-row-start:1;
+    align-self:center;
+}
+
+.reservation {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 30px;
+    align-items: center;
+}
+
+.flex-container-reservation {
+    display: grid;
+    margin-top: 104px;
+    width: calc(100vw-20px);
+    margin-bottom: 49px;
+    height: calc(100vh - 153px);
+    grid-template-columns: 15% auto 15%;
+    grid-template-rows: 10% auto 25%;
+}
+
+.flex-container-profilesettings {
+    display: grid;
+    margin-top: 56px;
+    width: calc(100vw-20px);
+    margin-bottom: 49px;
+    height: calc(100vh - 105px);
+    grid-template-columns: 15% auto 15%;
+    grid-template-rows: 5% auto 25%;
+}
+
+.profilesettings {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 30px;
+    align-items: center;
+}
+
+.profilesettings > div {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.profilesettings > div > button {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .flex-container {
@@ -31,9 +130,87 @@ img {
     flex-basis: 20%;
 }
 
-@media (max-width: 800px) {
+.flex-container-sellerpage {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 56px;
+    margin-bottom: 49px;
+}
+
+.sellerpage {
+    margin: 10px;
+    flex-basis: 20%;
+    height: 600px;
+}
+
+.flex-container-editsellerpage {
+    display: grid;
+    margin-top: 56px;
+    width: calc(100vw-20px);
+    margin-bottom: 49px;
+    height: calc(100vh - 105px);
+    grid-template-columns: 25% auto 25%;
+    grid-template-rows: 10% auto 25%;
+}
+
+.editsellerpage {
+    grid-column-start: 2;
+    grid-row-start: 2;
+    padding: 20px;
+    align-items: center;
+}
+
+.editsellerpage-form > * {
+    margin: 10px;
+}
+
+@media (max-width: 320px) {
+    .flex-container-reservation {
+        grid-template-columns: 1% auto 1%;
+        grid-template-rows: 10% auto 5%;
+        margin-top: 80px;
+        margin-bottom: 73px;
+    }
+}
+
+@media (max-width: 767px) {
     .flex-container {
         flex-direction: column;
+    }
+    .flex-container-sellerpage {
+        flex-direction: column;
+    }
+    .flex-container-signup {
+        grid-template-columns: 10% auto 10%;
+        grid-template-rows: 5% auto 30%;
+        margin-top: 56px;
+        margin-bottom: 49px;
+    }
+    .flex-container-login {
+        grid-template-columns: 10% auto 10%;
+        grid-template-rows: 5% auto 5%;
+        margin-top: 56px;
+        margin-bottom: 49px;
+    }
+    .flex-container-profilesettings {
+        grid-template-columns: 10% auto 10%;
+        grid-template-rows: 5% auto 5%;
+        margin-bottom: 73px;
+    }
+    .flex-container-reservation {
+        grid-template-columns: 1% auto 1%;
+        grid-template-rows: 10% auto 5%;
+        margin-bottom: 73px;
+    }
+    .flex-container-editsellerpage {
+        grid-template-columns: 5% auto 5%;
+        grid-template-rows: 5% auto 5%;
+        margin-top: 56px;
+        margin-bottom: 49px;
+    }
+    .editsellerpage-form > * {
+        margin-top: 30px;
+        margin-bottom: 30px;
     }
 }
 
@@ -41,6 +218,25 @@ img {
     .flex-container > * {
         margin: 10px;
         flex-basis: calc(50% - 20px);
+    }
+    .editsellerpage-form > * {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+}
+
+@media (min-width: 1025px) {
+    .flex-container-profilesettings {
+        grid-template-columns: 25% auto 25%;
+    }
+    .profilesettings > div {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .editsellerpage-form > * {
+        margin-top: 50px;
+        margin-bottom: 50px;
     }
 }
 
@@ -92,72 +288,16 @@ img {
     background-color: lightgray;
     opacity: .8;
 }
- .opacity-0h5 {
-    opacity:0!important;
-    transition: opacity .25s ease-in-out!important;
-    -moz-transition: opacity .25s ease-in-out!important;
-    -webkit-transition: opacity .25s ease-in-out!important;
-  }
-  .opacity-0h5:hover {
-    opacity:1!important;
-  }
-  
- .loader{
-     position: relative;
- }
- .loader span{
-     position: absolute;
-     width: 3px;
-     height: 3px;
-     background: #0f0;
-     display: block;
-     animation: animate 5s linear infinite;
-     box-shadow: 0 0 10px #0f0,
-                 0 0 40px #0f0,
-                 0 0 80px #0f0,
-                 0 0 160px #0f0;
-                 animation-delay: calc(-0.5s * var(--i));
-                 transform-origin:bottom ;
- }
- @keyframes animate{
-     0%
-     {
-         top:0;
-         left: 80px;
-         transform: scaleY(1);
-         filter: hue-rotate(0deg);
-     }
-     2%
-     {
-         top:0px;
-         left: 80px;
-         transform: scaleY(0.4);
-     }
-     10%
-     {
-         top:0px;
-         left: 70px;
-         transform: scaleY(1);
-     }
-     40%
-     {
-         top:0px;
-         left: 10px;
-     }
-     60%
-     {
-         top: 20px;
-         left: 10px;
-     }
-     85%
-     {
-         top:20px;
-         left: 80px;
-     }
-     100%
-     {
-         top:0;
-         left: 80px;
-         filter: hue-rotate(360deg);
-     }
- }
+.card-img-top {
+    max-height: 300px;
+    object-fit: cover;
+    padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.card-img-header {
+    max-width: 750px;
+    padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
+}

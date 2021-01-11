@@ -5,56 +5,37 @@
 @inject NavigationManager NavigationManager
 
 
-<center>
-    <div class="col-8 card">
-        <div class="col-12 row">
-            <p>&nbsp;</p>
-        </div>
-        <div class="col-12 row">
-            <div class="col-6" style="border-left:thick">
-                <EditForm Model="@user" OnValidSubmit="@RegisterUser">
-                    <div>
-                        <br /><br /><br /><br /><br />
-                    </div>
-                    <div>
-                        <h3 style="font-weight:bold; color:purple">Nearby-Produce Register</h3>
-                    </div>
-                    <div>
-                        <br />
-                    </div>
-                    <div class="col-12 row">
-                        <input class="form-control col-12" @bind="user.Username" placeholder="username" />
-                    </div>
-                    <br />
-                    <div class="col-12 row">
-                        <input class="form-control col-12" @bind="user.Email" placeholder="email address" />
-                    </div>
-                    <br />
-                    <div class="col-12 row">
-                        <input type="password" class="form-control col-12" @bind="user.Password" placeholder="password" />
-                    </div>
-                    <br />
-                    <div class="col-12 row">
-                        <input type="password" class="form-control col-12" @bind="ConfirmPassword" placeholder="confirm password" />
-                    </div>
-                    <br />
-                    <div class="col-12 row">
-                        <span class="col-12"></span>
-                        <input type="submit" class="form-control col-6 btn btn-primary" value="Sign up" />
-                        <a href="/login" class="col-6">Already an user?</a>
-                    </div>
-                    <br />
-                    <div class="col-12 row" style="text-align:left; font-weight:bold">
-                    </div>
-                    <br />
-                    <div class="col-12 row" style="text-align:left; font-weight:bold">
-                    </div>
-                </EditForm>
+<div class="flex-container-signup">
+    <div class="signup card">
+        <EditForm Model="@user" class="signup-form" OnValidSubmit="@RegisterUser">
+            <div class="text-center">
+                <h3>Registrera ny användare</h3>
+                <AlertMessage Message="@LoginMesssage" MessageType="@messageType" />
             </div>
-        </div>
-        <div class="col-12 row">
-            <p>&nbsp;</p>
-        </div>
+
+            <div style="margin: 20px; text-align: center; font: bold ">
+                <h5>Välj användartyp:</h5>
+                <input type="radio" value="@userType.1"  id="@userType" name="@userType" @onchange="buyerSelectionChanged" /> Köpare
+                <input type="radio" value="@userType.2"  id="@userType" name="@userType" @onchange="sellerSelectionChanged"/> Säljare
+            </div>
+            <div>
+                <input @bind="user.Username" class="form-control" placeholder="användarnamn" />
+            </div>
+            <div>
+                <input @bind="user.Email" class="form-control" type="email" placeholder="e-post" />
+            </div>
+            <div>
+                <input type="password" @bind="user.Password" class="form-control" placeholder="lösenord" />
+            </div>
+            <div>
+                <input type="password" @bind="ConfirmPassword" class="form-control" placeholder="upprepa lösenord" />
+            </div>
+            <div class="text-center">
+                <input style="margin-bottom: 10px" type="submit" class="btn btn-outline-primary btn-lg" value="Gå vidare" />
+                <br />
+                <a href="/login">Redan en användare?</a>
+            </div>
+        </EditForm>
     </div>
 </center>
 
@@ -63,19 +44,35 @@
     private User user;
     private string ConfirmPassword;
     public string LoginMesssage { get; set; }
+    AlertMessageType messageType = AlertMessageType.Error;
+    UserType userType = new UserType();
+
 
     protected override Task OnInitializedAsync()
     {
         user = new User();
         return base.OnInitializedAsync();
     }
+    public void buyerSelectionChanged(ChangeEventArgs args)
+    {
+        user.Type = UserType.Buyer;
+    }
+
+    public void sellerSelectionChanged(ChangeEventArgs args)
+    {
+        user.Type = UserType.Seller;
+    }
+
 
     private async Task<bool> RegisterUser()
     {
         if (user.Password == ConfirmPassword)
         {
-
-            user.Type = UserType.Buyer;
+            
+            var salt = UserService.GenerateSalt();
+            var hashedPassword = UserService.GenerateHash(user.Password, salt);
+            user.Salt = salt;
+            user.Password = hashedPassword;
             var response = await userRepo.PostUser(user);
 
             if (response.IsSuccessStatusCode)
