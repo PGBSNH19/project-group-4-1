@@ -7,6 +7,7 @@ namespace API.Models
         [ForeignKey("SellerPageID")]
         public int SellerPageID { get; set; }
         public SellerPage sellerPage { get; set; }
+
         [ForeignKey("ProductsID")]
         public int ProductID { get; set; }
         public Product product { get; set; }

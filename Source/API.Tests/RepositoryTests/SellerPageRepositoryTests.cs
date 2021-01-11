@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using API.Context;
+﻿using API.Context;
 using API.Models;
 using API.Services;
 using Moq;
 using Moq.EntityFrameworkCore;
+using System.Collections.Generic;
 using Xunit;
 
 namespace API.Tests.RepositoryTests
@@ -38,6 +38,21 @@ namespace API.Tests.RepositoryTests
 
             //Assert
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async void GetById_IfNotExist_ExpectedNull()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
+            var sellerPageRepository = new SellerPageRepository(mockContext.Object);
+
+            //Act
+            var result = await sellerPageRepository.GetSellerPageByUserID(3);
+
+            //Assert
+            Assert.Null(result);
         }
 
         public List<SellerPage> GetSellerPages()

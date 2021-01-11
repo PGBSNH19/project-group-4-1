@@ -1,8 +1,11 @@
-﻿using API.Models;
+﻿using API.Configuration;
+using API.Dtos;
+using API.Models;
 using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
 using AutoMapper;
@@ -13,12 +16,14 @@ namespace API.Controllers
     public class SellerPageController : Controller
     {
         private readonly ISellerPageRepository _sellerPageRepository;
+        private readonly IProductRepository _productRepository;
         private readonly IMapper _mapper;
 
-        public SellerPageController(ISellerPageRepository sellerPageRepository, IMapper mapper)
+        public SellerPageController(ISellerPageRepository sellerPageRepository, IMapper mapper, IProductRepository productRepository)
         {
             _sellerPageRepository = sellerPageRepository;
             _mapper = mapper;
+            _productRepository = productRepository;
         }
         /// <summary>
         /// Gets all users
@@ -72,6 +77,7 @@ namespace API.Controllers
             {
                 var results = await _sellerPageRepository.GetSellerPages();
                 var mappedEntities = _mapper.Map<SellerPageDto[]>(results);
+
                 if (mappedEntities.Length == 0)
                 {
                     return NotFound();
@@ -119,6 +125,13 @@ namespace API.Controllers
             {
                 var result = await _sellerPageRepository.GetSellerPageByUserID(id);
                 var mappedEntity = _mapper.Map<SellerPageDto>(result);
+                for (int i = 0; i < result.SellerPageProducts.Count(); i++)
+                {
+                    var products = result.SellerPageProducts.ElementAt(i).product;
+                    var productDto = await GetProductByIdInternal(products.ProductID);
+                    mappedEntity.SellerPageProducts.ElementAt(i).product = productDto;
+                }
+
                 if (mappedEntity == null)
                 {
                     return NotFound();
@@ -177,6 +190,28 @@ namespace API.Controllers
             catch (Exception e)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {e.Message}");
+            }
+        }
+        public async Task<ProductDto> GetProductByIdInternal(int id)
+        {
+            try
+            {
+                var result = await _productRepository.GetProductById(id);
+                var mappedEntity = _mapper.Map<ProductDto>(result);
+
+                var manualMapper = new ManualMapper();
+                var manualObject = manualMapper.ManualMapperPicturesReverse(result, mappedEntity);
+
+                if (mappedEntity == null)
+                {
+                    return null;
+                }
+
+                return manualObject;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"{e}");
             }
         }
     }

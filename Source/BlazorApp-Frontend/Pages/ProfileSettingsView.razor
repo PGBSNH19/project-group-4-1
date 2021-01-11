@@ -1,6 +1,6 @@
 ﻿@page "/ProfileSettingsView"
 @inject UserRepository userRepo
-@using Data;
+@inject AuthenticationStateProvider  authenticationStateProvider
 @using Services;
 
 <div class="display-3 text-center mb-4">Profil inställningar</div>
@@ -8,7 +8,7 @@
     <div class="form-row">
         <div class="col-md-5 mb-3 ml-2">
             <label for="validationDefault01">Användarnamn</label>
-            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@user.Username disabled>
+            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@currentUser.Username disabled>
         </div>
         <div class="col-md-5 mb-3">
             <label for="validationDefault02">Nytt Användarnamn</label>
@@ -26,7 +26,7 @@
 
         <div class="col-md-5 mb-3  ml-2">
             <label for="validationDefault01">Mailadress</label>
-            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@user.Email disabled>
+            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@currentUser.Email disabled>
         </div>
         <div class="col-md-5 mb-3">
             <label for="validationDefault02">Ny mailadress</label>
@@ -43,11 +43,36 @@
     </div>
 </form>
 
-@code {
-    private User user = new User { };
-
+@code{
+    private User currentUser = new User();
+    private User newUser = new User();
+    private string NewUsername { get; set; }
+    private string NewPassword { get; set; }
+    private string NewEmail { get; set; }
+    
     protected override async Task OnInitializedAsync()
     {
-        user = await userRepo.GetUserById(1);
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var userLoggedIn = authState.User;
+        var claimsList = userLoggedIn.Claims.ToList();
+        int result = Int32.Parse(claimsList[4].Value);
+        currentUser = await userRepo.GetUserById(result);
+    }
+
+    public async void SaveChanges()
+    {
+        currentUser = await userRepo.GetUserById(1);
+        newUser = currentUser;
+
+        if (NewUsername != null)
+            newUser.Username = NewUsername;
+        if (NewPassword != null)
+            newUser.Password = NewPassword;
+        if (NewEmail != null)
+            newUser.Email = NewEmail;
+
+        await userRepo.PutUser(newUser);
+
+        this.StateHasChanged();
     }
 }

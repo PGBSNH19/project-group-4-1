@@ -95,10 +95,62 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
+        /// <summary>
+        /// Log in User.
+        /// </summary>
+        [HttpPost("Login")]
+        public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                var result = await _userRepository.LoginUserAsync(model);
+
+                if (result.IsSuccess)
+                {
+                    return Ok(result);
+                }
+
+                return BadRequest(result);
+            }
+
+            return BadRequest("Some properties are not valid");
+        }
+
+        /// <summary>
+        /// Post a new User.
+        /// </summary>
+        /// <remarks>
+        /// Sample Request: 
+        ///
+        ///    Post /User
+        ///    
+        ///    {
+        ///    
+        ///         "UserID": 1,
+        ///         
+        ///         "Username": "Example",
+        ///         
+        ///         "Email": "Example@Example.com",
+        ///         
+        ///         "Password": "*********",
+        ///         
+        ///         "Salt": "jdakjgo21ok4k==",
+        ///         
+        ///         "UserType": 2,
+        ///         
+        ///         "MarketplaceSellers": [],
+        ///         
+        ///         "UserProducts": []
+        ///         
+        ///    }
+        ///
+        ///</remarks>
+        /// <param name="user"></param>
         [HttpPost]
         public async Task<ActionResult<User>> PostUser([FromBody] UserDto user)
         {
-            user.Type = UserType.Buyer;
             try
             {
                 var mappedEntity = _mapper.Map<User>(user);

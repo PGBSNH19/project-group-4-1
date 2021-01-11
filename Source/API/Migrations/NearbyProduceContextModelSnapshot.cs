@@ -35,12 +35,15 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("PictureBytes")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<DateTime>("StartDateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("MarketplaceID");
 
-                    b.ToTable("Marketplace");
+                    b.ToTable("Marketplaces");
 
                     b.HasData(
                         new
@@ -73,7 +76,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerID");
 
-                    b.ToTable("MarketplaceSeller");
+                    b.ToTable("MarketplaceSellers");
 
                     b.HasData(
                         new
@@ -102,6 +105,9 @@ namespace API.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("PictureBytes")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int?>("SellerPageID")
                         .HasColumnType("int");
@@ -147,6 +153,10 @@ namespace API.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(150)
+                        .HasColumnType("VARCHAR(150)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -157,24 +167,27 @@ namespace API.Migrations
 
                     b.HasIndex("SellerUserID");
 
-                    b.ToTable("SellerPage");
+                    b.ToTable("SellerPages");
 
                     b.HasData(
                         new
                         {
                             SellerPageID = 1,
+                            Description = "Här på Jannes gård säljer vi dem färskaste varorna i hela Västra Götaland!",
                             Name = "Jannes Online-Gård",
                             SellerUserID = 1
                         },
                         new
                         {
                             SellerPageID = 2,
+                            Description = "Lisas Näroldat: Bättre grönsaker finns inte!",
                             Name = "Lisas Näroldat",
                             SellerUserID = 4
                         },
                         new
                         {
                             SellerPageID = 3,
+                            Description = "Vi säljer dem bästa varorna i hela Göteborg!",
                             Name = "Hannes eko-farm",
                             SellerUserID = 4
                         });
@@ -198,7 +211,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerPageID");
 
-                    b.ToTable("SellerPageProduct");
+                    b.ToTable("SellerPageProducts");
 
                     b.HasData(
                         new
@@ -237,6 +250,9 @@ namespace API.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Salt")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
@@ -245,7 +261,7 @@ namespace API.Migrations
 
                     b.HasKey("UserID");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
@@ -253,7 +269,7 @@ namespace API.Migrations
                             UserID = 1,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Type = 2,
+                            Type = 1,
                             Username = "JanneBonde07"
                         },
                         new
@@ -261,7 +277,7 @@ namespace API.Migrations
                             UserID = 2,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Type = 1,
+                            Type = 0,
                             Username = "Bengtan555"
                         },
                         new
@@ -269,7 +285,7 @@ namespace API.Migrations
                             UserID = 3,
                             Email = "test@test.com",
                             Password = "KlDioL123!",
-                            Type = 1,
+                            Type = 0,
                             Username = "Henrik123"
                         },
                         new
@@ -277,7 +293,7 @@ namespace API.Migrations
                             UserID = 4,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Type = 2,
+                            Type = 1,
                             Username = "BondenLisa1"
                         },
                         new
@@ -285,7 +301,7 @@ namespace API.Migrations
                             UserID = 5,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Type = 2,
+                            Type = 1,
                             Username = "HannesFarm"
                         });
                 });
@@ -298,22 +314,27 @@ namespace API.Migrations
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
+                    b.Property<int>("Amount")
+                        .HasColumnType("int");
+
                     b.HasKey("UserID", "ProductID");
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("UserProduct");
+                    b.ToTable("UserProducts");
 
                     b.HasData(
                         new
                         {
                             UserID = 2,
-                            ProductID = 1
+                            ProductID = 1,
+                            Amount = 10
                         },
                         new
                         {
                             UserID = 3,
-                            ProductID = 5
+                            ProductID = 5,
+                            Amount = 12
                         });
                 });
 
