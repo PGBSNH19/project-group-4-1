@@ -40,15 +40,7 @@
             <button type="button" class="btn btn-outline-danger" @onclick="DeleteAccount">Ta bort mitt konto</button>
         </div>
     </div>
-
-    <div class="pb-2">
-
-        <p class="text-center ">
-            <button class="btn btn-outline-success" data-toggle="Spara ändringar">Spara ändringa</button>
-            <button type="button" class="btn btn-outline-danger">Ta bort mitt konto</button>
-        </p>
-    </div>
-</form>
+</div>
 
 @code{
     private User currentUser = new User();
@@ -76,15 +68,17 @@
             newUser.Username = NewUsername;
         if (NewPassword != null)
         {
-            var salt = UserService.GenerateSalt();
-            var hashedPassword = UserService.GenerateHash(NewPassword, salt);
-            newUser.Salt = salt;
+            var hashedPassword = UserService.GenerateHash(NewPassword, currentUser.Salt);
             newUser.Password = hashedPassword;
         }
         if (NewEmail != null)
             newUser.Email = NewEmail.ToLower();
 
-
+        if (NewUsername == null && NewPassword == null && NewEmail == null)
+        {
+            await JSRuntime.InvokeAsync<bool>("confirm", $"Du har inte fyllt i något fält. Var god försök igen.");
+            return;
+        }
 
         await userRepo.PutUser(newUser);
 
