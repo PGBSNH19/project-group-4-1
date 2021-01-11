@@ -1,4 +1,5 @@
-﻿using API.Configuration;
+
+using API.Configuration;
 using API.Dtos;
 using API.Models;
 using API.Services;
@@ -7,7 +8,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -26,40 +26,6 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        /// <summary>
-        /// Gets all Products
-        /// </summary>
-        /// /// <remarks>
-        /// Sample Request: 
-        ///
-        ///    Get /Product/GetProducts
-        ///    
-        ///    {
-        ///    
-        ///         "ProductID": 1,
-        ///         
-        ///         "Name": "Potato",
-        ///         
-        ///         "UserProducts": [],
-        ///         
-        ///         "SellerPageProducts": []
-        ///         
-        ///    },
-        ///    
-        ///     {
-        ///     
-        ///         "ProductID": 2,
-        ///         
-        ///         "Name": "Apple",
-        ///         
-        ///         "UserProducts": [],
-        ///         
-        ///         "SellerPageProducts": []
-        ///         
-        ///    }
-        ///
-        ///</remarks>
-        /// 
         [HttpGet("GetProducts")]
         public async Task<ActionResult<ProductDto[]>> GetProducts()
         {
@@ -89,28 +55,7 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Gets a product with the specified id
-        /// </summary>
-        /// <remarks>
-        /// Sample Request: 
-        ///
-        ///    Get /Product/GetProduct/1
-        ///    
-        ///    {
-        ///    
-        ///         "ProductID": 1,
-        ///         
-        ///         "Name": "Potato",
-        ///         
-        ///         "UserProducts": [],
-        ///         
-        ///         "SellerPageProducts": []
-        ///         
-        ///    }
-        ///</remarks>
-        /// <param name="id"></param>
-        /// 
+
         [HttpGet("GetProduct/{id}")]
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
@@ -135,28 +80,6 @@ namespace API.Controllers
             }
         }
 
-        /// <summary>
-        /// Creates a new product
-        /// </summary>
-        /// <remarks>
-        /// Sample Request: 
-        ///
-        ///    Post /Product
-        ///    
-        ///    {
-        ///    
-        ///         "ProductID": 1,
-        ///         
-        ///         "Name": "Potato",
-        ///         
-        ///         "UserProducts": [],
-        ///         
-        ///         "SellerPageProducts": []
-        ///         
-        ///    }
-        ///</remarks>
-        /// <param name="product"></param>
-        /// 
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct([FromForm] ProductDto productDto)
         {

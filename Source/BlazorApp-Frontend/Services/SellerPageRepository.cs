@@ -32,7 +32,7 @@ namespace BlazorApp_Frontend.Services
         {
             var data = new StringContent(JsonConvert.SerializeObject(sellerPageToCreate), Encoding.UTF8, "application/json");
 
-            var sellerPage = await http.PostJsonAsync<SellerPage>(http.BaseAddress + "/api/v1.0/SellerPage", data);
+            var sellerPage = await http.PostJsonAsync<SellerPage>(http.BaseAddress + "api/v1.0/SellerPage", data);
             return sellerPage;
         }
     }
