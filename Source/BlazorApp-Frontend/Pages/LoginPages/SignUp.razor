@@ -1,4 +1,4 @@
-@page  "/signup"
+﻿@page  "/signup"
 @using BlazorApp_Frontend.Data
 @using BlazorApp_Frontend.Services
 @inject UserRepository userRepo
@@ -69,7 +69,7 @@
     {
         if (user.Password == ConfirmPassword)
         {
-            //user.Email= user.Email.ToLower();
+            user.Email= user.Email.ToLower();
             var salt = UserService.GenerateSalt();
             var hashedPassword = UserService.GenerateHash(user.Password, salt);
             user.Salt = salt;
