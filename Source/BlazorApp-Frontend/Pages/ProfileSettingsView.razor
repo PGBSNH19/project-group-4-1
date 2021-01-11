@@ -8,7 +8,7 @@
     <div class="form-row">
         <div class="col-md-5 mb-3 ml-2">
             <label for="validationDefault01">Användarnamn</label>
-            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@user.Username disabled>
+            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@currentUser.Username disabled>
         </div>
         <div class="col-md-5 mb-3">
             <label for="validationDefault02">Nytt Användarnamn</label>
@@ -26,7 +26,7 @@
 
         <div class="col-md-5 mb-3  ml-2">
             <label for="validationDefault01">Mailadress</label>
-            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@user.Email disabled>
+            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@currentUser.Email disabled>
         </div>
         <div class="col-md-5 mb-3">
             <label for="validationDefault02">Ny mailadress</label>
@@ -74,10 +74,5 @@
         await userRepo.PutUser(newUser);
 
         this.StateHasChanged();
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        user = await userRepo.GetUserById(1);
     }
 }

@@ -1,4 +1,7 @@
-﻿namespace BlazorApp_Frontend.Data
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+
+namespace BlazorApp_Frontend.Data
 {
     public class Product
     {
