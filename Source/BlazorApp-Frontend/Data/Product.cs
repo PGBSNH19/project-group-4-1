@@ -5,16 +5,9 @@ namespace BlazorApp_Frontend.Data
 {
     public class Product
     {
-        [JsonProperty("productid")]
         public int ProductID { get; set; }
-
-        [JsonProperty("name")]
         public string Name { get; set; }
-
-        [JsonProperty("price")]
         public int Price { get; set; }
-
-        [JsonProperty("stock")]
         public int Stock { get; set; }
 
         [JsonProperty("Image")]

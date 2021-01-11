@@ -34,7 +34,7 @@ namespace BlazorApp_Frontend.Services
         {
             var data = new StringContent(JsonConvert.SerializeObject(productToCreate), Encoding.UTF8, "application/json");
 
-            var product = await http.PostJsonAsync<Product>(http.BaseAddress + "/api/v1.0/Product", data);
+            var product = await http.PostJsonAsync<Product>(http.BaseAddress + "api/v1.0/Product", data);
             return product;
         }
 
