@@ -11,33 +11,30 @@
             <h1>Välkommen @context.User.FindFirst("UserName").Value</h1>
         </Authorized>
     </AuthorizeView>
-
-    <div id="hero-card" class="card">
-        <div class="row no-gutters">
-            <div class="col-sm-5">
-                <img src=@marketplaces[1].Image class="card-img-header" alt="Populäraste marknaden">
+    <div class="flex-container">
+        <div class="card hero-card flex-row flex-wrap">
+            <div>
+                <img src=@marketplaces[1].Image alt="Populäraste marknaden">
             </div>
-            <div class="col-sm-7">
 
-                <div class="card-body">
-                    <h4 class="card-title">@marketplaces[1].Name</h4>
-                    <p class="card-text">@marketplaces[1].Location</p>
-                </div>
+            <div class="card-body">
+                <h4 class="card-title">@marketplaces[1].Name</h4>
+                <p class="card-text">@marketplaces[1].Location</p>
             </div>
         </div>
-    </div>
-    <div class="flex-container">
-        @foreach (var Marketplace in marketplaces)
-        {
-            <div class="card flex-item">
-                <img alt="Rekommenderad marknad" class="card-img-top" src=@Marketplace.Image />
-                <div class="card-body">
-                    <h4 class="card-title">@Marketplace.Name</h4>
-                    <p class="card-text">@Marketplace.Location</p>
-                    <p class="card-footer">Börjar: @Marketplace.StartDateTime <br /> Slutar: @Marketplace.EndDateTime</p>
+        <div class="flex-items">
+            @foreach (var Marketplace in marketplaces)
+            {
+                <div class="card">
+                    <img alt="Rekommenderad marknad" class="card-img-top" src=@Marketplace.Image />
+                    <div class="card-body">
+                        <h4 class="card-title">@Marketplace.Name</h4>
+                        <p class="card-text">@Marketplace.Location</p>
+                        <p class="card-footer">Börjar: @Marketplace.StartDateTime <br /> Slutar: @Marketplace.EndDateTime</p>
+                    </div>
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 }
 else
