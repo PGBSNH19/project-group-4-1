@@ -1,4 +1,4 @@
-@page  "/signup"
+﻿@page  "/signup"
 @using BlazorApp_Frontend.Data
 @using BlazorApp_Frontend.Services
 @inject UserRepository userRepo
@@ -23,7 +23,7 @@
                 <input @bind="user.Username" class="form-control" placeholder="användarnamn" />
             </div>
             <div>
-                <input @bind="user.Email" class="form-control" type="email" placeholder="e-post" />
+                <input  @bind="user.Email" class="form-control" type="email" placeholder="e-post" />
             </div>
             <div>
                 <input type="password" @bind="user.Password" class="form-control" placeholder="lösenord" />
@@ -69,7 +69,7 @@
     {
         if (user.Password == ConfirmPassword)
         {
-            
+            user.Email= user.Email.ToLower();
             var salt = UserService.GenerateSalt();
             var hashedPassword = UserService.GenerateHash(user.Password, salt);
             user.Salt = salt;
