@@ -40,9 +40,17 @@
             <button type="button" class="btn btn-outline-danger" @onclick="DeleteAccount">Ta bort mitt konto</button>
         </div>
     </div>
-</div>
 
-@code {
+    <div class="pb-2">
+
+        <p class="text-center ">
+            <button class="btn btn-outline-success" data-toggle="Spara ändringar">Spara ändringa</button>
+            <button type="button" class="btn btn-outline-danger">Ta bort mitt konto</button>
+        </p>
+    </div>
+</form>
+
+@code{
     private User currentUser = new User();
     private User newUser = new User();
     private string NewUsername { get; set; }

@@ -103,12 +103,6 @@ namespace API
                 app.UseDeveloperExceptionPage();
 
             }
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "NearbyProduceAPI v1");
-                //c.RoutePrefix = string.Empty;
-            });
 
             app.UseRouting();
             app.UseAuthentication();
