@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace BlazorApp_Frontend.Data
@@ -10,11 +11,18 @@ namespace BlazorApp_Frontend.Data
         public int UserID { get; set; }
 
         [JsonProperty("username")]
+        [Required(ErrorMessage = "Användarnamn måste anges")]
+        [MaxLength(125, ErrorMessage = "Användarnamn är inte giltigt")]
         public string Username { get; set; }
 
         [JsonProperty("email")]
+        [Required(ErrorMessage = "E-post måste anges")]
+        [EmailAddress(ErrorMessage = "Ange en giltig e-post address")]
         public string Email { get; set; }
+
         [JsonProperty("password")]
+        [Required(ErrorMessage = "Lösenord måste anges")]
+        [MinLength(10, ErrorMessage = "Lösenordet måste vara minst 10 karaktärer långt")]
         public string Password { get; set; }
 
         [JsonProperty("salt")]

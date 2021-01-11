@@ -131,9 +131,8 @@ img {
 }
 
 @media (max-width: 800px) {
-    .flex-container {
-        flex-direction: column;
-    }
+    .flex-container { flex-direction: column; }
+}
 .flex-container-sellerpage {
     display: flex;
     flex-wrap: wrap;

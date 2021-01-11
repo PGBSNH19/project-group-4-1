@@ -1,6 +1,8 @@
 @page  "/signup"
 @using BlazorApp_Frontend.Data
 @using BlazorApp_Frontend.Services
+@using System.Diagnostics.Eventing.Reader
+@using System.ComponentModel.Design
 @inject UserRepository userRepo
 @inject NavigationManager NavigationManager
 @inject UserService UserService
@@ -8,32 +10,43 @@
 
 <div class="flex-container-signup">
     <div class="signup card">
-        <EditForm Model="@user" class="signup-form" OnValidSubmit="@RegisterUser">
+        <EditForm Model="@user" class="signup-form" OnValidSubmit="@RegisterUser" OnInvalidSubmit="@InvalidSubmit">
+
             <div class="text-center">
                 <h3>Registrera ny användare</h3>
-                <AlertMessage Message="@LoginMesssage" MessageType="@messageType" />
+                <AlertMessage Message="@LoginMesssage" MessageType="@messageType"/>
             </div>
 
-            <div style="margin: 20px; text-align: center; font: bold ">
+            <div style="margin: 20px; text-align: center; font: bold">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
                 <h5>Välj användartyp:</h5>
-                <input type="radio" value="@userType.1"  id="@userType" name="@userType" @onchange="buyerSelectionChanged" /> Köpare
-                <input type="radio" value="@userType.2"  id="@userType" name="@userType" @onchange="sellerSelectionChanged"/> Säljare
+                <Input type="radio" value="@userType.1" id="@userType" name="@userType" @onchange="buyerSelectionChanged"/> Köpare
+                <input type="radio" value="@userType.2" id="@userType" name="@userType" @onchange="sellerSelectionChanged"/> Säljare
             </div>
             <div>
-                <input @bind="user.Username" class="form-control" placeholder="användarnamn" />
+                <lable>Användarnamn:</lable>
+                <InputText @bind-Value="@user.Username" class="form-control" type="text" />
+                <ValidationMessage For="@(() => user.Username)" />
             </div>
             <div>
-                <input @bind="user.Email" class="form-control" type="email" placeholder="e-post" />
+                <lable>E-post:</lable>
+                <InputText @bind-Value="user.Email" class="form-control" type="email" />
+                <ValidationMessage For="@(() => user.Email)" />
             </div>
             <div>
-                <input type="password" @bind="user.Password" class="form-control" placeholder="lösenord" />
+                <lable>Lösenord:</lable>
+                <InputText @bind-Value="user.Password" class="form-control" type="password"/>
+                <ValidationMessage For="@(() => user.Password)"/>
             </div>
             <div>
-                <input type="password" @bind="ConfirmPassword" class="form-control" placeholder="upprepa lösenord" />
+                <lable>Upprepa lösenord:</lable>
+                <InputText type="password" @bind-Value="ConfirmPassword" class="form-control" />
+                
             </div>
             <div class="text-center">
-                <input style="margin-bottom: 10px" type="submit" class="btn btn-outline-primary btn-lg" value="Gå vidare" />
-                <br />
+                <input style="margin-bottom: 10px" type="submit" class="btn btn-outline-primary btn-lg" value="Gå vidare"/>
+                <br/>
                 <a href="/login">Redan en användare?</a>
             </div>
         </EditForm>
@@ -42,34 +55,52 @@
 
 @code {
 
-    private User user;
+
     private string ConfirmPassword;
     public string LoginMesssage { get; set; }
     AlertMessageType messageType = AlertMessageType.Error;
     UserType userType = new UserType();
-
+    private  bool SelectionType;
+    private User user = new User();
 
     protected override Task OnInitializedAsync()
     {
         user = new User();
         return base.OnInitializedAsync();
     }
+
     public void buyerSelectionChanged(ChangeEventArgs args)
     {
         user.Type = UserType.Buyer;
+        SelectionType = true;
     }
 
     public void sellerSelectionChanged(ChangeEventArgs args)
     {
         user.Type = UserType.Seller;
+        SelectionType = true;
     }
 
 
     private async Task<bool> RegisterUser()
     {
+        if (!SelectionType)
+        {
+            LoginMesssage = "Du måste ange en användartyp";
+            return await Task.FromResult(false);
+        }
+        if (!user.Email.Contains("@"))
+        {
+            LoginMesssage = "ogiltig E-post";
+        }
+
         if (user.Password == ConfirmPassword)
         {
-            
+            if (user.Username.Length > 125)
+            {
+                user.Username = user.Username.Substring(0, 125);
+            }
+
             var salt = UserService.GenerateSalt();
             var hashedPassword = UserService.GenerateHash(user.Password, salt);
             user.Salt = salt;
@@ -91,7 +122,12 @@
         {
             LoginMesssage = "Lösenordet matchar inte";
         }
+
+        return await Task.FromResult(false);
+
+    }
+    private async Task<bool> InvalidSubmit()
+    {
         return await Task.FromResult(false);
     }
-
 }
