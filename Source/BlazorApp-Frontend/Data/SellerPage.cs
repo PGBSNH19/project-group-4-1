@@ -12,8 +12,7 @@ namespace BlazorApp_Frontend.Data
 
         public User Seller { get; set; }
 
-        public ICollection<Product> Products { get; set; }
-
+        [JsonProperty("sellerpageproducts")]
         public ICollection<SellerPageProduct> SellerPageProducts { get; set; }
     }
 }

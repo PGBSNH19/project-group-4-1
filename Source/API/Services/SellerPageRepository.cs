@@ -24,7 +24,10 @@ namespace API.Services
 
         public async Task<ICollection<SellerPage>> GetSellerPages()
         {
-            IQueryable<SellerPage> query = _context.SellerPages;
+            IQueryable<SellerPage> query = _context.SellerPages
+                .Include(SellerPageProduct => SellerPageProduct.SellerPageProducts)
+                .ThenInclude(SellerPageProduct => SellerPageProduct.product);
+
             return await query.ToArrayAsync();
         }
     }

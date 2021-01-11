@@ -14,6 +14,11 @@ namespace BlazorApp_Frontend.Data
 
         public DateTime EndDateTime { get; set; }
 
-        //public ICollection<MarketplaceSeller> MarketplaceSellers { get; set; }
+
+        [JsonProperty("marketplacesellers")]
+        public ICollection<MarketplaceSeller> MarketplaceSellers { get; set; }
+
+        [JsonProperty("image")]
+        public string Image { get; set; }
     }
 }

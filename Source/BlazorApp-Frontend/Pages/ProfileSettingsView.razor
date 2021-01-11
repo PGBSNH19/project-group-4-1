@@ -1,6 +1,6 @@
 ﻿@page "/ProfileSettingsView"
 @inject UserRepository userRepo
-@using Data;
+@inject AuthenticationStateProvider  authenticationStateProvider
 @using Services;
 
 <div class="display-3 text-center mb-4">Profil inställningar</div>
@@ -43,8 +43,38 @@
     </div>
 </form>
 
-@code {
-    private User user = new User { };
+@code{
+    private User currentUser = new User();
+    private User newUser = new User();
+    private string NewUsername { get; set; }
+    private string NewPassword { get; set; }
+    private string NewEmail { get; set; }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
+        var userLoggedIn = authState.User;
+        var claimsList = userLoggedIn.Claims.ToList();
+        int result = Int32.Parse(claimsList[4].Value);
+        currentUser = await userRepo.GetUserById(result);
+    }
+
+    public async void SaveChanges()
+    {
+        currentUser = await userRepo.GetUserById(1);
+        newUser = currentUser;
+
+        if (NewUsername != null)
+            newUser.Username = NewUsername;
+        if (NewPassword != null)
+            newUser.Password = NewPassword;
+        if (NewEmail != null)
+            newUser.Email = NewEmail;
+
+        await userRepo.PutUser(newUser);
+
+        this.StateHasChanged();
+    }
 
     protected override async Task OnInitializedAsync()
     {
