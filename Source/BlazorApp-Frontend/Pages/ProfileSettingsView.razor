@@ -1,6 +1,8 @@
 ﻿@page "/ProfileSettingsView"
 @inject UserRepository userRepo
 @inject AuthenticationStateProvider  authenticationStateProvider
+@inject IJSRuntime JSRuntime
+@inject NavigationManager navigationManager
 @using Services;
 
 <div class="display-3 text-center mb-4">Profil inställningar</div>
@@ -49,19 +51,21 @@
     private string NewUsername { get; set; }
     private string NewPassword { get; set; }
     private string NewEmail { get; set; }
-    
+    private int currentUserId { get; set; }
+
+
     protected override async Task OnInitializedAsync()
     {
         var authState = await authenticationStateProvider.GetAuthenticationStateAsync();
         var userLoggedIn = authState.User;
         var claimsList = userLoggedIn.Claims.ToList();
-        int result = Int32.Parse(claimsList[4].Value);
-        currentUser = await userRepo.GetUserById(result);
+        currentUserId = Int32.Parse(claimsList[4].Value);
+        currentUser = await userRepo.GetUserById(currentUserId);
     }
 
     public async void SaveChanges()
     {
-        currentUser = await userRepo.GetUserById(1);
+        currentUser = await userRepo.GetUserById(currentUserId);
         newUser = currentUser;
 
         if (NewUsername != null)
@@ -74,5 +78,21 @@
         await userRepo.PutUser(newUser);
 
         this.StateHasChanged();
+    }
+
+    public async void DeleteAccount()
+    {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"Är du säker på att du vill ta bort kontot: '{currentUser.Username}'?"))
+            return;
+        await userRepo.DeleteUser(currentUser);
+        await Logout();
+        navigationManager.NavigateTo("/");
+    }
+
+    async Task Logout()
+    {
+        var localStateProvider = (LocalAuthenticationStateProvider)authenticationStateProvider;
+        await localStateProvider.LogoutAsync();
+        navigationManager.NavigateTo("/");
     }
 }
