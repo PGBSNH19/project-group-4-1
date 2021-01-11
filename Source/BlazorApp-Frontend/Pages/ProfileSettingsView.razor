@@ -3,43 +3,42 @@
 @inject AuthenticationStateProvider  authenticationStateProvider
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigationManager
+@inject UserService UserService 
 @using Services;
 
 <div class="flex-container-profilesettings">
     <div class="card profilesettings">
-        @*<EditForm Model="@user" OnValidSubmit="@ValidateUser">*@
         <div>
             <h3>Profil inställningar</h3>
         </div>
         <div>
-            <label for="validationDefault01">Användarnamn</label>
-            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@currentUser.Username disabled>
+            <label for="currentUserName">Användarnamn</label>
+            <input type="text" class="form-control disabled" id="currentUserName" placeholder="Användarnamn" value=@currentUser.Username disabled>
         </div>
         <div>
-            <label for="validationDefault02">Nytt Användarnamn</label>
-            <input type="text" @bind="NewUsername" class="form-control" id="validationDefault02" placeholder="Användarnamn" required>
+            <label for="newUserName">Nytt Användarnamn</label>
+            <input type="text" @bind="NewUsername" class="form-control" id="newUserName" placeholder="Användarnamn" required>
         </div>
         <div>
-            <label for="validationDefault01">Lösenord</label>
-            <input type="text" class="form-control" id="validationDefault01" placeholder="Lösenord" value="*********" disabled>
+            <label for="currentPassword">Lösenord</label>
+            <input type="password" class="form-control" id="currentPassword" placeholder="Lösenord" value="*********" disabled>
         </div>
         <div>
-            <label for="validationDefault02">Nytt Lösenord</label>
-            <input type="text" @bind="NewPassword" class="form-control" id="validationDefault02" placeholder="Nytt lösenord " required>
+            <label for="newPassword">Nytt Lösenord</label>
+            <input type="password" @bind="NewPassword" class="form-control" id="newPassword" placeholder="Nytt lösenord " required>
         </div>
         <div>
-            <label for="validationDefault01">Mailadress</label>
-            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@currentUser.Email disabled>
+            <label for="currentEmail">Mailadress</label>
+            <input type="text" class="form-control" id="currentEmail" placeholder="mailadress" value=@currentUser.Email disabled>
         </div>
         <div>
-            <label for="validationDefault02">Ny mailadress</label>
-            <input type="text" @bind="NewEmail" class="form-control" id="validationDefault02" placeholder="Mailadress" required>
+            <label for="newEmail">Ny mailadress</label>
+            <input type="text" @bind="NewEmail" class="form-control" id="newEmail" placeholder="Mailadress" required>
         </div>
         <div class="text-center">
             <button class="btn btn-outline-success" @onclick="SaveChanges">Spara ändringar</button>
             <button type="button" class="btn btn-outline-danger" @onclick="DeleteAccount">Ta bort mitt konto</button>
         </div>
-        @*</EditForm>*@
     </div>
 </div>
 
@@ -68,11 +67,22 @@
         if (NewUsername != null)
             newUser.Username = NewUsername;
         if (NewPassword != null)
-            newUser.Password = NewPassword;
+        {
+            var salt = UserService.GenerateSalt();
+            var hashedPassword = UserService.GenerateHash(NewPassword, salt);
+            newUser.Salt = salt;
+            newUser.Password = hashedPassword;
+        }
         if (NewEmail != null)
-            newUser.Email = NewEmail;
+            newUser.Email = NewEmail.ToLower();
+
+
 
         await userRepo.PutUser(newUser);
+
+        NewUsername = "";
+        NewPassword = "";
+        NewEmail = "";
 
         this.StateHasChanged();
     }
