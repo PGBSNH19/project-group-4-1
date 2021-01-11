@@ -1,49 +1,46 @@
-﻿@page "/ProfileSettingsView"
+@page "/profilesettingsview"
 @inject UserRepository userRepo
 @inject AuthenticationStateProvider  authenticationStateProvider
 @inject IJSRuntime JSRuntime
 @inject NavigationManager navigationManager
+@inject UserService UserService 
 @using Services;
 
-<div class="display-3 text-center mb-4">Profil inställningar</div>
-<form id="form">
-    <div class="form-row">
-        <div class="col-md-5 mb-3 ml-2">
-            <label for="validationDefault01">Användarnamn</label>
-            <input type="text" class="form-control disabled" id="validationDefault01" placeholder="Användarnamn" value=@currentUser.Username disabled>
+<div class="flex-container-profilesettings">
+    <div class="card profilesettings">
+        <div>
+            <h3>Profil inställningar</h3>
         </div>
-        <div class="col-md-5 mb-3">
-            <label for="validationDefault02">Nytt Användarnamn</label>
-            <input type="text" class="form-control" id="validationDefault02" placeholder="Användarnamn" required>
+        <div>
+            <label for="currentUserName">Användarnamn</label>
+            <input type="text" class="form-control disabled" id="currentUserName" placeholder="Användarnamn" value=@currentUser.Username disabled>
         </div>
-
-        <div class="col-md-5 mb-3 ml-2">
-            <label for="validationDefault01">Lösenord</label>
-            <input type="text" class="form-control" id="validationDefault01" placeholder="Lösenord" value="*********" disabled>
+        <div>
+            <label for="newUserName">Nytt Användarnamn</label>
+            <input type="text" @bind="NewUsername" class="form-control" id="newUserName" placeholder="Användarnamn" required>
         </div>
-        <div class="col-md-5 mb-3">
-            <label for="validationDefault02">Nytt Lösenord</label>
-            <input type="text" class="form-control" id="validationDefault02" placeholder="Nytt lösenord " required>
+        <div>
+            <label for="currentPassword">Lösenord</label>
+            <input type="password" class="form-control" id="currentPassword" placeholder="Lösenord" value="*********" disabled>
         </div>
-
-        <div class="col-md-5 mb-3  ml-2">
-            <label for="validationDefault01">Mailadress</label>
-            <input type="text" class="form-control" id="validationDefault01" placeholder="mailadress" value=@currentUser.Email disabled>
+        <div>
+            <label for="newPassword">Nytt Lösenord</label>
+            <input type="password" @bind="NewPassword" class="form-control" id="newPassword" placeholder="Nytt lösenord " required>
         </div>
-        <div class="col-md-5 mb-3">
-            <label for="validationDefault02">Ny mailadress</label>
-            <input type="text" class="form-control" id="validationDefault02" placeholder="Mailadress" required>
+        <div>
+            <label for="currentEmail">Mailadress</label>
+            <input type="text" class="form-control" id="currentEmail" placeholder="mailadress" value=@currentUser.Email disabled>
+        </div>
+        <div>
+            <label for="newEmail">Ny mailadress</label>
+            <input type="text" @bind="NewEmail" class="form-control" id="newEmail" placeholder="Mailadress" required>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-outline-success" @onclick="SaveChanges">Spara ändringar</button>
+            <button type="button" class="btn btn-outline-danger" @onclick="DeleteAccount">Ta bort mitt konto</button>
         </div>
     </div>
-
-    <div class="pb-2">
-
-        <p class="text-center ">
-            <button class="btn btn-outline-success" data-toggle="Spara ändringar">Spara ändringa</button>
-            <button type="button" class="btn btn-outline-danger">Ta bort mitt konto</button>
-        </p>
-    </div>
-</form>
+</div>
 
 @code{
     private User currentUser = new User();
@@ -52,7 +49,6 @@
     private string NewPassword { get; set; }
     private string NewEmail { get; set; }
     private int currentUserId { get; set; }
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,11 +67,24 @@
         if (NewUsername != null)
             newUser.Username = NewUsername;
         if (NewPassword != null)
-            newUser.Password = NewPassword;
+        {
+            var hashedPassword = UserService.GenerateHash(NewPassword, currentUser.Salt);
+            newUser.Password = hashedPassword;
+        }
         if (NewEmail != null)
-            newUser.Email = NewEmail;
+            newUser.Email = NewEmail.ToLower();
+
+        if (NewUsername == null && NewPassword == null && NewEmail == null)
+        {
+            await JSRuntime.InvokeAsync<bool>("confirm", $"Du har inte fyllt i något fält. Var god försök igen.");
+            return;
+        }
 
         await userRepo.PutUser(newUser);
+
+        NewUsername = "";
+        NewPassword = "";
+        NewEmail = "";
 
         this.StateHasChanged();
     }
