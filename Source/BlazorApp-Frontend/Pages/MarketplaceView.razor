@@ -21,11 +21,9 @@
     }
 </div>
 @code {
-
     List<Marketplace> marketplaces = new List<Marketplace>();
     protected override async Task OnInitializedAsync()
     {
         marketplaces = await marketplaceRepository.GetMarketplaces();
     }
-
 }

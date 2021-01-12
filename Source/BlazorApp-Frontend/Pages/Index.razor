@@ -16,7 +16,6 @@
             <div>
                 <img src=@marketplaces[1].Image alt="Populäraste marknaden">
             </div>
-
             <div class="card-body">
                 <h4 class="card-title">@marketplaces[1].Name</h4>
                 <p class="card-text">@marketplaces[1].Location</p>
@@ -41,13 +40,10 @@ else
 {
     <p>Loading...</p>
 }
-
 @code {
-
     List<Marketplace> marketplaces = new List<Marketplace>();
     protected override async Task OnInitializedAsync()
     {
         marketplaces = await MarketplaceRepository.GetMarketplaces();
     }
-
 }
