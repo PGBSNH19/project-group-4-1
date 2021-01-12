@@ -2,13 +2,12 @@
 using API.Dtos;
 using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
 
 namespace API.Controllers
 {
@@ -26,7 +25,7 @@ namespace API.Controllers
             _productRepository = productRepository;
         }
         /// <summary>
-        /// Gets all users
+        /// Gets all sellerpages
         /// </summary>
         ///  <remarks>
         /// Sample Request: 
@@ -143,6 +142,9 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+        /// <summary>
+        /// Post a new SellerPage.
+        /// </summary>
 
         [HttpPost]
         public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPageDto sellerPage)
@@ -164,7 +166,7 @@ namespace API.Controllers
         }
 
         /// <summary>
-        /// Deletes a users
+        /// Deletes a SellerPage
         /// </summary>
         /// <param name="id"></param>
 
@@ -192,6 +194,8 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {e.Message}");
             }
         }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task<ProductDto> GetProductByIdInternal(int id)
         {
             try

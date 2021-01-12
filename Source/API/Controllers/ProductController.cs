@@ -25,6 +25,9 @@ namespace API.Controllers
             _productRepository = productRepository;
             _mapper = mapper;
         }
+        /// <summary>
+        /// Gets all products
+        /// </summary>
 
         [HttpGet("GetProducts")]
         public async Task<ActionResult<ProductDto[]>> GetProducts()
@@ -55,7 +58,9 @@ namespace API.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Gets a product by its id 
+        /// </summary>
         [HttpGet("GetProduct/{id}")]
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
@@ -79,7 +84,9 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
-
+        /// <summary>
+        /// Posts a new product
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<Product>> PostProduct([FromForm] ProductDto productDto)
         {
