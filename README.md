@@ -19,3 +19,12 @@ Tanken med detta projekt är att göra en Hemsida / applikation som ska fungera 
 <li>Deployment till moln AWS eller Azure</li>
 <li>Docker</li>
 </ul>
+
+<h2>Dokumentations länkar:</h2>
+<ul>
+<li>[BDD Features](https://plushogskolan.atlassian.net/wiki/spaces/G4/pages/67437856/BDD+-+Features)</li>
+<li>[C4 Diagram](https://plushogskolan.atlassian.net/wiki/spaces/G4/pages/102270004/C4-+Diagram)</li>
+<li>[Branching strategy](https://plushogskolan.atlassian.net/wiki/spaces/G4/pages/75793303/Branching-Strategy)</li>
+<li>[API calls](https://plushogskolan.atlassian.net/wiki/spaces/G4/pages/75793167/API+calls)</li>
+  <li>[SRS Document](https://plushogskolan.atlassian.net/wiki/spaces/G4/pages/65307962/Software+Requirement+Specification+SRS)</li>
+</ul>
