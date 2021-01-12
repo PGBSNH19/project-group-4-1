@@ -27,7 +27,7 @@ namespace API.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/Nearbyproduce-ConnectionString/54a471f3aa5040508f39273f3ceb220c");
+            var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/NearByProduce-Connectionstring2/54a471f3aa5040508f39273f3ceb220c");
             var builder = new ConfigurationBuilder();
             if (string.IsNullOrEmpty(azureDbCon))
             {
