@@ -14,10 +14,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
-using API.Dtos;
-using API.Models;
 
 namespace API
 {
@@ -78,13 +77,14 @@ namespace API
                     Version = "v1",
                     Title = "NearbyProduceAPI",
                     Description = "A simple ASP.NET REST API used for the NearbyProduce site",
-
                 });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
@@ -109,6 +109,8 @@ namespace API
             app.UseAuthorization();
             app.UseMvc();
             app.UseCors();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebApi v1"));
 
         }
     }

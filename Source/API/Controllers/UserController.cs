@@ -1,11 +1,11 @@
-﻿using API.Models;
+﻿using API.Dtos;
+using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
 
 
 namespace API.Controllers
@@ -22,6 +22,54 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets all users
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /User/GetUsers
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	6,
+        ///         
+        ///         "username" :	"test",
+        ///         
+        ///         "email" : "test@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 0,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }, 
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	10,
+        ///         
+        ///         "username" : "test",
+        ///         
+        ///         "email" : "test1@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 2,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }
+        ///</remarks>
         [HttpGet("GetUsers")]
         public async Task<ActionResult<UserDto[]>> GetUsers()
         {
@@ -40,7 +88,34 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
-
+        /// <summary>
+        /// Gets a users by its id
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /User/GetUser/{id}
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	6,
+        ///         
+        ///         "username" :	"test",
+        ///         
+        ///         "email" : "test@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 0,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }
+        ///</remarks>
         [HttpGet("GetUser/{id}")]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {
@@ -58,7 +133,36 @@ namespace API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
+
         }
+        /// <summary>
+        /// Gets a users by its name
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /User/GetUserByName/{name}
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	6,
+        ///         
+        ///         "username" :	"test",
+        ///         
+        ///         "email" : "test@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 0,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }
+        ///</remarks>
         [HttpGet("GetUserByName/{name}")]
         public async Task<ActionResult<UserDto>> GetUserByName(string name)
         {
@@ -77,6 +181,34 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+        /// <summary>
+        /// Gets a users by its email
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /User/GetUserByEmail/{email}
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	6,
+        ///         
+        ///         "username" :	"test",
+        ///         
+        ///         "email" : "test@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 0,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }
+        ///</remarks>
         [HttpGet("GetUserByEmail/{email}")]
         public async Task<ActionResult<UserDto>> GetUserByEmail(string email)
         {
@@ -171,6 +303,10 @@ namespace API.Controllers
         {
             throw new NotImplementedException();
         }
+        /// <summary>
+        /// Deletes a users
+        /// </summary>
+        /// <param name="id"></param>
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)
