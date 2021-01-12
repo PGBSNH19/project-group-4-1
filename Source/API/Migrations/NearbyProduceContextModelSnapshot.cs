@@ -109,12 +109,7 @@ namespace API.Migrations
                     b.Property<byte[]>("PictureBytes")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("SellerPageID")
-                        .HasColumnType("int");
-
                     b.HasKey("ProductID");
-
-                    b.HasIndex("SellerPageID");
 
                     b.ToTable("Products");
 
@@ -173,21 +168,18 @@ namespace API.Migrations
                         new
                         {
                             SellerPageID = 1,
-                            Description = "Här på Jannes gård säljer vi dem färskaste varorna i hela Västra Götaland!",
                             Name = "Jannes Online-Gård",
                             SellerUserID = 1
                         },
                         new
                         {
                             SellerPageID = 2,
-                            Description = "Lisas Näroldat: Bättre grönsaker finns inte!",
                             Name = "Lisas Näroldat",
                             SellerUserID = 4
                         },
                         new
                         {
                             SellerPageID = 3,
-                            Description = "Vi säljer dem bästa varorna i hela Göteborg!",
                             Name = "Hannes eko-farm",
                             SellerUserID = 4
                         });
@@ -245,7 +237,7 @@ namespace API.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
@@ -257,9 +249,17 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserID");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasFilter("[Username] IS NOT NULL");
 
                     b.ToTable("Users");
 
@@ -275,7 +275,7 @@ namespace API.Migrations
                         new
                         {
                             UserID = 2,
-                            Email = "test@test.com",
+                            Email = "test1@test.com",
                             Password = "lösen123",
                             Type = 0,
                             Username = "Bengtan555"
@@ -283,7 +283,7 @@ namespace API.Migrations
                         new
                         {
                             UserID = 3,
-                            Email = "test@test.com",
+                            Email = "test2@test.com",
                             Password = "KlDioL123!",
                             Type = 0,
                             Username = "Henrik123"
@@ -291,7 +291,7 @@ namespace API.Migrations
                         new
                         {
                             UserID = 4,
-                            Email = "test@test.com",
+                            Email = "test3@test.com",
                             Password = "lösen123",
                             Type = 1,
                             Username = "BondenLisa1"
@@ -299,7 +299,7 @@ namespace API.Migrations
                         new
                         {
                             UserID = 5,
-                            Email = "test@test.com",
+                            Email = "test4@test.com",
                             Password = "lösen123",
                             Type = 1,
                             Username = "HannesFarm"
@@ -314,9 +314,6 @@ namespace API.Migrations
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
                     b.HasKey("UserID", "ProductID");
 
                     b.HasIndex("ProductID");
@@ -327,14 +324,12 @@ namespace API.Migrations
                         new
                         {
                             UserID = 2,
-                            ProductID = 1,
-                            Amount = 10
+                            ProductID = 1
                         },
                         new
                         {
                             UserID = 3,
-                            ProductID = 5,
-                            Amount = 12
+                            ProductID = 5
                         });
                 });
 
@@ -355,13 +350,6 @@ namespace API.Migrations
                     b.Navigation("Marketplace");
 
                     b.Navigation("Seller");
-                });
-
-            modelBuilder.Entity("API.Models.Product", b =>
-                {
-                    b.HasOne("API.Models.SellerPage", null)
-                        .WithMany("Products")
-                        .HasForeignKey("SellerPageID");
                 });
 
             modelBuilder.Entity("API.Models.SellerPage", b =>
@@ -427,8 +415,6 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.SellerPage", b =>
                 {
-                    b.Navigation("Products");
-
                     b.Navigation("SellerPageProducts");
                 });
 

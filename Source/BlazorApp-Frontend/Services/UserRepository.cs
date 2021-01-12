@@ -32,11 +32,18 @@ namespace BlazorApp_Frontend.Services
         }
         public async Task<HttpResponseMessage> PutUser(User userToChange)
         {
+            try
+            {
+                var data = new StringContent(JsonConvert.SerializeObject(userToChange), Encoding.UTF8, "application/json");
+                var response = await http.PutAsync(http.BaseAddress + $"/api/v1.0/User/{userToChange.UserID}", data);
 
-            var data = new StringContent(JsonConvert.SerializeObject(userToChange), Encoding.UTF8, "application/json");
-            var response = await http.PutAsync(http.BaseAddress + $"/api/v1.0/User/{userToChange.UserID}", data);
-
-            return response;
+                return response;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<User> GetUserByUsername(string username)
@@ -55,10 +62,18 @@ namespace BlazorApp_Frontend.Services
 
         public async Task<HttpResponseMessage> PostUser(User userToCreate)
         {
-            var data = new StringContent(JsonConvert.SerializeObject(userToCreate), Encoding.UTF8, "application/json");
-            var response = await http.PostAsync(http.BaseAddress + $"/api/v1.0/User", data);
+            try
+            {
+                var data = new StringContent(JsonConvert.SerializeObject(userToCreate), Encoding.UTF8, "application/json");
+                var response = await http.PostAsync(http.BaseAddress + $"/api/v1.0/User", data);
 
-            return response;
+                return response;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         public async Task<HttpResponseMessage> DeleteUser(User userToDelete)
