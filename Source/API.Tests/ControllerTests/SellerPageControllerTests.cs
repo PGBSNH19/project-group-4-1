@@ -103,15 +103,17 @@ namespace API.Tests.ControllerTests
                 {
                     SellerPageID = 1,
                     Name = "Anders",
-                    SellerUserID=1
-
+                    SellerUserID=1,
+                    Description = "Test",
+                    SellerPageProducts = new List<SellerPageProduct>()
                 } ,
                 new SellerPage
                 {
                     SellerPageID = 2,
                     Name = "Oskar",
-                    SellerUserID=2
-
+                    SellerUserID=2,
+                    Description = "Test",
+                    SellerPageProducts = new List<SellerPageProduct>()
                 }
 
             };
