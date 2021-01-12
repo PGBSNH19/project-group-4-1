@@ -8,7 +8,6 @@
 @inject NavigationManager NavigationManager
 @inject UserService UserService
 
-
 <div class="flex-container-signup">
     <div class="signup card">
         <EditForm Model="@user" class="signup-form" OnValidSubmit="@RegisterUser" OnInvalidSubmit="@InvalidSubmit">
@@ -17,7 +16,6 @@
                 <h3>Registrera ny användare</h3>
                 <AlertMessage Message="@LoginMesssage" MessageType="@messageType"/>
             </div>
-
             <div style="margin: 20px; text-align: center; font: bold">
                 <DataAnnotationsValidator />
                 <ValidationSummary />
@@ -56,8 +54,6 @@
 </div>
 
 @code {
-
-
     private string ConfirmPassword;
     public string LoginMesssage { get; set; }
     AlertMessageType messageType = AlertMessageType.Error;
@@ -82,7 +78,6 @@
         user.Type = UserType.Seller;
         SelectionType = true;
     }
-
 
     private async Task<bool> RegisterUser()
     {
@@ -139,7 +134,6 @@
 
         LoginMesssage = "Lösenordet matchar inte";
         return await Task.FromResult(false);
-
     }
     private async Task<bool> InvalidSubmit()
     {

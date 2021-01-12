@@ -38,10 +38,10 @@ namespace API.Tests.ControllerTests
             //Act
             var result = await marketplaceController.GetMarketplaces();
             var contentResult = result.Result as OkObjectResult;
-            var resultMarketplaces = contentResult.Value as MarketplaceDto[];
+            var resultMarketplaces = contentResult.Value as List<MarketplaceDto>;
 
             //Assert
-            Assert.True(resultMarketplaces.Length > 0);
+            Assert.True(resultMarketplaces.Count > 0);
         }
 
         [Fact]
@@ -112,7 +112,8 @@ namespace API.Tests.ControllerTests
                     Name = "Market1",
                     Location = "Göteborg",
                     StartDateTime = new DateTime(2020, 12, 18),
-                    EndDateTime = new DateTime(2020, 12, 19)
+                    EndDateTime = new DateTime(2020, 12, 19),
+                    PictureBytes = null
                 },
                 new Marketplace()
                 {
@@ -120,9 +121,11 @@ namespace API.Tests.ControllerTests
                     Name = "Market2",
                     Location = "Stockholm",
                     StartDateTime = new DateTime(2020, 12, 20),
-                    EndDateTime = new DateTime(2020, 12, 21)
-                }
-            };
+                    EndDateTime = new DateTime(2020, 12, 21),
+                    PictureBytes = null
+
+    }
+};
         }
     }
 }

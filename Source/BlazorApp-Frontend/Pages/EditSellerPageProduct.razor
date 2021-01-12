@@ -43,7 +43,6 @@
     private async Task OnInputFileChange(InputFileChangeEventArgs e)
     {
         var format = "image/png";
-
         var resizedImageFile = await e.File.RequestImageFileAsync(format, 240, 240);
         var buffer = new byte[resizedImageFile.Size];
         await resizedImageFile.OpenReadStream().ReadAsync(buffer);
@@ -66,5 +65,4 @@
         }
         return response;
     }
-
 }
