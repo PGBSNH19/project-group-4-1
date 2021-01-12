@@ -149,6 +149,8 @@ namespace API.Context
 
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<User>().HasKey(k => k.UserID);
+            modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+            modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
             modelBuilder.Entity<User>()
            .HasData(new
            {
