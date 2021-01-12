@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using API.Dtos;
+using AutoMapper;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace API.Controllers
@@ -295,6 +299,10 @@ namespace API.Controllers
             }
             catch (Exception e)
             {
+                if (e is DbUpdateException)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden, $"Value not unique {e.InnerException.Message}");
+                }
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
