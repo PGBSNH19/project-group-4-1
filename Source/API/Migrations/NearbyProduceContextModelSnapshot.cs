@@ -43,7 +43,7 @@ namespace API.Migrations
 
                     b.HasKey("MarketplaceID");
 
-                    b.ToTable("Marketplace");
+                    b.ToTable("Marketplaces");
 
                     b.HasData(
                         new
@@ -76,7 +76,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerID");
 
-                    b.ToTable("MarketplaceSeller");
+                    b.ToTable("MarketplaceSellers");
 
                     b.HasData(
                         new
@@ -162,7 +162,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerUserID");
 
-                    b.ToTable("SellerPage");
+                    b.ToTable("SellerPages");
 
                     b.HasData(
                         new
@@ -203,7 +203,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerPageID");
 
-                    b.ToTable("SellerPageProduct");
+                    b.ToTable("SellerPageProducts");
 
                     b.HasData(
                         new
@@ -261,7 +261,7 @@ namespace API.Migrations
                         .IsUnique()
                         .HasFilter("[Username] IS NOT NULL");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
@@ -275,7 +275,7 @@ namespace API.Migrations
                         new
                         {
                             UserID = 2,
-                            Email = "test@test.com",
+                            Email = "test1@test.com",
                             Password = "lösen123",
                             Type = 0,
                             Username = "Bengtan555"
@@ -283,7 +283,7 @@ namespace API.Migrations
                         new
                         {
                             UserID = 3,
-                            Email = "test@test.com",
+                            Email = "test2@test.com",
                             Password = "KlDioL123!",
                             Type = 0,
                             Username = "Henrik123"
@@ -291,7 +291,7 @@ namespace API.Migrations
                         new
                         {
                             UserID = 4,
-                            Email = "test@test.com",
+                            Email = "test3@test.com",
                             Password = "lösen123",
                             Type = 1,
                             Username = "BondenLisa1"
@@ -299,7 +299,7 @@ namespace API.Migrations
                         new
                         {
                             UserID = 5,
-                            Email = "test@test.com",
+                            Email = "test4@test.com",
                             Password = "lösen123",
                             Type = 1,
                             Username = "HannesFarm"
@@ -318,7 +318,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("UserProduct");
+                    b.ToTable("UserProducts");
 
                     b.HasData(
                         new
