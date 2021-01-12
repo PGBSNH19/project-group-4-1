@@ -113,6 +113,7 @@
                 user.Username = user.Username.Substring(0, 125);
             }
 
+            user.Email= user.Email.ToLower();
             var salt = UserService.GenerateSalt();
             var hashedPassword = UserService.GenerateHash(user.Password, salt);
             user.Salt = salt;
