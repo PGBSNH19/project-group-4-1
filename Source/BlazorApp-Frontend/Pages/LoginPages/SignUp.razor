@@ -5,7 +5,6 @@
 @inject NavigationManager NavigationManager
 @inject UserService UserService
 
-
 <div class="flex-container-signup">
     <div class="signup card">
         <EditForm Model="@user" class="signup-form" OnValidSubmit="@RegisterUser">
@@ -13,7 +12,6 @@
                 <h3>Registrera ny användare</h3>
                 <AlertMessage Message="@LoginMesssage" MessageType="@messageType" />
             </div>
-
             <div style="margin: 20px; text-align: center; font: bold ">
                 <h5>Välj användartyp:</h5>
                 <input type="radio" value="@userType.1"  id="@userType" name="@userType" @onchange="buyerSelectionChanged" /> Köpare
@@ -41,13 +39,11 @@
 </div>
 
 @code {
-
     private User user;
     private string ConfirmPassword;
     public string LoginMesssage { get; set; }
     AlertMessageType messageType = AlertMessageType.Error;
     UserType userType = new UserType();
-
 
     protected override Task OnInitializedAsync()
     {
@@ -63,7 +59,6 @@
     {
         user.Type = UserType.Seller;
     }
-
 
     private async Task<bool> RegisterUser()
     {
@@ -93,5 +88,4 @@
         }
         return await Task.FromResult(false);
     }
-
 }

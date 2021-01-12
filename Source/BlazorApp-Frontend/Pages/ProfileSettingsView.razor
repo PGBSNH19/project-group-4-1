@@ -81,11 +81,9 @@
         }
 
         await userRepo.PutUser(newUser);
-
         NewUsername = "";
         NewPassword = "";
         NewEmail = "";
-
         this.StateHasChanged();
     }
 
