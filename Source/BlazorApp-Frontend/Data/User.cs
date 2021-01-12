@@ -25,6 +25,12 @@ namespace BlazorApp_Frontend.Data
         [MinLength(10, ErrorMessage = "Lösenordet måste vara minst 10 karaktärer långt")]
         public string Password { get; set; }
 
+        [Required(ErrorMessage = "Lösenord måste anges")]
+        [MinLength(10, ErrorMessage = "Lösenordet måste vara minst 10 karaktärer långt")]
+        [Compare("Password",
+            ErrorMessage = "Lösenorden måste matcha")]
+        public string ConfirmPassword { get; set; }
+
         [JsonProperty("salt")]
         public byte[] Salt { get; set; }
 

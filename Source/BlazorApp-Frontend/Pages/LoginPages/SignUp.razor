@@ -41,8 +41,9 @@
             </div>
             <div>
                 <lable>Upprepa lösenord:</lable>
-                <InputText type="password" @bind-Value="ConfirmPassword" class="form-control" />
-                
+                <InputText type="password" @bind-Value="user.ConfirmPassword" class="form-control" />
+                <ValidationMessage For="@(() => user.Password)" />
+
             </div>
             <div class="text-center">
                 <input style="margin-bottom: 10px" type="submit" class="btn btn-outline-primary btn-lg" value="Gå vidare"/>
@@ -89,12 +90,23 @@
             LoginMesssage = "Du måste ange en användartyp";
             return await Task.FromResult(false);
         }
-        if (!user.Email.Contains("@"))
+        if (!user.Email.Contains("@") || user.Email.Contains(" "))
         {
             LoginMesssage = "ogiltig E-post";
+            return await Task.FromResult(false);
+        }
+        if (user.Username.Contains(" "))
+        {
+            LoginMesssage = "Ogiltigt användarnamn";
+            return await Task.FromResult(false);
+        }
+        if(user.Password.Contains(" "))
+        {
+            LoginMesssage = "Lösenord får inte innehålla blanka rader";
+            return await Task.FromResult(false);
         }
 
-        if (user.Password == ConfirmPassword)
+        if (user.Password == user.ConfirmPassword)
         {
             if (user.Username.Length > 125)
             {
@@ -118,11 +130,8 @@
 
             return await Task.FromResult(true);
         }
-        else
-        {
-            LoginMesssage = "Lösenordet matchar inte";
-        }
 
+        LoginMesssage = "Lösenordet matchar inte";
         return await Task.FromResult(false);
 
     }
