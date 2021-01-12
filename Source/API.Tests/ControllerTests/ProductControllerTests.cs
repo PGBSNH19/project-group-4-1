@@ -37,10 +37,10 @@ namespace API.Tests.ControllerTests
             //Act
             var result = await productController.GetProducts();
             var contentResult = result.Result as OkObjectResult;
-            var resultProducts = contentResult.Value as ProductDto[];
+            var resultProducts = contentResult.Value as List<ProductDto>;
 
             //Assert
-            Assert.True(resultProducts.Length > 0);
+            Assert.True(resultProducts.Count > 0);
         }
 
         [Fact]
