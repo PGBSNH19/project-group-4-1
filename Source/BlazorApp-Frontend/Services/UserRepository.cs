@@ -1,7 +1,6 @@
 ﻿using BlazorApp_Frontend.Data;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -55,7 +54,7 @@ namespace BlazorApp_Frontend.Services
         public async Task<HttpResponseMessage> PostUser(User userToCreate)
         {
             var data = new StringContent(JsonConvert.SerializeObject(userToCreate), Encoding.UTF8, "application/json");
-            var response = await http.PostAsync($"https://localhost:5002/api/v1.0/User", data);
+            var response = await http.PostAsync(http.BaseAddress + $"/api/v1.0/User/", data);
 
             return response;
         }
