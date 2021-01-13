@@ -4,12 +4,9 @@ using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace API.Controllers
@@ -307,10 +304,29 @@ namespace API.Controllers
             }
         }
 
-        private void Debugger()
+        /// <summary>
+        /// Puts a User.
+        /// </summary>
+        [HttpPut("{userId}")]
+        public async Task<ActionResult<User>> PutUser(int userId, [FromBody] UserDto userDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var oldUser = await _userRepository.GetUserById(userId);
+                if (oldUser == null)
+                    return NotFound($"Can't find any user with id: {userId}");
+                var newUser = _mapper.Map(userDto, oldUser);
+                _userRepository.Update(newUser);
+                if (await _userRepository.Save())
+                    return Ok(newUser);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
+            }
+            return BadRequest();
         }
+
         /// <summary>
         /// Deletes a users
         /// </summary>
