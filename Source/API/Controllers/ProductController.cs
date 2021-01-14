@@ -32,22 +32,20 @@ namespace API.Controllers
         [HttpGet("GetProducts")]
         public async Task<ActionResult<ProductDto[]>> GetProducts()
         {
+            var results = await _productRepository.GetProducts();
+
+            if (results.Count == 0)
+                return NoContent();
+
             try
             {
-                var results = await _productRepository.GetProducts();
                 var mappedEntities = _mapper.Map<ProductDto[]>(results);
-
                 var manualMapper = new ManualMapper();
                 var manualObjects = new List<ProductDto>();
                 for (int i = 0; i < results.Count; i++)
                 {
                     var manualObject = manualMapper.ManualMapperPicturesReverse(results.ElementAt(i), mappedEntities[i]);
                     manualObjects.Add(manualObject);
-                }
-
-                if (mappedEntities.Length == 0)
-                {
-                    return NotFound();
                 }
 
                 return Ok(manualObjects);
@@ -64,18 +62,15 @@ namespace API.Controllers
         [HttpGet("GetProduct/{id}")]
         public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
+            var result = await _productRepository.GetProductById(id);
+            if (result == null)
+                return NoContent();
             try
             {
-                var result = await _productRepository.GetProductById(id);
                 var mappedEntity = _mapper.Map<ProductDto>(result);
 
                 var manualMapper = new ManualMapper();
                 var manualObject = manualMapper.ManualMapperPicturesReverse(result, mappedEntity);
-
-                if (mappedEntity == null)
-                {
-                    return NotFound();
-                }
 
                 return Ok(manualObject);
             }
@@ -96,8 +91,7 @@ namespace API.Controllers
                 if (productDto.Image != null)
                 {
                     var manualMapper = new ManualMapper();
-                    var manualObj = manualMapper.ManualMapperPictures(product, productDto);
-                    _productRepository.Add(manualObj);
+                    product = manualMapper.ManualMapperPictures(product, productDto);
                 }
                 _productRepository.Add(product);
                 if (await _productRepository.Save())
@@ -119,11 +113,12 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<Product>> PutProduct(int id, [FromBody] ProductPutDto productDto)
         {
+            var oldProduct = await _productRepository.GetProductById(id);
+            if (oldProduct == null)
+                return NotFound($"Can't find any product with id: {id}");
+
             try
             {
-                var oldProduct = await _productRepository.GetProductById(id);
-                if (oldProduct == null)
-                    return NotFound($"Can't find any product with id: {id}");
                 var newProduct = _mapper.Map(productDto, oldProduct);
                 var manualMapper = new ManualMapper();
                 var manualObj = manualMapper.ManualMapperPutPictures(newProduct, productDto);
@@ -144,15 +139,13 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteProduct(int id)
         {
+            var product = await _productRepository.GetProductById(id);
+
+            if (product == null)
+                return NotFound();
+
             try
             {
-                var product = await _productRepository.GetProductById(id);
-
-                if (product == null)
-                {
-                    return NotFound();
-                }
-
                 _productRepository.Delete(product);
 
                 if (await _productRepository.Save())
