@@ -25,7 +25,7 @@ namespace API.Services
 
         public async Task<Marketplace> GetMarketplaceById(int id)
         {
-            var query = await _context.Marketplaces.FindAsync(id);
+            var query = await _context.Marketplaces.FirstOrDefaultAsync(x => x.MarketplaceID == id);
             return query;
         }
     }

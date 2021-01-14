@@ -103,9 +103,9 @@ namespace API.Controllers
         public async Task<ActionResult<Marketplace>> PutMarketplace(int marketplaceId, [FromForm] MarketplaceDto marketplace)
         {
             var currentMarketplace = await _marketplaceRepository.GetMarketplaceById(marketplaceId);
-            
-            if (currentMarketplace == null) 
-                return NotFound($"Cant't find any marketplaces with id: {marketplaceId}");
+
+            if (currentMarketplace == null)
+                return BadRequest($"Cant't find any marketplaces with id: {marketplaceId}");
 
 
             try
@@ -140,7 +140,6 @@ namespace API.Controllers
         {
 
             var marketplace = await _marketplaceRepository.GetMarketplaceById(id);
-            
             if (marketplace == null)
                 return NotFound();
             
