@@ -24,6 +24,7 @@ namespace API.Controllers
             _mapper = mapper;
             _productRepository = productRepository;
         }
+
         /// <summary>
         /// Gets all sellerpages
         /// </summary>
@@ -68,25 +69,14 @@ namespace API.Controllers
         ///         
         ///    }
         ///</remarks>
-
         [HttpGet("GetSellerPages")]
         public async Task<ActionResult<SellerPageDto[]>> GetSellerPages()
         {
-            try
-            {
-                var results = await _sellerPageRepository.GetSellerPages();
-                var mappedEntities = _mapper.Map<SellerPageDto[]>(results);
+            var results = await _sellerPageRepository.GetSellerPages();
+            var mappedEntities = _mapper.Map<SellerPageDto[]>(results);
 
-                if (mappedEntities.Length == 0)
-                {
-                    return NotFound();
-                }
-                return Ok(mappedEntities);
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
-            }
+            if (mappedEntities.Length == 0) return NoContent();
+            return Ok(mappedEntities);
         }
 
         /// <summary>
@@ -120,10 +110,14 @@ namespace API.Controllers
         [HttpGet("GetSellerPageByUserID/{id}")]
         public async Task<ActionResult<SellerPageDto>> GetSellerPageByUserId(int id)
         {
+            if (id <= 0) return BadRequest();
+            
+            var result = await _sellerPageRepository.GetSellerPageByUserID(id);
+            if (result == null) return NoContent();
+
+            var mappedEntity = _mapper.Map<SellerPageDto>(result);
             try
             {
-                var result = await _sellerPageRepository.GetSellerPageByUserID(id);
-                var mappedEntity = _mapper.Map<SellerPageDto>(result);
                 for (int i = 0; i < result.SellerPageProducts.Count(); i++)
                 {
                     var products = result.SellerPageProducts.ElementAt(i).product;
@@ -131,10 +125,6 @@ namespace API.Controllers
                     mappedEntity.SellerPageProducts.ElementAt(i).product = productDto;
                 }
 
-                if (mappedEntity == null)
-                {
-                    return NotFound();
-                }
                 return Ok(mappedEntity);
             }
             catch (Exception exception)
@@ -142,27 +132,23 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+
         /// <summary>
         /// Post a new SellerPage.
         /// </summary>
-
         [HttpPost]
         public async Task<ActionResult<SellerPage>> PostSellerPage(SellerPageDto sellerPage)
         {
             try
             {
                 var _mappedEntity = _mapper.Map<SellerPage>(sellerPage);
+
                 _sellerPageRepository.Add(_mappedEntity);
-                if (await _sellerPageRepository.Save())
-                {
-                    return Created("/api/v1.0/[controller]" + sellerPage.SellerPageID, new SellerPage { SellerPageID = sellerPage.SellerPageID });
-                }
-                return BadRequest();
+                await _sellerPageRepository.Save(); 
+
+                return Created("/api/v1.0/[controller]" + sellerPage.SellerPageID, new SellerPage { SellerPageID = sellerPage.SellerPageID });
             }
-            catch (Exception e)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
-            }
+            catch (Exception e) { return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}"); }
         }
 
         /// <summary>
@@ -174,25 +160,16 @@ namespace API.Controllers
         [HttpDelete]
         public async Task<ActionResult> DeleteSellerPage(int id)
         {
+            if (id <= 0) return BadRequest();
+            var sellerPage = _sellerPageRepository.GetSellerPageByUserID(id);
+            if (sellerPage == null) return NoContent(); 
             try
             {
-                var sellerPage = _sellerPageRepository.GetSellerPageByUserID(id);
-                if (sellerPage == null)
-                {
-                    return NotFound();
-                }
-
                 _sellerPageRepository.Delete(sellerPage);
-                if (await _sellerPageRepository.Save())
-                {
-                    return NoContent();
-                }
-                return BadRequest();
+                await _sellerPageRepository.Save();
+                return NoContent();
             }
-            catch (Exception e)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {e.Message}");
-            }
+            catch (Exception e) { return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {e.Message}"); }
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
@@ -206,17 +183,11 @@ namespace API.Controllers
                 var manualMapper = new ManualMapper();
                 var manualObject = manualMapper.ManualMapperPicturesReverse(result, mappedEntity);
 
-                if (mappedEntity == null)
-                {
-                    return null;
-                }
+                if (mappedEntity == null) return null;
 
                 return manualObject;
             }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException($"{e}");
-            }
+            catch (Exception e) { throw new InvalidOperationException($"{e}"); }
         }
     }
 }

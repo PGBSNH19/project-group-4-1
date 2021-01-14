@@ -36,12 +36,12 @@ namespace API.Tests.ControllerTests
             var marketplaceController = new MarketplaceController(marketplaceRepository, _mapper);
 
             //Act
-            var result = await marketplaceController.GetMarketplaces();
-            var contentResult = result.Result as OkObjectResult;
+            var dataResult = await marketplaceController.GetMarketplaces();
+            var contentResult = dataResult.Result as OkObjectResult;
             var resultMarketplaces = contentResult.Value as List<MarketplaceDto>;
-
             //Assert
             Assert.True(resultMarketplaces.Count > 0);
+            Assert.IsType<OkObjectResult>(contentResult);
         }
 
         [Fact]
@@ -60,6 +60,7 @@ namespace API.Tests.ControllerTests
 
             //Assert
             Assert.NotNull(resultMarketplace);
+            Assert.IsType<OkObjectResult>(contentResult);
         }
 
         [Fact]
@@ -73,10 +74,11 @@ namespace API.Tests.ControllerTests
 
             //Act
             var result = await marketplaceController.GetMarketplaceById(1);
-            var contentResult = result.Result as NotFoundObjectResult;
+            var contentResult = result.Result as NoContentResult;
 
             //Assert
             Assert.Null(result.Value);
+            Assert.IsType<NoContentResult>(contentResult);
         }
 
         [Fact]
@@ -102,6 +104,76 @@ namespace API.Tests.ControllerTests
             Assert.Equal(201, contentResult.StatusCode);
         }
 
+        [Fact]
+        public async void PutMarketplace_IfMarketplaceIsUpdated_ExpectedStatusCode200()
+        {
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
+            var marketplaceRepository = new MarketplaceRepository(mockContext.Object);
+
+            var controller = new MarketplaceController(marketplaceRepository, _mapper);
+            var newMarket = new MarketplaceDto
+            {
+                MarketplaceID = 7,
+                Name = "Market1",
+                Location = "Göteborg",
+                StartDateTime = new DateTime(2020, 12, 18),
+                EndDateTime = new DateTime(2020, 12, 19),
+                Image = "",
+            };
+            var result = await controller.PutMarketplace(1, newMarket);
+            var content = result.Result as OkObjectResult;
+            Assert.Equal(200, content.StatusCode);
+        }
+
+        [Fact]
+        public async void PutMarketplace_IfMarketplaceIsNotUpdated_ExpectedStatusCode400()
+        {
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
+            var marketplaceRepository = new MarketplaceRepository(mockContext.Object);
+
+            var controller = new MarketplaceController(marketplaceRepository, _mapper);
+            var newMarket = new MarketplaceDto
+            {
+                MarketplaceID = 7,
+                Name = "Market1",
+                Location = "Göteborg",
+                StartDateTime = new DateTime(2020, 12, 18),
+                EndDateTime = new DateTime(2020, 12, 19),
+                Image = "",
+            };
+            var result = await controller.PutMarketplace(55, newMarket);
+            var content = result.Result as BadRequestObjectResult;
+            Assert.Equal(400, content.StatusCode);
+        }
+
+        [Fact]
+        public async void DeleteMarketplace_IfMarketplaceIsDeleted_ExpectedStatusCode204()
+        {
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
+            var marketplaceRepository = new MarketplaceRepository(mockContext.Object);
+
+            var controller = new MarketplaceController(marketplaceRepository, _mapper);
+            var result = await controller.DeleteMarketplace(1);
+            var content = result as NoContentResult;
+            Assert.Equal(204, content.StatusCode);
+        }
+
+        [Fact]
+        public async void DeleteMarketplace_IfMarketplaceIsNull_ExpectedStatusCode400()
+        {
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
+            var marketplaceRepository = new MarketplaceRepository(mockContext.Object);
+
+            var controller = new MarketplaceController(marketplaceRepository, _mapper);
+            var result = await controller.DeleteMarketplace(66);
+            var content = result as NotFoundResult;
+            Assert.Equal(404, content.StatusCode);
+        }
+
         public List<Marketplace> GetMarketplaces()
         {
             return new List<Marketplace>
@@ -124,8 +196,8 @@ namespace API.Tests.ControllerTests
                     EndDateTime = new DateTime(2020, 12, 21),
                     PictureBytes = null
 
-    }
-};
+                }
+            };
         }
     }
 }

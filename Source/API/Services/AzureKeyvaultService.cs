@@ -5,7 +5,7 @@ namespace API.Services
 {
     public class AzureKeyvaultService
     {
-        public string GetKeyVaultSecret(string secretName)
+        public static string GetKeyVaultSecret(string secretName)
         {
             var azureServiceTokenProvider = new AzureServiceTokenProvider();
             var keyVault = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));

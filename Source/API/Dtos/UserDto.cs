@@ -8,7 +8,12 @@ namespace API.Dtos
     {
         public int UserID { get; set; }
         public string Username { get; set; }
+        [Required]
+        [StringLength(50)]
+        [EmailAddress]
         public string Email { get; set; }
+        [Required]
+        [StringLength(50, MinimumLength = 5)]
         public string Password { get; set; }
         public byte[] Salt { get; set; }
         public UserType Type { get; set; }
