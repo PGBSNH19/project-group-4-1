@@ -36,12 +36,12 @@ namespace API.Tests.ControllerTests
             var marketplaceController = new MarketplaceController(marketplaceRepository, _mapper);
 
             //Act
-            var result = await marketplaceController.GetMarketplaces();
-            var contentResult = result.Result as OkObjectResult;
+            var dataResult = await marketplaceController.GetMarketplaces();
+            var contentResult = dataResult.Result as OkObjectResult;
             var resultMarketplaces = contentResult.Value as List<MarketplaceDto>;
-
             //Assert
             Assert.True(resultMarketplaces.Count > 0);
+            Assert.IsType<OkObjectResult>(contentResult);
         }
 
         [Fact]
@@ -60,6 +60,7 @@ namespace API.Tests.ControllerTests
 
             //Assert
             Assert.NotNull(resultMarketplace);
+            Assert.IsType<OkObjectResult>(contentResult);
         }
 
         [Fact]
@@ -73,10 +74,11 @@ namespace API.Tests.ControllerTests
 
             //Act
             var result = await marketplaceController.GetMarketplaceById(1);
-            var contentResult = result.Result as NotFoundObjectResult;
+            var contentResult = result.Result as NoContentResult;
 
             //Assert
             Assert.Null(result.Value);
+            Assert.IsType<NoContentResult>(contentResult);
         }
 
         [Fact]
@@ -102,6 +104,13 @@ namespace API.Tests.ControllerTests
             Assert.Equal(201, contentResult.StatusCode);
         }
 
+        [Fact]
+        public async void PutMarketplace_IfMarketplaceIsUpdated_ExpectedStatusCode200()
+        {
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Marketplaces).ReturnsDbSet(GetMarketplaces());
+        }
+
         public List<Marketplace> GetMarketplaces()
         {
             return new List<Marketplace>
@@ -124,8 +133,8 @@ namespace API.Tests.ControllerTests
                     EndDateTime = new DateTime(2020, 12, 21),
                     PictureBytes = null
 
-    }
-};
+                }
+            };
         }
     }
 }
