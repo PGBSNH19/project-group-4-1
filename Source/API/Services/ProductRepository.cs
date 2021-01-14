@@ -21,8 +21,8 @@ namespace API.Services
 
         public async Task<Product> GetProductById(int id)
         {
-            var query = await _context.Products.FindAsync(id);
-            return query;
+            IQueryable<Product> query = _context.Products.Where(x => x.ProductID == id);
+            return await query.FirstOrDefaultAsync();
         }
     }
 }
