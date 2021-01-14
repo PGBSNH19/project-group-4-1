@@ -30,30 +30,22 @@ namespace API.Controllers
         [HttpGet("GetMarketplaces")]
         public async Task<ActionResult<MarketplaceDto[]>> GetMarketplaces()
         {
-            try
-            {
-                var results = await _marketplaceRepository.GetMarketplaces();
-                var mappedEntities = _mapper.Map<MarketplaceDto[]>(results);
+            var results = await _marketplaceRepository.GetMarketplaces();
+            if (results.Count == 0)
+                return NoContent();
 
-                var manualMapper = new ManualMapper();
-                var manualObjects = new List<MarketplaceDto>();
-                for (int i = 0; i < results.Count; i++)
-                {
-                    var manualObject =
-                        manualMapper.ManualMapperMarketplacePicturesReverse(results.ElementAt(i), mappedEntities[i]);
-                    manualObjects.Add(manualObject);
-                }
-                if (mappedEntities.Length == 0)
-                {
-                    return NotFound();
-                }
+            var mappedEntities = _mapper.Map<MarketplaceDto[]>(results);
+            var manualMapper = new ManualMapper();
+            var manualObjects = new List<MarketplaceDto>();
 
-                return Ok(manualObjects);
-            }
-            catch (Exception exception)
+            for (int i = 0; i < results.Count; i++)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {exception.Message}");
+                var manualObject =
+                    manualMapper.ManualMapperMarketplacePicturesReverse(results.ElementAt(i), mappedEntities[i]);
+                manualObjects.Add(manualObject);
             }
+
+            return Ok(manualObjects);
         }
         /// <summary>
         /// Gets a Marketplace by its id
@@ -61,46 +53,41 @@ namespace API.Controllers
         [HttpGet("GetMarketplace/{id}")]
         public async Task<ActionResult<MarketplaceDto>> GetMarketplaceById(int id)
         {
-            try
-            {
-                var result = await _marketplaceRepository.GetMarketplaceById(id);
-                var mappedEntity = _mapper.Map<MarketplaceDto>(result);
+            var result = await _marketplaceRepository.GetMarketplaceById(id);
 
-                var manualMapper = new ManualMapper();
-                var manualObject = manualMapper.ManualMapperMarketplacePicturesReverse(result, mappedEntity);
+            if (result == null)
+                return NoContent();
 
-                if (mappedEntity == null)
-                {
-                    return NotFound();
-                }
+            var mappedEntity = _mapper.Map<MarketplaceDto>(result);
 
-                return Ok(manualObject);
-            }
-            catch (Exception e)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
-            }
+            var manualMapper = new ManualMapper();
+            var manualObject = manualMapper.ManualMapperMarketplacePicturesReverse(result, mappedEntity);
+
+            if (manualObject == null)
+                return BadRequest();
+
+            return Ok(manualObject);
         }
         /// <summary>
         /// post a new Marketplaces
         /// </summary>
         [HttpPost]
         public async Task<ActionResult<Marketplace>> PostMarketplace([FromForm] MarketplaceDto marketplace)
-        {
+        {            
             try
             {
                 var mappedEntity = _mapper.Map<Marketplace>(marketplace);
-                if (marketplace.Image != null)
+
+                if (!String.IsNullOrEmpty(marketplace.Image))
                 {
                     var manualMapper = new ManualMapper();
-                    var manualObject = manualMapper.ManualMapperMarketplacePictures(mappedEntity, marketplace);
-                    _marketplaceRepository.Add(manualObject);
+                    mappedEntity = manualMapper.ManualMapperMarketplacePictures(mappedEntity, marketplace);
                 }
+
                 _marketplaceRepository.Add(mappedEntity);
+
                 if (await _marketplaceRepository.Save())
-                {
                     return Created("/api/v1.0/[controller]/" + marketplace.MarketplaceID, new Marketplace { MarketplaceID = marketplace.MarketplaceID });
-                }
 
                 return BadRequest();
             }
@@ -115,28 +102,33 @@ namespace API.Controllers
         [HttpPut("{marketplaceId}")]
         public async Task<ActionResult<Marketplace>> PutMarketplace(int marketplaceId, [FromForm] MarketplaceDto marketplace)
         {
+            var currentMarketplace = await _marketplaceRepository.GetMarketplaceById(marketplaceId);
+            
+            if (currentMarketplace == null) 
+                return NotFound($"Cant't find any marketplaces with id: {marketplaceId}");
+
+
             try
             {
-                var oldMarketplace = await _marketplaceRepository.GetMarketplaceById(marketplaceId);
-                if (oldMarketplace == null)
+                var updatedMarketplace = _mapper.Map(marketplace, currentMarketplace);
+                
+                if (!String.IsNullOrEmpty(marketplace.Image))
                 {
-                    return NotFound($"Cant't find any marketplaces with id: {marketplaceId}");
+                    var manualMapper = new ManualMapper();
+                    updatedMarketplace = manualMapper.ManualMapperMarketplacePictures(updatedMarketplace, marketplace);
                 }
+                
+                _marketplaceRepository.Update(updatedMarketplace);
 
-                var newMarketplace = _mapper.Map(marketplace, oldMarketplace);
-                var manualMapper = new ManualMapper();
-                var manualObject = manualMapper.ManualMapperMarketplacePictures(newMarketplace, marketplace);
-                _marketplaceRepository.Update(manualObject);
                 if (await _marketplaceRepository.Save())
-                {
-                    return Ok(manualObject);
-                }
+                    return Ok(updatedMarketplace);
+
+                return BadRequest();
             }
             catch (Exception e)
             {
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
-            return BadRequest();
         }
         /// <summary>
         /// Deletes a  Marketplace based on its id
@@ -146,15 +138,14 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteMarketplace(int id)
         {
+
+            var marketplace = await _marketplaceRepository.GetMarketplaceById(id);
+            
+            if (marketplace == null)
+                return NotFound();
+            
             try
             {
-                var marketplace = await _marketplaceRepository.GetMarketplaceById(id);
-
-                if (marketplace == null)
-                {
-                    return NotFound();
-                }
-
                 _marketplaceRepository.Delete(marketplace);
 
                 if (await _marketplaceRepository.Save())

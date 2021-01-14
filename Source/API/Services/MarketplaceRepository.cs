@@ -19,14 +19,14 @@ namespace API.Services
 
         public async Task<ICollection<Marketplace>> GetMarketplaces()
         {
-            IQueryable<Marketplace> query = _context.Marketplaces;
+            IQueryable<Marketplace> query = _context.Marketplaces.AsNoTracking();
             return await query.ToArrayAsync();
         }
 
         public async Task<Marketplace> GetMarketplaceById(int id)
         {
-            IQueryable<Marketplace> query = _context.Marketplaces.Where(x => x.MarketplaceID == id);
-            return await query.FirstOrDefaultAsync();
+            var query = await _context.Marketplaces.FindAsync(id);
+            return query;
         }
     }
 }
