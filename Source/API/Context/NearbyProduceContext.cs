@@ -10,11 +10,7 @@ namespace API.Context
     {
         private readonly IConfiguration _configuration;
         public NearbyProduceContext() { }
-        AzureKeyvaultService _aKVService = new AzureKeyvaultService();
-        public NearbyProduceContext(IConfiguration config, DbContextOptions options) : base(options)
-        {
-            _configuration = config;
-        }
+        public NearbyProduceContext(DbContextOptions options) : base(options){ }
         public virtual DbSet<Marketplace> Marketplaces { get; set; }
         public virtual DbSet<MarketplaceSeller> MarketplaceSellers { get; set; }
         public virtual DbSet<Product> Products { get; set; }
@@ -23,25 +19,6 @@ namespace API.Context
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserProduct> UserProducts { get; set; }
 
-
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            var azureDbCon = _aKVService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/NearByProduce-Connectionstring2/54a471f3aa5040508f39273f3ceb220c");
-            var builder = new ConfigurationBuilder();
-            if (string.IsNullOrEmpty(azureDbCon))
-            {
-                IConfigurationRoot configuration = builder.SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-                    .AddJsonFile("appsettings.Development.json")
-                    .Build();
-                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
-            }
-            else
-            {
-                builder.Build();
-                optionsBuilder.UseSqlServer(azureDbCon);
-            }
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

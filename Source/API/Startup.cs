@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,7 +32,28 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<NearbyProduceContext>();
+            var azureDbCon = string.Empty;
+            try
+            {
+                azureDbCon = AzureKeyvaultService.GetKeyVaultSecret("https://nearbyproducevault.vault.azure.net/secrets/NearByProduce-Connectionstring2/54a471f3aa5040508f39273f3ceb220c");
+            }
+            catch(Exception e)
+            {
+               
+            }
+            if (string.IsNullOrEmpty(azureDbCon))
+            {
+                services.AddDbContext<NearbyProduceContext>(options =>
+                options.UseSqlServer(
+                 Configuration.GetConnectionString("DefaultConnection")));
+            }
+            else
+            {
+                services.AddDbContext<NearbyProduceContext>(options =>
+                options.UseSqlServer(
+                 azureDbCon));
+            }
+            
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
