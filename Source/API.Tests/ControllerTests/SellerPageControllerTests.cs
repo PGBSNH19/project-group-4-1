@@ -62,7 +62,7 @@ namespace API.Tests.ControllerTests
         }
         [Fact]
 
-        public async void GetSellerPageById_IfNotExist_ExpectedNull()
+        public async void GetSellerPageByUserId_IfNotExist_ExpectedNull()
         {
             var mockContext = new Mock<NearbyProduceContext>();
             mockContext.Setup(x => x.SellerPages).ReturnsDbSet(GetSellerPages());
