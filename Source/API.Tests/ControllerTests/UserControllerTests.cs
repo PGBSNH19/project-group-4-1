@@ -8,6 +8,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Moq.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
@@ -25,8 +26,9 @@ namespace API.Tests.ControllerTests
             _mapper = mapper;
         }
 
+        #region GetUsers tests
         [Fact]
-        public async void GetAll_IfAnyExist_ReturnTrue()
+        public async void GetUsers_IfAnyExist_ReturnTrue()
         {
             //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
@@ -36,15 +38,34 @@ namespace API.Tests.ControllerTests
 
             //Act
             var result = await userController.GetUsers();
-            var contentResult = result.Result as OkObjectResult;
+            var contentResult = result.Result as ObjectResult;
             var resultUsers = contentResult.Value as UserDto[];
 
             //Assert
             Assert.True(resultUsers.Length > 0);
+            Assert.IsType<OkObjectResult>(result.Result);
         }
 
         [Fact]
-        public async void GetById_IfExist_ExpectedNotNull()
+        public async void GetUsers_IfNoResults_ReturnNoContent()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(new List<User>());
+            var userRepository = new UserRepository(mockContext.Object);
+            var userController = new UserController(userRepository, _mapper);
+
+            //Act
+            var result = await userController.GetUsers();
+
+            //Assert
+            Assert.IsType<NoContentResult>(result.Result);
+        }
+        #endregion
+
+        #region GetUser tests
+        [Fact]
+        public async void GetUser_IfExist_ExpectedNotNull()
         {
             //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
@@ -62,7 +83,7 @@ namespace API.Tests.ControllerTests
         }
 
         [Fact]
-        public async void GetById_IfNotExist_ExpectedNull()
+        public async void GetUser_IfNotExist_ExpectedNull()
         {
             //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
@@ -72,14 +93,31 @@ namespace API.Tests.ControllerTests
 
             //Act
             var result = await userController.GetUser(4);
-            var contentResult = result.Result as NotFoundObjectResult;
 
             //Assert
             Assert.Null(result.Value);
+            Assert.IsType<NoContentResult>(result.Result);
         }
 
+        [Theory]
+        [InlineData(0)]
+        [InlineData(-1)]
+        public async void GetUser_BadRequestData_ReturnBadRequest(object id)
+        {
+            //Arrange
+            var userController = new UserController(null, _mapper);
+
+            //Act
+            var result = await userController.GetUser((int)id);
+
+            //Assert
+            Assert.IsType<BadRequestResult>(result.Result);
+        }
+        #endregion
+
+        #region GetUserByName tests
         [Fact]
-        public async void GetByName_IfExist_ExpectedNotNull()
+        public async void GetUserByName_IfExist_ExpectedNotNull()
         {
             //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
@@ -94,10 +132,11 @@ namespace API.Tests.ControllerTests
 
             //Assert
             Assert.NotNull(resultUsers);
+            Assert.IsType<OkObjectResult>(result.Result);
         }
 
         [Fact]
-        public async void GetByName_IfNotExist_ExpectedNull()
+        public async void GetUserByName_IfNotExist_ExpectedNull()
         {
             //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
@@ -107,15 +146,32 @@ namespace API.Tests.ControllerTests
 
             //Act
             var result = await userController.GetUserByName("Klas");
-            var contentResult = result.Result as NotFoundObjectResult;
 
             //Assert
             Assert.Null(result.Value);
+            Assert.IsType<NoContentResult>(result.Result);
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public async void GetUserByName_BadRequestData_ReturnNoContent(string name)
+        {
+            //Arrange
+            var userController = new UserController(null, _mapper);
 
+            //Act
+            var result = await userController.GetUserByName(name);
+
+            //Assert
+            Assert.Null(result.Value);
+            Assert.IsType<BadRequestResult>(result.Result);
+        }
+        #endregion
+
+        #region GetUserByEmail tests
         [Fact]
-        public async void GetByEmail_IfExist_ExpectedNotNull()
+        public async void GetUserByEmail_IfExist_ExpectedNotNull()
         {
             //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
@@ -130,10 +186,11 @@ namespace API.Tests.ControllerTests
 
             //Assert
             Assert.NotNull(resultUsers);
+            Assert.IsType<OkObjectResult>(result.Result);
         }
 
         [Fact]
-        public async void GetByEmail_IfNotExist_ExpectedNull()
+        public async void GetUserByEmail_IfNotExist_ExpectedNull()
         {
             //Arrange
             var mockContext = new Mock<NearbyProduceContext>();
@@ -147,9 +204,27 @@ namespace API.Tests.ControllerTests
 
             //Assert
             Assert.Null(result.Value);
+            Assert.IsType<NotFoundResult>(result.Result);
         }
 
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        public async void GetUserByEmail_BadRequestData_ReturnNoContent(string email)
+        {
+            //Arrange
+            var userController = new UserController(null, _mapper);
 
+            //Act
+            var result = await userController.GetUserByEmail(email);
+
+            //Assert
+            Assert.Null(result.Value);
+            Assert.IsType<BadRequestResult>(result.Result);
+        }
+        #endregion
+
+        #region PostUser tests
         [Fact]
         public async void PostUser_IfUserPosted_Expected201StatusCode()
         {
@@ -171,6 +246,43 @@ namespace API.Tests.ControllerTests
             //Assert
             Assert.Equal(201, contentResult.StatusCode);
         }
+        #endregion
+
+        #region DeleteUser tests 
+        [Fact]
+        public async void DeleteUser_BadRequestData_ReturnBadRequest()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(new List<User>());
+            var userRepository = new UserRepository(mockContext.Object);
+            var userController = new UserController(userRepository, _mapper);
+
+            //Act
+            var badId = 0;
+            var result = await userController.DeleteUser(badId);
+
+            //Assert
+            Assert.IsType<BadRequestResult>(result);
+        }
+
+        [Fact]
+        public async void DeleteUser_IfNotExist_ReturnNoContent()
+        {
+            //Arrange
+            var mockContext = new Mock<NearbyProduceContext>();
+            mockContext.Setup(x => x.Users).ReturnsDbSet(new List<User>());
+            var userRepository = new UserRepository(mockContext.Object);
+            var userController = new UserController(userRepository, _mapper);
+
+            //Act
+            var nonExistingId = 5;
+            var result = await userController.DeleteUser(nonExistingId);
+
+            //Assert
+            Assert.IsType<NoContentResult>(result);
+        }
+        #endregion
 
         public List<User> GetUsers()
         {

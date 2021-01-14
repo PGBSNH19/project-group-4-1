@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using API.Extensions;
 using API.Models;
 using API.Services;
 using AutoMapper;
@@ -74,20 +75,12 @@ namespace API.Controllers
         [HttpGet("GetUsers")]
         public async Task<ActionResult<UserDto[]>> GetUsers()
         {
-            try
-            {
-                var results = await _userRepository.GetUsers();
-                var mappedEntities = _mapper.Map<UserDto[]>(results);
-                if (mappedEntities.Length == 0)
-                {
-                    return NotFound();
-                }
-                return Ok(mappedEntities);
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
-            }
+            var results = await _userRepository.GetUsers();
+
+            var mappedEntities = _mapper.Map<UserDto[]>(results);
+            if (mappedEntities.Length == 0) return NoContent();
+
+            return Ok(mappedEntities);
         }
         /// <summary>
         /// Gets a users by its id
@@ -120,21 +113,13 @@ namespace API.Controllers
         [HttpGet("GetUser/{id}")]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {
-            try
-            {
-                var result = await _userRepository.GetUserById(id);
-                var mappedEntity = _mapper.Map<UserDto>(result);
-                if (mappedEntity == null)
-                {
-                    return NotFound();
-                }
-                return Ok(mappedEntity);
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
-            }
+            if (id <= 0) return BadRequest();
+            var result = await _userRepository.GetUserById(id);
 
+            if (result == null) return NoContent();
+            var mappedEntity = _mapper.Map<UserDto>(result);
+            
+            return Ok(mappedEntity);
         }
         /// <summary>
         /// Gets a users by its name
@@ -167,20 +152,13 @@ namespace API.Controllers
         [HttpGet("GetUserByName/{name}")]
         public async Task<ActionResult<UserDto>> GetUserByName(string name)
         {
-            try
-            {
-                var result = await _userRepository.GetUserByName(name);
-                var mappedEntity = _mapper.Map<UserDto>(result);
-                if (mappedEntity == null)
-                {
-                    return NotFound();
-                }
-                return Ok(mappedEntity);
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
-            }
+            if (string.IsNullOrEmpty(name)) return BadRequest();
+            var result = await _userRepository.GetUserByName(name);
+                
+            if (result == null) return NoContent();
+            var mappedEntity = _mapper.Map<UserDto>(result);
+
+            return Ok(mappedEntity);
         }
         /// <summary>
         /// Gets a users by its email
@@ -213,20 +191,13 @@ namespace API.Controllers
         [HttpGet("GetUserByEmail/{email}")]
         public async Task<ActionResult<UserDto>> GetUserByEmail(string email)
         {
-            try
-            {
-                var result = await _userRepository.GetUserByEmail(email);
-                var mappedEntity = _mapper.Map<UserDto>(result);
-                if (mappedEntity == null)
-                {
-                    return NotFound();
-                }
-                return Ok(mappedEntity);
-            }
-            catch (Exception exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
-            }
+            if (string.IsNullOrEmpty(email)) return BadRequest();
+            var result = await _userRepository.GetUserByEmail(email);
+
+            if (result == null) return NotFound(); 
+            var mappedEntity = _mapper.Map<UserDto>(result);
+
+            return Ok(mappedEntity);
         }
 
         /// <summary>
@@ -235,20 +206,12 @@ namespace API.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel model)
         {
+            if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
 
-            if (ModelState.IsValid)
-            {
-                var result = await _userRepository.LoginUserAsync(model);
+            var result = await _userRepository.LoginUserAsync(model);
+            if (result.IsSuccess) return Ok(result);
 
-                if (result.IsSuccess)
-                {
-                    return Ok(result);
-                }
-
-                return BadRequest(result);
-            }
-
-            return BadRequest("Some properties are not valid");
+            return BadRequest(result);
         }
 
         /// <summary>
@@ -288,18 +251,12 @@ namespace API.Controllers
             {
                 var mappedEntity = _mapper.Map<User>(user);
                 _userRepository.Add(mappedEntity);
-                if (await _userRepository.Save())
-                {
-                    return Created("/api/v1.0/[controller]" + user.UserID, new User { UserID = user.UserID });
-                }
-                return BadRequest();
-            }
+                await _userRepository.Save();
+                return Created("/api/v1.0/[controller]" + user.UserID, new User { UserID = user.UserID });
+            } 
             catch (Exception e)
             {
-                if (e is DbUpdateException)
-                {
-                    return this.StatusCode(StatusCodes.Status403Forbidden, $"Value not unique {e.InnerException.Message}");
-                }
+                if (e is DbUpdateException) return this.StatusCode(StatusCodes.Status403Forbidden, $"Value not unique {e.InnerException.Message}");
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
@@ -310,21 +267,18 @@ namespace API.Controllers
         [HttpPut("{userId}")]
         public async Task<ActionResult<User>> PutUser(int userId, [FromBody] UserDto userDto)
         {
+            var oldUser = await _userRepository.GetUserById(userId);
+            if (oldUser == null) return BadRequest($"Can't find any user with id: {userId}");
+
             try
             {
-                var oldUser = await _userRepository.GetUserById(userId);
-                if (oldUser == null)
-                    return NotFound($"Can't find any user with id: {userId}");
                 var newUser = _mapper.Map(userDto, oldUser);
                 _userRepository.Update(newUser);
-                if (await _userRepository.Save())
-                    return Ok(newUser);
+                
+                await _userRepository.Save();
+                return Ok(newUser);
             }
-            catch (Exception e)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
-            }
-            return BadRequest();
+            catch (Exception e) { return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}"); }
         }
 
         /// <summary>
@@ -333,29 +287,18 @@ namespace API.Controllers
         /// <param name="id"></param>
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
+            if (id <= 0) return BadRequest();
+            var user = await _userRepository.GetUserById(id);
+            if (user == null) return NoContent();
+
             try
             {
-                var user = await _userRepository.GetUserById(id);
-
-                if (user == null)
-                {
-                    return NotFound();
-                }
-
                 _userRepository.Delete(user);
-                if (await _userRepository.Save())
-                {
-                    return NoContent();
-                }
-
-                return BadRequest();
-            }
-            catch (Exception e)
-            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {e.Message}");
-            }
+                await _userRepository.Save();
+                return Ok();
+            } catch (Exception e) { return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {e.Message}"); }
         }
     }
 }
