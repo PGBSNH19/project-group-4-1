@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BlazorApp_Frontend.Data
 {
     public class LoginRequest
     {
-        [Required]
+        [Required(ErrorMessage = "Du måste ange en E-post")]
         [StringLength(50)]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Ange en giltig E-post")]
         public string Email { get; set; }
 
-        [Required]
+
+        [Required(ErrorMessage = "Du måste ange ett Lösenord")]
         [StringLength(50)]
         public string Password { get; set; }
     }

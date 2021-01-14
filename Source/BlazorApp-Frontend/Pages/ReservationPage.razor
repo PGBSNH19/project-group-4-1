@@ -45,8 +45,8 @@
             </div>
         </div>
     </AuthorizeView>
-    @code {
 
+    @code {
         User user = new User();
 
         protected override async Task OnInitializedAsync()
@@ -57,5 +57,4 @@
             int result = Int32.Parse(claimsList[4].Value);
             user = await userRepo.GetUserById(result);
         }
-
     }

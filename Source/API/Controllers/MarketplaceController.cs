@@ -24,7 +24,9 @@ namespace API.Controllers
             _marketplaceRepository = marketplaceRepository;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// Gets all Marketplaces
+        /// </summary>
         [HttpGet("GetMarketplaces")]
         public async Task<ActionResult<MarketplaceDto[]>> GetMarketplaces()
         {
@@ -53,7 +55,9 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure: {exception.Message}");
             }
         }
-
+        /// <summary>
+        /// Gets a Marketplace by its id
+        /// </summary>
         [HttpGet("GetMarketplace/{id}")]
         public async Task<ActionResult<MarketplaceDto>> GetMarketplaceById(int id)
         {
@@ -77,7 +81,9 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
-
+        /// <summary>
+        /// post a new Marketplaces
+        /// </summary>
         [HttpPost]
         public async Task<ActionResult<Marketplace>> PostMarketplace([FromForm] MarketplaceDto marketplace)
         {
@@ -103,7 +109,9 @@ namespace API.Controllers
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
-
+        /// <summary>
+        /// Puts a  Marketplaces by its id
+        /// </summary>
         [HttpPut("{marketplaceId}")]
         public async Task<ActionResult<Marketplace>> PutMarketplace(int marketplaceId, [FromForm] MarketplaceDto marketplace)
         {

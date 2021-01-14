@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(NearbyProduceContext))]
-    [Migration("20201218083728_MoreSeedMigration")]
-    partial class MoreSeedMigration
+    [Migration("20210112085309_Unique_username_and_email")]
+    partial class Unique_username_and_email
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,12 +37,15 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("PictureBytes")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<DateTime>("StartDateTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("MarketplaceID");
 
-                    b.ToTable("Marketplace");
+                    b.ToTable("Marketplaces");
 
                     b.HasData(
                         new
@@ -75,7 +78,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerID");
 
-                    b.ToTable("MarketplaceSeller");
+                    b.ToTable("MarketplaceSellers");
 
                     b.HasData(
                         new
@@ -105,12 +108,10 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SellerPageID")
-                        .HasColumnType("int");
+                    b.Property<byte[]>("PictureBytes")
+                        .HasColumnType("varbinary(max)");
 
                     b.HasKey("ProductID");
-
-                    b.HasIndex("SellerPageID");
 
                     b.ToTable("Products");
 
@@ -149,6 +150,10 @@ namespace API.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(150)
+                        .HasColumnType("VARCHAR(150)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -159,7 +164,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerUserID");
 
-                    b.ToTable("SellerPage");
+                    b.ToTable("SellerPages");
 
                     b.HasData(
                         new
@@ -200,7 +205,7 @@ namespace API.Migrations
 
                     b.HasIndex("SellerPageID");
 
-                    b.ToTable("SellerPageProduct");
+                    b.ToTable("SellerPageProducts");
 
                     b.HasData(
                         new
@@ -234,20 +239,31 @@ namespace API.Migrations
                         .UseIdentityColumn();
 
                     b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("Salt")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
                     b.Property<string>("Username")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserID");
 
-                    b.ToTable("User");
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
+
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasFilter("[Username] IS NOT NULL");
+
+                    b.ToTable("Users");
 
                     b.HasData(
                         new
@@ -255,39 +271,39 @@ namespace API.Migrations
                             UserID = 1,
                             Email = "test@test.com",
                             Password = "lösen123",
-                            Type = 2,
+                            Type = 1,
                             Username = "JanneBonde07"
                         },
                         new
                         {
                             UserID = 2,
-                            Email = "test@test.com",
+                            Email = "test1@test.com",
                             Password = "lösen123",
-                            Type = 1,
+                            Type = 0,
                             Username = "Bengtan555"
                         },
                         new
                         {
                             UserID = 3,
-                            Email = "test@test.com",
+                            Email = "test2@test.com",
                             Password = "KlDioL123!",
-                            Type = 1,
+                            Type = 0,
                             Username = "Henrik123"
                         },
                         new
                         {
                             UserID = 4,
-                            Email = "test@test.com",
+                            Email = "test3@test.com",
                             Password = "lösen123",
-                            Type = 2,
+                            Type = 1,
                             Username = "BondenLisa1"
                         },
                         new
                         {
                             UserID = 5,
-                            Email = "test@test.com",
+                            Email = "test4@test.com",
                             Password = "lösen123",
-                            Type = 2,
+                            Type = 1,
                             Username = "HannesFarm"
                         });
                 });
@@ -304,7 +320,7 @@ namespace API.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("UserProduct");
+                    b.ToTable("UserProducts");
 
                     b.HasData(
                         new
@@ -336,13 +352,6 @@ namespace API.Migrations
                     b.Navigation("Marketplace");
 
                     b.Navigation("Seller");
-                });
-
-            modelBuilder.Entity("API.Models.Product", b =>
-                {
-                    b.HasOne("API.Models.SellerPage", null)
-                        .WithMany("Products")
-                        .HasForeignKey("SellerPageID");
                 });
 
             modelBuilder.Entity("API.Models.SellerPage", b =>
@@ -408,8 +417,6 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.SellerPage", b =>
                 {
-                    b.Navigation("Products");
-
                     b.Navigation("SellerPageProducts");
                 });
 

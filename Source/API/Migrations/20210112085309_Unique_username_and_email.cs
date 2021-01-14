@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class Tryingtofixdb : Migration
+    public partial class Unique_username_and_email : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,6 +15,7 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureBytes = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     StartDateTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -24,13 +25,27 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureBytes = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     UserID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Salt = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false)
@@ -85,24 +100,25 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "UserProducts",
                 columns: table => new
                 {
+                    UserID = table.Column<int>(type: "int", nullable: false),
                     ProductID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PictureBytes = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    SellerPageID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.ProductID);
+                    table.PrimaryKey("PK_UserProducts", x => new { x.UserID, x.ProductID });
                     table.ForeignKey(
-                        name: "FK_Products_SellerPages_SellerPageID",
-                        column: x => x.SellerPageID,
-                        principalTable: "SellerPages",
-                        principalColumn: "SellerPageID",
-                        onDelete: ReferentialAction.Restrict);
+                        name: "FK_UserProducts_Products_ProductID",
+                        column: x => x.ProductID,
+                        principalTable: "Products",
+                        principalColumn: "ProductID");
+                    table.ForeignKey(
+                        name: "FK_UserProducts_Users_UserID",
+                        column: x => x.UserID,
+                        principalTable: "Users",
+                        principalColumn: "UserID");
                 });
 
             migrationBuilder.CreateTable(
@@ -129,48 +145,25 @@ namespace API.Migrations
                         principalColumn: "SellerPageID");
                 });
 
-            migrationBuilder.CreateTable(
-                name: "UserProducts",
-                columns: table => new
-                {
-                    UserID = table.Column<int>(type: "int", nullable: false),
-                    ProductID = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserProducts", x => new { x.UserID, x.ProductID });
-                    table.ForeignKey(
-                        name: "FK_UserProducts_Products_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Products",
-                        principalColumn: "ProductID");
-                    table.ForeignKey(
-                        name: "FK_UserProducts_Users_UserID",
-                        column: x => x.UserID,
-                        principalTable: "Users",
-                        principalColumn: "UserID");
-                });
-
             migrationBuilder.InsertData(
                 table: "Marketplaces",
-                columns: new[] { "MarketplaceID", "EndDateTime", "Location", "Name", "StartDateTime" },
+                columns: new[] { "MarketplaceID", "EndDateTime", "Location", "Name", "PictureBytes", "StartDateTime" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2020, 12, 26, 16, 30, 0, 0, DateTimeKind.Unspecified), "Heden", "Göteborgs Bakluckeloppis", new DateTime(2020, 12, 26, 10, 30, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, new DateTime(2020, 12, 30, 16, 30, 0, 0, DateTimeKind.Unspecified), "Majorna", "Majornas Eko-Marknad", new DateTime(2020, 12, 30, 9, 30, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, new DateTime(2020, 12, 26, 16, 30, 0, 0, DateTimeKind.Unspecified), "Heden", "Göteborgs Bakluckeloppis", null, new DateTime(2020, 12, 26, 10, 30, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, new DateTime(2020, 12, 30, 16, 30, 0, 0, DateTimeKind.Unspecified), "Majorna", "Majornas Eko-Marknad", null, new DateTime(2020, 12, 30, 9, 30, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "ProductID", "Name", "PictureBytes", "SellerPageID" },
+                columns: new[] { "ProductID", "Name", "PictureBytes" },
                 values: new object[,]
                 {
-                    { 1, "Potatis", null, null },
-                    { 2, "Morot", null, null },
-                    { 3, "Äpplen", null, null },
-                    { 4, "Päron", null, null },
-                    { 5, "Nöttfärs", null, null }
+                    { 1, "Potatis", null },
+                    { 2, "Morot", null },
+                    { 3, "Äpplen", null },
+                    { 4, "Päron", null },
+                    { 5, "Nöttfärs", null }
                 });
 
             migrationBuilder.InsertData(
@@ -179,10 +172,10 @@ namespace API.Migrations
                 values: new object[,]
                 {
                     { 1, "test@test.com", "lösen123", null, 1, "JanneBonde07" },
-                    { 2, "test@test.com", "lösen123", null, 0, "Bengtan555" },
-                    { 3, "test@test.com", "KlDioL123!", null, 0, "Henrik123" },
-                    { 4, "test@test.com", "lösen123", null, 1, "BondenLisa1" },
-                    { 5, "test@test.com", "lösen123", null, 1, "HannesFarm" }
+                    { 2, "test1@test.com", "lösen123", null, 0, "Bengtan555" },
+                    { 3, "test2@test.com", "KlDioL123!", null, 0, "Henrik123" },
+                    { 4, "test3@test.com", "lösen123", null, 1, "BondenLisa1" },
+                    { 5, "test4@test.com", "lösen123", null, 1, "HannesFarm" }
                 });
 
             migrationBuilder.InsertData(
@@ -200,18 +193,18 @@ namespace API.Migrations
                 columns: new[] { "SellerPageID", "Description", "Name", "SellerUserID" },
                 values: new object[,]
                 {
-                    { 1, "Här på Jannes gård säljer vi dem färskaste varorna i hela Västra Götaland!", "Jannes Online-Gård", 1 },
-                    { 2, "Lisas Näroldat: Bättre grönsaker finns inte!", "Lisas Näroldat", 4 },
-                    { 3, "Vi säljer dem bästa varorna i hela Göteborg!", "Hannes eko-farm", 4 }
+                    { 1, null, "Jannes Online-Gård", 1 },
+                    { 2, null, "Lisas Näroldat", 4 },
+                    { 3, null, "Hannes eko-farm", 4 }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserProducts",
-                columns: new[] { "ProductID", "UserID", "Amount" },
+                columns: new[] { "ProductID", "UserID" },
                 values: new object[,]
                 {
-                    { 1, 2, 10 },
-                    { 5, 3, 12 }
+                    { 1, 2 },
+                    { 5, 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -235,11 +228,6 @@ namespace API.Migrations
                 column: "SellerID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_SellerPageID",
-                table: "Products",
-                column: "SellerPageID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SellerPageProducts_SellerPageID",
                 table: "SellerPageProducts",
                 column: "SellerPageID");
@@ -253,6 +241,20 @@ namespace API.Migrations
                 name: "IX_UserProducts_ProductID",
                 table: "UserProducts",
                 column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true,
+                filter: "[Email] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true,
+                filter: "[Username] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -270,10 +272,10 @@ namespace API.Migrations
                 name: "Marketplaces");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "SellerPages");
 
             migrationBuilder.DropTable(
-                name: "SellerPages");
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Users");

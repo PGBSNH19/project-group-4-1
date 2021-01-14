@@ -1,11 +1,12 @@
-﻿using API.Models;
+﻿using API.Dtos;
+using API.Models;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
-using API.Dtos;
-using AutoMapper;
 
 
 namespace API.Controllers
@@ -22,6 +23,54 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Gets all users
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /User/GetUsers
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	6,
+        ///         
+        ///         "username" :	"test",
+        ///         
+        ///         "email" : "test@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 0,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }, 
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	10,
+        ///         
+        ///         "username" : "test",
+        ///         
+        ///         "email" : "test1@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 2,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }
+        ///</remarks>
         [HttpGet("GetUsers")]
         public async Task<ActionResult<UserDto[]>> GetUsers()
         {
@@ -40,7 +89,34 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
-
+        /// <summary>
+        /// Gets a users by its id
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /User/GetUser/{id}
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	6,
+        ///         
+        ///         "username" :	"test",
+        ///         
+        ///         "email" : "test@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 0,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }
+        ///</remarks>
         [HttpGet("GetUser/{id}")]
         public async Task<ActionResult<UserDto>> GetUser(int id)
         {
@@ -58,7 +134,36 @@ namespace API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
+
         }
+        /// <summary>
+        /// Gets a users by its name
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /User/GetUserByName/{name}
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	6,
+        ///         
+        ///         "username" :	"test",
+        ///         
+        ///         "email" : "test@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 0,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }
+        ///</remarks>
         [HttpGet("GetUserByName/{name}")]
         public async Task<ActionResult<UserDto>> GetUserByName(string name)
         {
@@ -77,6 +182,34 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Database Failure:{exception.Message} ");
             }
         }
+        /// <summary>
+        /// Gets a users by its email
+        /// </summary>
+        ///  <remarks>
+        /// Sample Request: 
+        ///
+        ///    Get /User/GetUserByEmail/{email}
+        ///    
+        ///    {
+        ///    
+        ///         "UserID" :	6,
+        ///         
+        ///         "username" :	"test",
+        ///         
+        ///         "email" : "test@test.com",
+        ///         
+        ///         "password": "VJcJGx1mrMsd8XTR6nbsTxj4cUceFdNzU8rzue0+7rs=",
+        ///         
+        ///         "salt": "xqHTWZyqWaX8Bl0n9tDo7g==",
+        ///         
+        ///         "type": 0,
+        ///         
+        ///         "marketplaceSellers": []
+        /// 
+        ///         "userproducts" : []
+        ///         
+        ///    }
+        ///</remarks>
         [HttpGet("GetUserByEmail/{email}")]
         public async Task<ActionResult<UserDto>> GetUserByEmail(string email)
         {
@@ -163,14 +296,41 @@ namespace API.Controllers
             }
             catch (Exception e)
             {
+                if (e is DbUpdateException)
+                {
+                    return this.StatusCode(StatusCodes.Status403Forbidden, $"Value not unique {e.InnerException.Message}");
+                }
                 return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
             }
         }
 
-        private void Debugger()
+        /// <summary>
+        /// Puts a User.
+        /// </summary>
+        [HttpPut("{userId}")]
+        public async Task<ActionResult<User>> PutUser(int userId, [FromBody] UserDto userDto)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var oldUser = await _userRepository.GetUserById(userId);
+                if (oldUser == null)
+                    return NotFound($"Can't find any user with id: {userId}");
+                var newUser = _mapper.Map(userDto, oldUser);
+                _userRepository.Update(newUser);
+                if (await _userRepository.Save())
+                    return Ok(newUser);
+            }
+            catch (Exception e)
+            {
+                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Database failure {e.Message}");
+            }
+            return BadRequest();
         }
+
+        /// <summary>
+        /// Deletes a users
+        /// </summary>
+        /// <param name="id"></param>
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(int id)

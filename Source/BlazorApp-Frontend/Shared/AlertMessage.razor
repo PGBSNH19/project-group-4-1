@@ -6,7 +6,6 @@
 @code {
     [Parameter]
     public string Message { get; set; }
-
     private Data.AlertMessageType messageType;
 
     [Parameter]
@@ -34,7 +33,6 @@
     }
 
     string alertClass = "alert-info";
-
     void HideMessage()
     {
         Message = string.Empty;
